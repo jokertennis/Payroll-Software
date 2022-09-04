@@ -68,4 +68,4 @@ main：本番環境の役割を持つブランチ。定期的にdevelopブラン
 タスクに取り組む際はdevelopブランチからブランチを切って取り組む。ブランチ名に関しては、追跡性を考慮して「issues/issueの番号」を推奨する。
 
 ### その他
-APIの設計思想はREST APIを採用する。また、OpenAPI(RESTful APIを記述するためのフォーマット)の作成にはSwaggerを利用する。
+APIの設計思想はREST APIを採用する。また、OpenAPI(RESTful APIを記述するためのフォーマット)の作成にはgo-swaggerというライブラリを利用する。
