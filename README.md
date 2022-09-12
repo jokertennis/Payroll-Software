@@ -21,7 +21,7 @@ irisを利用する理由は、以下の理由である。
 * 他のgolangのwebフレームワークと比較して高速である。
 
 ### 利用するデータベース,sqlライブラリ,マイグレーションツール
-データベースはRDBのMySQLを利用する。sqlライブラリはgolangの標準ライブラリである[database/sql](https://pkg.go.dev/database/sql)を利用する。開発を進めていくうちに不便さを感じた場合、ormやサードパーティツールの導入を検討する。
+データベースはRDBのMySQLを利用する。sqlライブラリはgolangの標準ライブラリである[database/sql](https://pkg.go.dev/database/sql)を利用する。開発を進めていくうちに不便さを感じた場合、ormやサードパーティツールの導入を検討する。マイグレーションツールは[golang-migrate](https://github.com/golang-migrate/migrate)を利用する。
 
 ### OpenAPI自動生成ツール
 OpenAPI自動生成ツールはgolangのライブラリであるgo-swaggerを利用する方針である。
