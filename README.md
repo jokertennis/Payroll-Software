@@ -45,7 +45,7 @@ MRの粒度は以下の方針にする。
 
 ### その他
 APIの設計思想はREST APIを採用する。また、できる限りマイクロサービスアーキテクチャを採用する。また、golangには[google/wire](https://github.com/google/wire)のようなDIツールがいくつか存在するが、DIの理解のためにもアプリケーションが複雑になるまでは手動で作成する予定である。インスタンスの生成方法はDI(Dependency Injection)とFactory Patternの2つに
-分けられるが、インスタンスの柔軟性を考慮して極力DIを利用する方針とする。開発・運用していく中でFactory Patternの方が良いと判断した場合は、Factory Patternに一部のインスタンスの生成方法を変更する。
+分けられるが、インスタンスの柔軟性を考慮して極力DIを利用する方針とする。開発・運用していく中でFactory Patternの方が良いと判断した場合は、Factory Patternに一部のインスタンスの生成方法を変更する。DIの方法はConstructor Injectionで統一する。
 
 ### 参考文献
 [Dependency Injection vs Factory Pattern](https://stackoverflow.com/questions/557742/dependency-injection-vs-factory-pattern)
