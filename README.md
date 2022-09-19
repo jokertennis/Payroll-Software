@@ -49,3 +49,4 @@ APIの設計思想はREST APIを採用する。また、できる限りマイク
 
 ### 参考文献
 [Dependency Injection vs Factory Pattern](https://stackoverflow.com/questions/557742/dependency-injection-vs-factory-pattern)
+[Go言語とDependency Injection](https://blog.recruit.co.jp/rtc/2017/12/11/go_dependency_injection/)
