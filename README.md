@@ -48,5 +48,5 @@ APIの設計思想はREST APIを採用する。また、できる限りマイク
 分けられるが、インスタンスの柔軟性を考慮して極力DIを利用する方針とする。開発・運用していく中でFactory Patternの方が良いと判断した場合は、Factory Patternに一部のインスタンスの生成方法を変更する。DIの方法はConstructor Injectionで統一する。
 
 ### 参考文献
-[Dependency Injection vs Factory Pattern](https://stackoverflow.com/questions/557742/dependency-injection-vs-factory-pattern)
-[Go言語とDependency Injection](https://blog.recruit.co.jp/rtc/2017/12/11/go_dependency_injection/)
+* [Dependency Injection vs Factory Pattern](https://stackoverflow.com/questions/557742/dependency-injection-vs-factory-pattern)
+* [Go言語とDependency Injection](https://blog.recruit.co.jp/rtc/2017/12/11/go_dependency_injection/)
