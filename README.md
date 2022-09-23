@@ -32,6 +32,8 @@ OpenAPI自動生成ツールはgolangのライブラリである[go-swagger](htt
 
 [参考文献](https://future-architect.github.io/articles/20190814/#補足-コード生成系フレームワーク比較)
 
+[OpenAPI作成時に参考になりそうな文献](https://note.com/rescuenow_hr/n/nc0f7fbaeaac8)
+
 ### テストに関して
 APIのテストに関してはc1カバレッジ100%を目指す。エンドポイントからの単体テストで正常系・異常系・認証系のテストを行うこととする。また、実装前に行うべきテストをまとめてから、テストを通るような実装を行うべきである。理由はテスト作成後にテスト失敗を確認し、実装を変更するという作業をなるべく無くすためである。シナリオテストに関しては、ユースケースを満たすAPIの実装や単体テストを全て作成後に作成することとする。
 
@@ -58,3 +60,4 @@ APIの設計思想はREST APIを採用する。また、できる限りマイク
 * [Go言語とDependency Injection](https://blog.recruit.co.jp/rtc/2017/12/11/go_dependency_injection/)
 * [【Golang】migrateでDBマイグレーションをする](https://simple-minds-think-alike.moritamorie.com/entry/golang-migrate)
 * [WAFとして go-swagger を選択してみた](https://future-architect.github.io/articles/20190814/)
+* [go-swaggerで作るAPIサーバー](https://note.com/rescuenow_hr/n/nc0f7fbaeaac8)
