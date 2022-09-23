@@ -57,3 +57,4 @@ APIの設計思想はREST APIを採用する。また、できる限りマイク
 * [Dependency Injection vs Factory Pattern](https://stackoverflow.com/questions/557742/dependency-injection-vs-factory-pattern)
 * [Go言語とDependency Injection](https://blog.recruit.co.jp/rtc/2017/12/11/go_dependency_injection/)
 * [【Golang】migrateでDBマイグレーションをする](https://simple-minds-think-alike.moritamorie.com/entry/golang-migrate)
+* [WAFとして go-swagger を選択してみた](https://future-architect.github.io/articles/20190814/)
