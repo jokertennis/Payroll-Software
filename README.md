@@ -21,7 +21,7 @@ irisを利用する理由は、以下の理由である。
 * 他のgolangのwebフレームワークと比較して高速である。
 
 ### 利用するデータベース,sqlライブラリ,マイグレーションツール
-データベースはRDBのMySQLを利用する。sqlライブラリはgolangの標準ライブラリである[database/sql](https://pkg.go.dev/database/sql)を利用する。開発を進めていくうちに不便さを感じた場合、ormやサードパーティツールの導入を検討する。マイグレーションツールは[golang-migrate](https://github.com/golang-migrate/migrate)を利用する。
+データベースはRDBのMySQLを利用する。sqlライブラリはgolangの標準ライブラリである[database/sql](https://pkg.go.dev/database/sql)を利用する。開発を進めていくうちに不便さを感じた場合、ormやサードパーティツールの導入を検討する。マイグレーションライブラリは[golang-migrate](https://github.com/golang-migrate/migrate)を利用する。マイグレーションライブラリの選定基準としては、mysqlなど基本的なDBサーバーに対応しており、かつCLI上で実行可能なマイグレーションライブラリを選定した。
 
 ### OpenAPI自動生成ツール
 OpenAPI自動生成ツールはgolangのライブラリであるgo-swaggerを利用する方針である。
@@ -50,3 +50,4 @@ APIの設計思想はREST APIを採用する。また、できる限りマイク
 ### 参考文献
 * [Dependency Injection vs Factory Pattern](https://stackoverflow.com/questions/557742/dependency-injection-vs-factory-pattern)
 * [Go言語とDependency Injection](https://blog.recruit.co.jp/rtc/2017/12/11/go_dependency_injection/)
+* [【Golang】migrateでDBマイグレーションをする](https://simple-minds-think-alike.moritamorie.com/entry/golang-migrate)
