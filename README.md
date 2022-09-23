@@ -24,7 +24,13 @@ irisを利用する理由は、以下の理由である。
 データベースはRDBのMySQLを利用する。sqlライブラリはgolangの標準ライブラリである[database/sql](https://pkg.go.dev/database/sql)を利用する。開発を進めていくうちに不便さを感じた場合、ormやサードパーティツールの導入を検討する。マイグレーションライブラリは[golang-migrate](https://github.com/golang-migrate/migrate)を利用する。マイグレーションライブラリの選定基準としては、mysqlなど基本的なDBサーバーに対応しており、かつCLI上で実行可能なマイグレーションライブラリを選定した。
 
 ### OpenAPI自動生成ツール
-OpenAPI自動生成ツールはgolangのライブラリである[go-swagger](https://github.com/go-swagger/go-swagger)を利用する方針である。
+OpenAPI自動生成ツールはgolangのライブラリである[go-swagger](https://github.com/go-swagger/go-swagger)を利用する方針である。go-swaggerを利用した理由は、以下の理由である。
+* Handlerとリクエスト/レスポンスの型定義がマッチされたコードが生成される。
+* リクエストパラメータのバリデーションを自動で実行。
+* 編集不要ファイルは DO NOT EDIT コメントがついている。
+* デフォルトで未実装エラーが出る Handler が登録される。
+
+[参考文献](https://future-architect.github.io/articles/20190814/#補足-コード生成系フレームワーク比較)
 
 ### テストに関して
 APIのテストに関してはc1カバレッジ100%を目指す。エンドポイントからの単体テストで正常系・異常系・認証系のテストを行うこととする。また、実装前に行うべきテストをまとめてから、テストを通るような実装を行うべきである。理由はテスト作成後にテスト失敗を確認し、実装を変更するという作業をなるべく無くすためである。シナリオテストに関しては、ユースケースを満たすAPIの実装や単体テストを全て作成後に作成することとする。
