@@ -41,16 +41,15 @@ APIのテストに関してはc1カバレッジ100%を目指す。エンドポ�
 MRの粒度は以下の方針にする。
 * 特定のAPIのIFと実装・正常系テスト・異常系テスト・認証系テストの作成
 * シナリオテストの作成
-リリースできる状態になり次第、定期的にmasterブランチに取り組む。
 追跡性を考慮してissueとMRの粒度は一致させる。また、タスクの管理はgithubのissueを利用する方針とする。
 
-現状、テスト用ブランチは用意しない。
-hot-fixブランチ：
 ### ブランチ運用に関して
-ブランチ運用は以下の通りである。
+ブランチ運用は以下の通りである。Gitflowを主に採用する。
 * featureブランチ：機能開発用ブランチ。developブランチから切る。
-* developブランチ：開発用ブランチ。リリースできる状態になり次第、定期的にmasterブランチに取り組む。
-* mainブランチ：本番環境の役割を持つブランチ。定期的にdevelopブランチからmergeする。
+* developブランチ：開発兼テスト用(単体テストと自動e2eテストのみ行う)ブランチ。リリースできる状態になり次第、定期的にreleaseブランチを切って、mainブランチへのmergeを行う。
+* releaseブランチ：ステージング環境用のブランチ。ここで手動e2eテストを行う。また、バグが発生した場合は修正を行う。バグの大小によってはreleaseブランチから新しいブランチを切る。作業完了後に、mainブランチとdevelopブランチにmergeする。mainブランチへのmerge時にバージョン番号をタグ付けする。
+* mainブランチ：本番環境の役割を持つブランチ。定期的にdevelop→release→mainの流れでmergeする。
+* hot-fixブランチ：mainブランチで緊急修正を行うブランチ。mainブランチから分岐し、mainブランチにマージしタグ付けをする。
 
 タスクに取り組む際はdevelopブランチからブランチを切って取り組む。ブランチ名に関しては、追跡性を考慮して「issues/issueの番号」を推奨する。
 
@@ -64,3 +63,5 @@ APIの設計思想はREST APIを採用する。また、できる限りマイク
 * [【Golang】migrateでDBマイグレーションをする](https://simple-minds-think-alike.moritamorie.com/entry/golang-migrate)
 * [WAFとして go-swagger を選択してみた](https://future-architect.github.io/articles/20190814/)
 * [go-swaggerで作るAPIサーバー](https://note.com/rescuenow_hr/n/nc0f7fbaeaac8)
+* [Gitflow ワークフロー](https://www.atlassian.com/ja/git/tutorials/comparing-workflows/gitflow-workflow)
+* [【GitHub】ブランチの運用方法について](https://qiita.com/onishi_820/items/d98c61e0faa67f417829)
