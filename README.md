@@ -51,8 +51,6 @@ MRの粒度は以下の方針にする。
 * mainブランチ：本番環境の役割を持つブランチ。定期的にdevelop→release→mainの流れでmergeする。
 * hot-fixブランチ：mainブランチで緊急修正を行うブランチ。mainブランチから分岐し、mainブランチにマージしタグ付けをする。
 
-タスクに取り組む際はdevelopブランチからブランチを切って取り組む。ブランチ名に関しては、追跡性を考慮して「issues/issueの番号」を推奨する。
-
 ### その他
 APIの設計思想はREST APIを採用する。また、できる限りマイクロサービスアーキテクチャを採用する。また、golangには[google/wire](https://github.com/google/wire)のようなDIツール(injectorの作成を行なってくれる。)がいくつか存在するが、一旦手動で行う方針とし、運用していく上で必要性を感じた場合に導入を検討する。インスタンスの生成方法はDI(Dependency Injection)とFactory Patternの2つに
 分けられるが、インスタンスの柔軟性を考慮して極力DIを利用する方針とする。開発・運用していく中でFactory Patternの方が良いと判断した場合は、Factory Patternに一部のインスタンスの生成方法を変更する。DIの方法はConstructor Injectionで統一する。
