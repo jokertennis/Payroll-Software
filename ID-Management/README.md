@@ -1,5 +1,5 @@
 ## ID-Management
-ID-ManagementはPayroll-Softwareの認証機能を保持するマイクロサービスである。本マイクロサービスの開発方針として、認証認可の機能を実装するか、AWSのBaaS(Backend as a service)を利用するか迷ったため、両者の方法のメリットとデメリットを整理する。
+ID-ManagementはPayroll-Softwareの認証認可機能を保持するマイクロサービスである。本マイクロサービスの開発方針として、認証認可の機能を実装するか、AWSのBaaS(Backend as a service)を利用するか迷ったため、両者の方法のメリットとデメリットを整理する。
 
 実現方法 | メリット | デメリット
 --------|--------|-----------
@@ -15,7 +15,16 @@ BaaS | ・開発スピードの短縮化。<br>・サーバーレスであるた
 →可用性を意識したインフラ設計をできる限り目指す。
 
 ## AWS技術選定
-AmplifyとCognitoを利用するとよさそう。
+認証機能の作成には  
+・lambda  
+・Api gateway  
+・Amplify  
+・Cognito   
+・DynamoDb  
+
+RDSかDynamoDb(RDBかNoSQL)のどちらを採用するかに関して、川田としてはDynamoDbを採用する方が良いと考えた。理由は以下の内容である。
+- RDSはインスタンスの起動時間の従量課金制である一方、DynamoDbは月当たりのリクエスト数やリクエストの種類などで金額が決まり、利用頻度やデータ量を考慮すると、DynamoDbの方が圧倒的に金銭的なコストを下げることができると判断したため。
+- 管理するデータがユーザー情報のみであるため、複雑なクエリを必要としないことが想定され、RDBを利用するメリットが薄くなるため。
 
 ## 参考文献
 ・[BaaS (Backend as a Service) とは？](https://cloudnavi.nhn-techorus.com/archives/2739)  
