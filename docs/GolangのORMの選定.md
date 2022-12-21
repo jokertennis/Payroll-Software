@@ -28,4 +28,4 @@ sqlboilerを採用することにした。理由として大きいのが以下�
 ## 参考文献
 ・[GoにおけるORMと、SQLBoiler入門マニュアル](https://zenn.dev/gami/articles/0fb2cf8b36aa09)
 ・[What do you think is the best ORM or SQL builder for Go?](https://www.reddit.com/r/golang/comments/t5l7uu/what_do_you_think_is_the_best_orm_or_sql_builder/)
-・[[ORM を GORM から SQLBoiler に変えた理由](https://tech-blog.optim.co.jp/entry/2021/03/22/100000)](https://tech-blog.optim.co.jp/entry/2021/03/22/100000)
+・[ORM を GORM から SQLBoiler に変えた理由](https://tech-blog.optim.co.jp/entry/2021/03/22/100000)](https://tech-blog.optim.co.jp/entry/2021/03/22/100000)
