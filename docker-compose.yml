@@ -1,0 +1,31 @@
+services:
+  payroll-management:
+    build: .
+    tty: true
+    command: /bin/sh
+    depends_on:
+    - db
+    volumes:
+    - ./:/go/src/app
+  db:
+    image: mysql:8.0
+    environment:
+    - MYSQL_DATABASE=develop_db
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_USER=mysql_user
+    - MYSQL_PASSWORD=password
+    # how to write ports? : https://github.com/compose-spec/compose-spec/blob/master/spec.md#ports
+    ports:
+    - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    ports:
+      - 7890:80
+    environment:
+    # when set to 1 connection to the arbitrary server will be allowed
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    depends_on:
+      - db
