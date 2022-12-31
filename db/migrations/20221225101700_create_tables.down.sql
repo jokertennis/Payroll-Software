@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS companies;
-DROP TABLE IF EXISTS employees;
