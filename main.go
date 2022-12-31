@@ -16,10 +16,6 @@ func main() {
 		fmt.Printf("failed to create MigrateInstance. err:%s", errorCreateMigrateInstance)
 	}
 
-	if err := migrateInstance.Steps(2); err != nil {
-		fmt.Printf("failed to step. err:%s", err)
-	}
-
 	if err := migrateInstance.Up(); err != nil {
 		fmt.Printf("failed to up. err:%s", err)
 	}

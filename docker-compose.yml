@@ -1,10 +1,12 @@
 services:
   payroll-management:
     build: .
+    command: ["/bin/sh", "-c", "go run /usr/src/app/main.go && /bin/sh"]
     tty: true
-    command: /bin/sh
+    working_dir: /usr/src/app
     depends_on:
-    - db
+      db:
+        condition: service_healthy
     volumes:
     - ./:/usr/src/app
     container_name: payroll_management_container
@@ -19,6 +21,8 @@ services:
     ports:
     - 3306:3306
     container_name: db_container
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
   phpmyadmin:
     image: phpmyadmin:5.2
     ports:
