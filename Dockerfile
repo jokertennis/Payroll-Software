@@ -1,5 +1,8 @@
 FROM golang:1.19
 
+# install vim
+RUN apt-get update && apt-get -y install vim
+
 WORKDIR /usr/src/app
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change.
@@ -12,5 +15,3 @@ RUN go mod download && go mod verify
 # https://zenn.dev/shinji/articles/0eaad9d8c0954f
 COPY . .
 RUN go build ./main.go
-
-CMD ["go", "run", "main.go"]
