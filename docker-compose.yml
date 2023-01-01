@@ -15,14 +15,14 @@ services:
     environment:
     - MYSQL_DATABASE=develop_db
     - MYSQL_ROOT_PASSWORD=password
-    - MYSQL_USER=mysql_user
-    - MYSQL_PASSWORD=password
     # how to write ports? : https://github.com/compose-spec/compose-spec/blob/master/spec.md#ports
     ports:
     - 3306:3306
     container_name: db_container
+    volumes:
+    - ./db/create-test-db:/docker-entrypoint-initdb.d
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
+      test: mysql -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD
   phpmyadmin:
     image: phpmyadmin:5.2
     ports:
