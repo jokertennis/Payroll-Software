@@ -20,7 +20,7 @@ services:
     - 3306:3306
     container_name: db_container
     volumes:
-    - ./db/create-test-db:/docker-entrypoint-initdb.d
+    - ./db-container:/docker-entrypoint-initdb.d
     healthcheck:
       test: mysql -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD
   phpmyadmin:
