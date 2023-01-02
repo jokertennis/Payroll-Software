@@ -29,3 +29,7 @@ func CreateMigrateInstance() (*migrate.Migrate, error) {
 
 	return m, nil
 }
+
+func CreateDemoData(migrateInstance migrate.Migrate) error {
+	
+}
