@@ -11,7 +11,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
-// TODO:enumを作成する。DevelopとTestのみ
+// TODO:create as enum. only Develop and Test
 type DbEnvironment struct {
 	Environment string
 }
@@ -19,13 +19,17 @@ type DbEnvironment struct {
 func CreateDbInstance(dbEnvironment DbEnvironment) (*sql.DB, error) {
 	switch dbEnvironment.Environment {
 	case "Develop":
-		db, err := sql.Open("mysql", "root:password@tcp(db_container:3306)/develop_db")
+		// When we executed createDbInstance local environment,localhost will be used.
+		// On the other hand we executed createDbInstance inside container,db_container will be used.
+		// Temporary change is not a problem.
+		// We have to separate host_name depending on executed environment.
+		db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/develop_db")
 		if err != nil {
 			return nil, fmt.Errorf("sql.Open error. err:%s", err)
 		}
 		return db, nil
 	case "Test":
-		db, err := sql.Open("mysql", "root:password@tcp(db_container:3306)/test_db")
+		db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/test_db")
 		if err != nil {
 			return nil, fmt.Errorf("sql.Open error. err:%s", err)
 		}
