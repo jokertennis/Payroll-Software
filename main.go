@@ -1,45 +1,56 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
+	"usr/local/go/db"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func main() {
-	migrateInstance, errorCreateMigrateInstance := createMigrateInstance()
-	if errorCreateMigrateInstance != nil {
-		fmt.Printf("failed to create MigrateInstance. err:%s", errorCreateMigrateInstance)
+	// create context
+	ctx := context.Background()
+
+	// create dbInstance which is used when accessing db.
+	developDbEnvironment := db.DbEnvironment{Environment: "Develop"}
+	developDbInstance, err := db.CreateDbInstance(developDbEnvironment)
+	if err != nil {
+		fmt.Printf("failed to create developDbInstance. err:%s", err)
 	}
 
-	if err := migrateInstance.Up(); err != nil {
+	// migrate develop_db
+	migrateInstanceForDevelopDb, errorCreateMigrateInstance := db.CreateMigrateInstance(developDbInstance)
+	if errorCreateMigrateInstance != nil {
+		fmt.Printf("failed to create MigrateInstance for develop_db. err:%s", errorCreateMigrateInstance)
+	}
+	if err := migrateInstanceForDevelopDb.Up(); err != nil {
 		fmt.Printf("failed to up. err:%s", err)
 	}
-}
 
-// Reference : https://github.com/golang-migrate/migrate/tree/master/database/mysql#use-with-existing-client
-func createMigrateInstance() (*migrate.Migrate, error) {
-	// https://github.com/go-sql-driver/mysql/#multistatements
-	db, err := sql.Open("mysql", "root:password@tcp(db_container:3306)/develop_db")
-	if err != nil {
-		return nil, fmt.Errorf("sql.Open error. err:%s", err)
-	}
-	driver, err := mysql.WithInstance(db, &mysql.Config{})
-	if err != nil {
-		return nil, fmt.Errorf("failed to create driver. err:%s", err)
-	}
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://db/migrations",
-		"mysql",
-		driver,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create migration-instance. err:%s", err)
+	// create demo-data for manual test.
+	if err := db.CreateDemoData(ctx, developDbInstance); err != nil {
+		fmt.Printf("failed to create demo data. err:%s", err)
 	}
 
-	return m, nil
+	// create dbInstance which is used when accessing db.
+	testDbEnvironment := db.DbEnvironment{Environment: "Test"}
+	testDbInstance, err := db.CreateDbInstance(testDbEnvironment)
+	if err != nil {
+		fmt.Printf("failed to create testDbInstance. err:%s", err)
+	}
+
+	// migrate test_db
+	migrateInstanceForTestDb, errorCreateMigrateInstance := db.CreateMigrateInstance(testDbInstance)
+	if errorCreateMigrateInstance != nil {
+		fmt.Printf("failed to create MigrateInstance for test_db. err:%s", errorCreateMigrateInstance)
+	}
+	if err := migrateInstanceForTestDb.Up(); err != nil {
+		fmt.Printf("failed to up. err:%s", err)
+	}
+
+// 	if err := db.CreateTestData(ctx, testDbInstance); err != nil {
+// 		fmt.Printf("failed to create test data. err:%s", err)
+// 	}
 }

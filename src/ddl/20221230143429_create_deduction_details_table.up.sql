@@ -1,4 +1,4 @@
-CREATE TABLE `deduction_details_table` (
+CREATE TABLE `deduction_details` (
     `id` mediumint unsigned AUTO_INCREMENT,
     `deduction_id` mediumint unsigned NOT NULL,
     `nominal` varchar(255) NOT NULL,
