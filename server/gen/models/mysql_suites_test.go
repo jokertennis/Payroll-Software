@@ -8,7 +8,7 @@ import "testing"
 func TestUpsert(t *testing.T) {
 	t.Run("Companies", testCompaniesUpsert)
 
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesUpsert)
+	t.Run("DeductionDetails", testDeductionDetailsUpsert)
 
 	t.Run("Deductions", testDeductionsUpsert)
 

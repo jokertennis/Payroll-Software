@@ -13,7 +13,7 @@ import "testing"
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
 	t.Run("Companies", testCompanies)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTables)
+	t.Run("DeductionDetails", testDeductionDetails)
 	t.Run("Deductions", testDeductions)
 	t.Run("EarningDetails", testEarningDetails)
 	t.Run("Earnings", testEarnings)
@@ -28,7 +28,7 @@ func TestParent(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	t.Run("Companies", testCompaniesDelete)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesDelete)
+	t.Run("DeductionDetails", testDeductionDetailsDelete)
 	t.Run("Deductions", testDeductionsDelete)
 	t.Run("EarningDetails", testEarningDetailsDelete)
 	t.Run("Earnings", testEarningsDelete)
@@ -43,7 +43,7 @@ func TestDelete(t *testing.T) {
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Companies", testCompaniesQueryDeleteAll)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesQueryDeleteAll)
+	t.Run("DeductionDetails", testDeductionDetailsQueryDeleteAll)
 	t.Run("Deductions", testDeductionsQueryDeleteAll)
 	t.Run("EarningDetails", testEarningDetailsQueryDeleteAll)
 	t.Run("Earnings", testEarningsQueryDeleteAll)
@@ -58,7 +58,7 @@ func TestQueryDeleteAll(t *testing.T) {
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Companies", testCompaniesSliceDeleteAll)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesSliceDeleteAll)
+	t.Run("DeductionDetails", testDeductionDetailsSliceDeleteAll)
 	t.Run("Deductions", testDeductionsSliceDeleteAll)
 	t.Run("EarningDetails", testEarningDetailsSliceDeleteAll)
 	t.Run("Earnings", testEarningsSliceDeleteAll)
@@ -73,7 +73,7 @@ func TestSliceDeleteAll(t *testing.T) {
 
 func TestExists(t *testing.T) {
 	t.Run("Companies", testCompaniesExists)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesExists)
+	t.Run("DeductionDetails", testDeductionDetailsExists)
 	t.Run("Deductions", testDeductionsExists)
 	t.Run("EarningDetails", testEarningDetailsExists)
 	t.Run("Earnings", testEarningsExists)
@@ -88,7 +88,7 @@ func TestExists(t *testing.T) {
 
 func TestFind(t *testing.T) {
 	t.Run("Companies", testCompaniesFind)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesFind)
+	t.Run("DeductionDetails", testDeductionDetailsFind)
 	t.Run("Deductions", testDeductionsFind)
 	t.Run("EarningDetails", testEarningDetailsFind)
 	t.Run("Earnings", testEarningsFind)
@@ -103,7 +103,7 @@ func TestFind(t *testing.T) {
 
 func TestBind(t *testing.T) {
 	t.Run("Companies", testCompaniesBind)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesBind)
+	t.Run("DeductionDetails", testDeductionDetailsBind)
 	t.Run("Deductions", testDeductionsBind)
 	t.Run("EarningDetails", testEarningDetailsBind)
 	t.Run("Earnings", testEarningsBind)
@@ -118,7 +118,7 @@ func TestBind(t *testing.T) {
 
 func TestOne(t *testing.T) {
 	t.Run("Companies", testCompaniesOne)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesOne)
+	t.Run("DeductionDetails", testDeductionDetailsOne)
 	t.Run("Deductions", testDeductionsOne)
 	t.Run("EarningDetails", testEarningDetailsOne)
 	t.Run("Earnings", testEarningsOne)
@@ -133,7 +133,7 @@ func TestOne(t *testing.T) {
 
 func TestAll(t *testing.T) {
 	t.Run("Companies", testCompaniesAll)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesAll)
+	t.Run("DeductionDetails", testDeductionDetailsAll)
 	t.Run("Deductions", testDeductionsAll)
 	t.Run("EarningDetails", testEarningDetailsAll)
 	t.Run("Earnings", testEarningsAll)
@@ -148,7 +148,7 @@ func TestAll(t *testing.T) {
 
 func TestCount(t *testing.T) {
 	t.Run("Companies", testCompaniesCount)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesCount)
+	t.Run("DeductionDetails", testDeductionDetailsCount)
 	t.Run("Deductions", testDeductionsCount)
 	t.Run("EarningDetails", testEarningDetailsCount)
 	t.Run("Earnings", testEarningsCount)
@@ -163,7 +163,7 @@ func TestCount(t *testing.T) {
 
 func TestHooks(t *testing.T) {
 	t.Run("Companies", testCompaniesHooks)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesHooks)
+	t.Run("DeductionDetails", testDeductionDetailsHooks)
 	t.Run("Deductions", testDeductionsHooks)
 	t.Run("EarningDetails", testEarningDetailsHooks)
 	t.Run("Earnings", testEarningsHooks)
@@ -179,8 +179,8 @@ func TestHooks(t *testing.T) {
 func TestInsert(t *testing.T) {
 	t.Run("Companies", testCompaniesInsert)
 	t.Run("Companies", testCompaniesInsertWhitelist)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesInsert)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesInsertWhitelist)
+	t.Run("DeductionDetails", testDeductionDetailsInsert)
+	t.Run("DeductionDetails", testDeductionDetailsInsertWhitelist)
 	t.Run("Deductions", testDeductionsInsert)
 	t.Run("Deductions", testDeductionsInsertWhitelist)
 	t.Run("EarningDetails", testEarningDetailsInsert)
@@ -206,7 +206,7 @@ func TestInsert(t *testing.T) {
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOne(t *testing.T) {
-	t.Run("DeductionDetailsTableToDeductionUsingDeduction", testDeductionDetailsTableToOneDeductionUsingDeduction)
+	t.Run("DeductionDetailToDeductionUsingDeduction", testDeductionDetailToOneDeductionUsingDeduction)
 	t.Run("EarningDetailToEarningUsingEarning", testEarningDetailToOneEarningUsingEarning)
 	t.Run("EmployeeToCompanyUsingCompany", testEmployeeToOneCompanyUsingCompany)
 	t.Run("FixedDeductionDetailToFixedDeductionUsingFixedDeduction", testFixedDeductionDetailToOneFixedDeductionUsingFixedDeduction)
@@ -229,7 +229,7 @@ func TestOneToOne(t *testing.T) {
 // or deadlocks can occur.
 func TestToMany(t *testing.T) {
 	t.Run("CompanyToEmployees", testCompanyToManyEmployees)
-	t.Run("DeductionToDeductionDetailsTables", testDeductionToManyDeductionDetailsTables)
+	t.Run("DeductionToDeductionDetails", testDeductionToManyDeductionDetails)
 	t.Run("EarningToEarningDetails", testEarningToManyEarningDetails)
 	t.Run("EmployeeToSalaryStatements", testEmployeeToManySalaryStatements)
 	t.Run("FixedDeductionToFixedDeductionDetails", testFixedDeductionToManyFixedDeductionDetails)
@@ -241,7 +241,7 @@ func TestToMany(t *testing.T) {
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOneSet(t *testing.T) {
-	t.Run("DeductionDetailsTableToDeductionUsingDeductionDetailsTables", testDeductionDetailsTableToOneSetOpDeductionUsingDeduction)
+	t.Run("DeductionDetailToDeductionUsingDeductionDetails", testDeductionDetailToOneSetOpDeductionUsingDeduction)
 	t.Run("EarningDetailToEarningUsingEarningDetails", testEarningDetailToOneSetOpEarningUsingEarning)
 	t.Run("EmployeeToCompanyUsingEmployees", testEmployeeToOneSetOpCompanyUsingCompany)
 	t.Run("FixedDeductionDetailToFixedDeductionUsingFixedDeductionDetails", testFixedDeductionDetailToOneSetOpFixedDeductionUsingFixedDeduction)
@@ -280,7 +280,7 @@ func TestOneToOneRemove(t *testing.T) {
 // or deadlocks can occur.
 func TestToManyAdd(t *testing.T) {
 	t.Run("CompanyToEmployees", testCompanyToManyAddOpEmployees)
-	t.Run("DeductionToDeductionDetailsTables", testDeductionToManyAddOpDeductionDetailsTables)
+	t.Run("DeductionToDeductionDetails", testDeductionToManyAddOpDeductionDetails)
 	t.Run("EarningToEarningDetails", testEarningToManyAddOpEarningDetails)
 	t.Run("EmployeeToSalaryStatements", testEmployeeToManyAddOpSalaryStatements)
 	t.Run("FixedDeductionToFixedDeductionDetails", testFixedDeductionToManyAddOpFixedDeductionDetails)
@@ -305,7 +305,7 @@ func TestToManyRemove(t *testing.T) {
 
 func TestReload(t *testing.T) {
 	t.Run("Companies", testCompaniesReload)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesReload)
+	t.Run("DeductionDetails", testDeductionDetailsReload)
 	t.Run("Deductions", testDeductionsReload)
 	t.Run("EarningDetails", testEarningDetailsReload)
 	t.Run("Earnings", testEarningsReload)
@@ -320,7 +320,7 @@ func TestReload(t *testing.T) {
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Companies", testCompaniesReloadAll)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesReloadAll)
+	t.Run("DeductionDetails", testDeductionDetailsReloadAll)
 	t.Run("Deductions", testDeductionsReloadAll)
 	t.Run("EarningDetails", testEarningDetailsReloadAll)
 	t.Run("Earnings", testEarningsReloadAll)
@@ -335,7 +335,7 @@ func TestReloadAll(t *testing.T) {
 
 func TestSelect(t *testing.T) {
 	t.Run("Companies", testCompaniesSelect)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesSelect)
+	t.Run("DeductionDetails", testDeductionDetailsSelect)
 	t.Run("Deductions", testDeductionsSelect)
 	t.Run("EarningDetails", testEarningDetailsSelect)
 	t.Run("Earnings", testEarningsSelect)
@@ -350,7 +350,7 @@ func TestSelect(t *testing.T) {
 
 func TestUpdate(t *testing.T) {
 	t.Run("Companies", testCompaniesUpdate)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesUpdate)
+	t.Run("DeductionDetails", testDeductionDetailsUpdate)
 	t.Run("Deductions", testDeductionsUpdate)
 	t.Run("EarningDetails", testEarningDetailsUpdate)
 	t.Run("Earnings", testEarningsUpdate)
@@ -365,7 +365,7 @@ func TestUpdate(t *testing.T) {
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Companies", testCompaniesSliceUpdateAll)
-	t.Run("DeductionDetailsTables", testDeductionDetailsTablesSliceUpdateAll)
+	t.Run("DeductionDetails", testDeductionDetailsSliceUpdateAll)
 	t.Run("Deductions", testDeductionsSliceUpdateAll)
 	t.Run("EarningDetails", testEarningDetailsSliceUpdateAll)
 	t.Run("Earnings", testEarningsSliceUpdateAll)

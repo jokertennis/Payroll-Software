@@ -79,17 +79,17 @@ var DeductionWhere = struct {
 
 // DeductionRels is where relationship names are stored.
 var DeductionRels = struct {
-	SalaryStatement        string
-	DeductionDetailsTables string
+	SalaryStatement  string
+	DeductionDetails string
 }{
-	SalaryStatement:        "SalaryStatement",
-	DeductionDetailsTables: "DeductionDetailsTables",
+	SalaryStatement:  "SalaryStatement",
+	DeductionDetails: "DeductionDetails",
 }
 
 // deductionR is where relationships are stored.
 type deductionR struct {
-	SalaryStatement        *SalaryStatement           `boil:"SalaryStatement" json:"SalaryStatement" toml:"SalaryStatement" yaml:"SalaryStatement"`
-	DeductionDetailsTables DeductionDetailsTableSlice `boil:"DeductionDetailsTables" json:"DeductionDetailsTables" toml:"DeductionDetailsTables" yaml:"DeductionDetailsTables"`
+	SalaryStatement  *SalaryStatement     `boil:"SalaryStatement" json:"SalaryStatement" toml:"SalaryStatement" yaml:"SalaryStatement"`
+	DeductionDetails DeductionDetailSlice `boil:"DeductionDetails" json:"DeductionDetails" toml:"DeductionDetails" yaml:"DeductionDetails"`
 }
 
 // NewStruct creates a new relationship struct
@@ -104,11 +104,11 @@ func (r *deductionR) GetSalaryStatement() *SalaryStatement {
 	return r.SalaryStatement
 }
 
-func (r *deductionR) GetDeductionDetailsTables() DeductionDetailsTableSlice {
+func (r *deductionR) GetDeductionDetails() DeductionDetailSlice {
 	if r == nil {
 		return nil
 	}
-	return r.DeductionDetailsTables
+	return r.DeductionDetails
 }
 
 // deductionL is where Load methods for each relationship are stored.
@@ -411,18 +411,18 @@ func (o *Deduction) SalaryStatement(mods ...qm.QueryMod) salaryStatementQuery {
 	return SalaryStatements(queryMods...)
 }
 
-// DeductionDetailsTables retrieves all the deduction_details_table's DeductionDetailsTables with an executor.
-func (o *Deduction) DeductionDetailsTables(mods ...qm.QueryMod) deductionDetailsTableQuery {
+// DeductionDetails retrieves all the deduction_detail's DeductionDetails with an executor.
+func (o *Deduction) DeductionDetails(mods ...qm.QueryMod) deductionDetailQuery {
 	var queryMods []qm.QueryMod
 	if len(mods) != 0 {
 		queryMods = append(queryMods, mods...)
 	}
 
 	queryMods = append(queryMods,
-		qm.Where("`deduction_details_table`.`deduction_id`=?", o.ID),
+		qm.Where("`deduction_details`.`deduction_id`=?", o.ID),
 	)
 
-	return DeductionDetailsTables(queryMods...)
+	return DeductionDetails(queryMods...)
 }
 
 // LoadSalaryStatement allows an eager lookup of values, cached into the
@@ -542,9 +542,9 @@ func (deductionL) LoadSalaryStatement(ctx context.Context, e boil.ContextExecuto
 	return nil
 }
 
-// LoadDeductionDetailsTables allows an eager lookup of values, cached into the
+// LoadDeductionDetails allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for a 1-M or N-M relationship.
-func (deductionL) LoadDeductionDetailsTables(ctx context.Context, e boil.ContextExecutor, singular bool, maybeDeduction interface{}, mods queries.Applicator) error {
+func (deductionL) LoadDeductionDetails(ctx context.Context, e boil.ContextExecutor, singular bool, maybeDeduction interface{}, mods queries.Applicator) error {
 	var slice []*Deduction
 	var object *Deduction
 
@@ -598,8 +598,8 @@ func (deductionL) LoadDeductionDetailsTables(ctx context.Context, e boil.Context
 	}
 
 	query := NewQuery(
-		qm.From(`deduction_details_table`),
-		qm.WhereIn(`deduction_details_table.deduction_id in ?`, args...),
+		qm.From(`deduction_details`),
+		qm.WhereIn(`deduction_details.deduction_id in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -607,22 +607,22 @@ func (deductionL) LoadDeductionDetailsTables(ctx context.Context, e boil.Context
 
 	results, err := query.QueryContext(ctx, e)
 	if err != nil {
-		return errors.Wrap(err, "failed to eager load deduction_details_table")
+		return errors.Wrap(err, "failed to eager load deduction_details")
 	}
 
-	var resultSlice []*DeductionDetailsTable
+	var resultSlice []*DeductionDetail
 	if err = queries.Bind(results, &resultSlice); err != nil {
-		return errors.Wrap(err, "failed to bind eager loaded slice deduction_details_table")
+		return errors.Wrap(err, "failed to bind eager loaded slice deduction_details")
 	}
 
 	if err = results.Close(); err != nil {
-		return errors.Wrap(err, "failed to close results in eager load on deduction_details_table")
+		return errors.Wrap(err, "failed to close results in eager load on deduction_details")
 	}
 	if err = results.Err(); err != nil {
-		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for deduction_details_table")
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for deduction_details")
 	}
 
-	if len(deductionDetailsTableAfterSelectHooks) != 0 {
+	if len(deductionDetailAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
 			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
@@ -630,10 +630,10 @@ func (deductionL) LoadDeductionDetailsTables(ctx context.Context, e boil.Context
 		}
 	}
 	if singular {
-		object.R.DeductionDetailsTables = resultSlice
+		object.R.DeductionDetails = resultSlice
 		for _, foreign := range resultSlice {
 			if foreign.R == nil {
-				foreign.R = &deductionDetailsTableR{}
+				foreign.R = &deductionDetailR{}
 			}
 			foreign.R.Deduction = object
 		}
@@ -643,9 +643,9 @@ func (deductionL) LoadDeductionDetailsTables(ctx context.Context, e boil.Context
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
 			if local.ID == foreign.DeductionID {
-				local.R.DeductionDetailsTables = append(local.R.DeductionDetailsTables, foreign)
+				local.R.DeductionDetails = append(local.R.DeductionDetails, foreign)
 				if foreign.R == nil {
-					foreign.R = &deductionDetailsTableR{}
+					foreign.R = &deductionDetailR{}
 				}
 				foreign.R.Deduction = local
 				break
@@ -730,11 +730,11 @@ func (o *Deduction) RemoveSalaryStatement(ctx context.Context, exec boil.Context
 	return nil
 }
 
-// AddDeductionDetailsTables adds the given related objects to the existing relationships
+// AddDeductionDetails adds the given related objects to the existing relationships
 // of the deduction, optionally inserting them as new records.
-// Appends related to o.R.DeductionDetailsTables.
+// Appends related to o.R.DeductionDetails.
 // Sets related.R.Deduction appropriately.
-func (o *Deduction) AddDeductionDetailsTables(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*DeductionDetailsTable) error {
+func (o *Deduction) AddDeductionDetails(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*DeductionDetail) error {
 	var err error
 	for _, rel := range related {
 		if insert {
@@ -744,9 +744,9 @@ func (o *Deduction) AddDeductionDetailsTables(ctx context.Context, exec boil.Con
 			}
 		} else {
 			updateQuery := fmt.Sprintf(
-				"UPDATE `deduction_details_table` SET %s WHERE %s",
+				"UPDATE `deduction_details` SET %s WHERE %s",
 				strmangle.SetParamNames("`", "`", 0, []string{"deduction_id"}),
-				strmangle.WhereClause("`", "`", 0, deductionDetailsTablePrimaryKeyColumns),
+				strmangle.WhereClause("`", "`", 0, deductionDetailPrimaryKeyColumns),
 			)
 			values := []interface{}{o.ID, rel.ID}
 
@@ -765,15 +765,15 @@ func (o *Deduction) AddDeductionDetailsTables(ctx context.Context, exec boil.Con
 
 	if o.R == nil {
 		o.R = &deductionR{
-			DeductionDetailsTables: related,
+			DeductionDetails: related,
 		}
 	} else {
-		o.R.DeductionDetailsTables = append(o.R.DeductionDetailsTables, related...)
+		o.R.DeductionDetails = append(o.R.DeductionDetails, related...)
 	}
 
 	for _, rel := range related {
 		if rel.R == nil {
-			rel.R = &deductionDetailsTableR{
+			rel.R = &deductionDetailR{
 				Deduction: o,
 			}
 		} else {

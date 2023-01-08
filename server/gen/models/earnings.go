@@ -24,6 +24,7 @@ import (
 // Earning is an object representing the database table.
 type Earning struct {
 	ID        uint32    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Nominal   string    `boil:"nominal" json:"nominal" toml:"nominal" yaml:"nominal"`
 	Amount    int       `boil:"amount" json:"amount" toml:"amount" yaml:"amount"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
@@ -34,11 +35,13 @@ type Earning struct {
 
 var EarningColumns = struct {
 	ID        string
+	Nominal   string
 	Amount    string
 	CreatedAt string
 	UpdatedAt string
 }{
 	ID:        "id",
+	Nominal:   "nominal",
 	Amount:    "amount",
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
@@ -46,11 +49,13 @@ var EarningColumns = struct {
 
 var EarningTableColumns = struct {
 	ID        string
+	Nominal   string
 	Amount    string
 	CreatedAt string
 	UpdatedAt string
 }{
 	ID:        "earnings.id",
+	Nominal:   "earnings.nominal",
 	Amount:    "earnings.amount",
 	CreatedAt: "earnings.created_at",
 	UpdatedAt: "earnings.updated_at",
@@ -60,11 +65,13 @@ var EarningTableColumns = struct {
 
 var EarningWhere = struct {
 	ID        whereHelperuint32
+	Nominal   whereHelperstring
 	Amount    whereHelperint
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
 	ID:        whereHelperuint32{field: "`earnings`.`id`"},
+	Nominal:   whereHelperstring{field: "`earnings`.`nominal`"},
 	Amount:    whereHelperint{field: "`earnings`.`amount`"},
 	CreatedAt: whereHelpertime_Time{field: "`earnings`.`created_at`"},
 	UpdatedAt: whereHelpertime_Time{field: "`earnings`.`updated_at`"},
@@ -108,8 +115,8 @@ func (r *earningR) GetEarningDetails() EarningDetailSlice {
 type earningL struct{}
 
 var (
-	earningAllColumns            = []string{"id", "amount", "created_at", "updated_at"}
-	earningColumnsWithoutDefault = []string{"amount", "created_at", "updated_at"}
+	earningAllColumns            = []string{"id", "nominal", "amount", "created_at", "updated_at"}
+	earningColumnsWithoutDefault = []string{"nominal", "amount", "created_at", "updated_at"}
 	earningColumnsWithDefault    = []string{"id"}
 	earningPrimaryKeyColumns     = []string{"id"}
 	earningGeneratedColumns      = []string{}

@@ -21,8 +21,8 @@ import (
 	"github.com/volatiletech/strmangle"
 )
 
-// DeductionDetailsTable is an object representing the database table.
-type DeductionDetailsTable struct {
+// DeductionDetail is an object representing the database table.
+type DeductionDetail struct {
 	ID          uint32    `boil:"id" json:"id" toml:"id" yaml:"id"`
 	DeductionID uint32    `boil:"deduction_id" json:"deduction_id" toml:"deduction_id" yaml:"deduction_id"`
 	Nominal     string    `boil:"nominal" json:"nominal" toml:"nominal" yaml:"nominal"`
@@ -30,11 +30,11 @@ type DeductionDetailsTable struct {
 	CreatedAt   time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt   time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
-	R *deductionDetailsTableR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L deductionDetailsTableL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *deductionDetailR `boil:"-" json:"-" toml:"-" yaml:"-"`
+	L deductionDetailL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
-var DeductionDetailsTableColumns = struct {
+var DeductionDetailColumns = struct {
 	ID          string
 	DeductionID string
 	Nominal     string
@@ -50,7 +50,7 @@ var DeductionDetailsTableColumns = struct {
 	UpdatedAt:   "updated_at",
 }
 
-var DeductionDetailsTableTableColumns = struct {
+var DeductionDetailTableColumns = struct {
 	ID          string
 	DeductionID string
 	Nominal     string
@@ -58,12 +58,12 @@ var DeductionDetailsTableTableColumns = struct {
 	CreatedAt   string
 	UpdatedAt   string
 }{
-	ID:          "deduction_details_table.id",
-	DeductionID: "deduction_details_table.deduction_id",
-	Nominal:     "deduction_details_table.nominal",
-	Amount:      "deduction_details_table.amount",
-	CreatedAt:   "deduction_details_table.created_at",
-	UpdatedAt:   "deduction_details_table.updated_at",
+	ID:          "deduction_details.id",
+	DeductionID: "deduction_details.deduction_id",
+	Nominal:     "deduction_details.nominal",
+	Amount:      "deduction_details.amount",
+	CreatedAt:   "deduction_details.created_at",
+	UpdatedAt:   "deduction_details.updated_at",
 }
 
 // Generated where
@@ -114,7 +114,7 @@ func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
-var DeductionDetailsTableWhere = struct {
+var DeductionDetailWhere = struct {
 	ID          whereHelperuint32
 	DeductionID whereHelperuint32
 	Nominal     whereHelperstring
@@ -122,72 +122,72 @@ var DeductionDetailsTableWhere = struct {
 	CreatedAt   whereHelpertime_Time
 	UpdatedAt   whereHelpertime_Time
 }{
-	ID:          whereHelperuint32{field: "`deduction_details_table`.`id`"},
-	DeductionID: whereHelperuint32{field: "`deduction_details_table`.`deduction_id`"},
-	Nominal:     whereHelperstring{field: "`deduction_details_table`.`nominal`"},
-	Amount:      whereHelperint{field: "`deduction_details_table`.`amount`"},
-	CreatedAt:   whereHelpertime_Time{field: "`deduction_details_table`.`created_at`"},
-	UpdatedAt:   whereHelpertime_Time{field: "`deduction_details_table`.`updated_at`"},
+	ID:          whereHelperuint32{field: "`deduction_details`.`id`"},
+	DeductionID: whereHelperuint32{field: "`deduction_details`.`deduction_id`"},
+	Nominal:     whereHelperstring{field: "`deduction_details`.`nominal`"},
+	Amount:      whereHelperint{field: "`deduction_details`.`amount`"},
+	CreatedAt:   whereHelpertime_Time{field: "`deduction_details`.`created_at`"},
+	UpdatedAt:   whereHelpertime_Time{field: "`deduction_details`.`updated_at`"},
 }
 
-// DeductionDetailsTableRels is where relationship names are stored.
-var DeductionDetailsTableRels = struct {
+// DeductionDetailRels is where relationship names are stored.
+var DeductionDetailRels = struct {
 	Deduction string
 }{
 	Deduction: "Deduction",
 }
 
-// deductionDetailsTableR is where relationships are stored.
-type deductionDetailsTableR struct {
+// deductionDetailR is where relationships are stored.
+type deductionDetailR struct {
 	Deduction *Deduction `boil:"Deduction" json:"Deduction" toml:"Deduction" yaml:"Deduction"`
 }
 
 // NewStruct creates a new relationship struct
-func (*deductionDetailsTableR) NewStruct() *deductionDetailsTableR {
-	return &deductionDetailsTableR{}
+func (*deductionDetailR) NewStruct() *deductionDetailR {
+	return &deductionDetailR{}
 }
 
-func (r *deductionDetailsTableR) GetDeduction() *Deduction {
+func (r *deductionDetailR) GetDeduction() *Deduction {
 	if r == nil {
 		return nil
 	}
 	return r.Deduction
 }
 
-// deductionDetailsTableL is where Load methods for each relationship are stored.
-type deductionDetailsTableL struct{}
+// deductionDetailL is where Load methods for each relationship are stored.
+type deductionDetailL struct{}
 
 var (
-	deductionDetailsTableAllColumns            = []string{"id", "deduction_id", "nominal", "amount", "created_at", "updated_at"}
-	deductionDetailsTableColumnsWithoutDefault = []string{"deduction_id", "nominal", "amount", "created_at", "updated_at"}
-	deductionDetailsTableColumnsWithDefault    = []string{"id"}
-	deductionDetailsTablePrimaryKeyColumns     = []string{"id"}
-	deductionDetailsTableGeneratedColumns      = []string{}
+	deductionDetailAllColumns            = []string{"id", "deduction_id", "nominal", "amount", "created_at", "updated_at"}
+	deductionDetailColumnsWithoutDefault = []string{"deduction_id", "nominal", "amount", "created_at", "updated_at"}
+	deductionDetailColumnsWithDefault    = []string{"id"}
+	deductionDetailPrimaryKeyColumns     = []string{"id"}
+	deductionDetailGeneratedColumns      = []string{}
 )
 
 type (
-	// DeductionDetailsTableSlice is an alias for a slice of pointers to DeductionDetailsTable.
-	// This should almost always be used instead of []DeductionDetailsTable.
-	DeductionDetailsTableSlice []*DeductionDetailsTable
-	// DeductionDetailsTableHook is the signature for custom DeductionDetailsTable hook methods
-	DeductionDetailsTableHook func(context.Context, boil.ContextExecutor, *DeductionDetailsTable) error
+	// DeductionDetailSlice is an alias for a slice of pointers to DeductionDetail.
+	// This should almost always be used instead of []DeductionDetail.
+	DeductionDetailSlice []*DeductionDetail
+	// DeductionDetailHook is the signature for custom DeductionDetail hook methods
+	DeductionDetailHook func(context.Context, boil.ContextExecutor, *DeductionDetail) error
 
-	deductionDetailsTableQuery struct {
+	deductionDetailQuery struct {
 		*queries.Query
 	}
 )
 
 // Cache for insert, update and upsert
 var (
-	deductionDetailsTableType                 = reflect.TypeOf(&DeductionDetailsTable{})
-	deductionDetailsTableMapping              = queries.MakeStructMapping(deductionDetailsTableType)
-	deductionDetailsTablePrimaryKeyMapping, _ = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, deductionDetailsTablePrimaryKeyColumns)
-	deductionDetailsTableInsertCacheMut       sync.RWMutex
-	deductionDetailsTableInsertCache          = make(map[string]insertCache)
-	deductionDetailsTableUpdateCacheMut       sync.RWMutex
-	deductionDetailsTableUpdateCache          = make(map[string]updateCache)
-	deductionDetailsTableUpsertCacheMut       sync.RWMutex
-	deductionDetailsTableUpsertCache          = make(map[string]insertCache)
+	deductionDetailType                 = reflect.TypeOf(&DeductionDetail{})
+	deductionDetailMapping              = queries.MakeStructMapping(deductionDetailType)
+	deductionDetailPrimaryKeyMapping, _ = queries.BindMapping(deductionDetailType, deductionDetailMapping, deductionDetailPrimaryKeyColumns)
+	deductionDetailInsertCacheMut       sync.RWMutex
+	deductionDetailInsertCache          = make(map[string]insertCache)
+	deductionDetailUpdateCacheMut       sync.RWMutex
+	deductionDetailUpdateCache          = make(map[string]updateCache)
+	deductionDetailUpsertCacheMut       sync.RWMutex
+	deductionDetailUpsertCache          = make(map[string]insertCache)
 )
 
 var (
@@ -198,27 +198,27 @@ var (
 	_ = qmhelper.Where
 )
 
-var deductionDetailsTableAfterSelectHooks []DeductionDetailsTableHook
+var deductionDetailAfterSelectHooks []DeductionDetailHook
 
-var deductionDetailsTableBeforeInsertHooks []DeductionDetailsTableHook
-var deductionDetailsTableAfterInsertHooks []DeductionDetailsTableHook
+var deductionDetailBeforeInsertHooks []DeductionDetailHook
+var deductionDetailAfterInsertHooks []DeductionDetailHook
 
-var deductionDetailsTableBeforeUpdateHooks []DeductionDetailsTableHook
-var deductionDetailsTableAfterUpdateHooks []DeductionDetailsTableHook
+var deductionDetailBeforeUpdateHooks []DeductionDetailHook
+var deductionDetailAfterUpdateHooks []DeductionDetailHook
 
-var deductionDetailsTableBeforeDeleteHooks []DeductionDetailsTableHook
-var deductionDetailsTableAfterDeleteHooks []DeductionDetailsTableHook
+var deductionDetailBeforeDeleteHooks []DeductionDetailHook
+var deductionDetailAfterDeleteHooks []DeductionDetailHook
 
-var deductionDetailsTableBeforeUpsertHooks []DeductionDetailsTableHook
-var deductionDetailsTableAfterUpsertHooks []DeductionDetailsTableHook
+var deductionDetailBeforeUpsertHooks []DeductionDetailHook
+var deductionDetailAfterUpsertHooks []DeductionDetailHook
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *DeductionDetailsTable) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableAfterSelectHooks {
+	for _, hook := range deductionDetailAfterSelectHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -228,12 +228,12 @@ func (o *DeductionDetailsTable) doAfterSelectHooks(ctx context.Context, exec boi
 }
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *DeductionDetailsTable) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableBeforeInsertHooks {
+	for _, hook := range deductionDetailBeforeInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -243,12 +243,12 @@ func (o *DeductionDetailsTable) doBeforeInsertHooks(ctx context.Context, exec bo
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *DeductionDetailsTable) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableAfterInsertHooks {
+	for _, hook := range deductionDetailAfterInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -258,12 +258,12 @@ func (o *DeductionDetailsTable) doAfterInsertHooks(ctx context.Context, exec boi
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *DeductionDetailsTable) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableBeforeUpdateHooks {
+	for _, hook := range deductionDetailBeforeUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -273,12 +273,12 @@ func (o *DeductionDetailsTable) doBeforeUpdateHooks(ctx context.Context, exec bo
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *DeductionDetailsTable) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableAfterUpdateHooks {
+	for _, hook := range deductionDetailAfterUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -288,12 +288,12 @@ func (o *DeductionDetailsTable) doAfterUpdateHooks(ctx context.Context, exec boi
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *DeductionDetailsTable) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableBeforeDeleteHooks {
+	for _, hook := range deductionDetailBeforeDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -303,12 +303,12 @@ func (o *DeductionDetailsTable) doBeforeDeleteHooks(ctx context.Context, exec bo
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *DeductionDetailsTable) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableAfterDeleteHooks {
+	for _, hook := range deductionDetailAfterDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -318,12 +318,12 @@ func (o *DeductionDetailsTable) doAfterDeleteHooks(ctx context.Context, exec boi
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *DeductionDetailsTable) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableBeforeUpsertHooks {
+	for _, hook := range deductionDetailBeforeUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -333,12 +333,12 @@ func (o *DeductionDetailsTable) doBeforeUpsertHooks(ctx context.Context, exec bo
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *DeductionDetailsTable) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *DeductionDetail) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range deductionDetailsTableAfterUpsertHooks {
+	for _, hook := range deductionDetailAfterUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -347,33 +347,33 @@ func (o *DeductionDetailsTable) doAfterUpsertHooks(ctx context.Context, exec boi
 	return nil
 }
 
-// AddDeductionDetailsTableHook registers your hook function for all future operations.
-func AddDeductionDetailsTableHook(hookPoint boil.HookPoint, deductionDetailsTableHook DeductionDetailsTableHook) {
+// AddDeductionDetailHook registers your hook function for all future operations.
+func AddDeductionDetailHook(hookPoint boil.HookPoint, deductionDetailHook DeductionDetailHook) {
 	switch hookPoint {
 	case boil.AfterSelectHook:
-		deductionDetailsTableAfterSelectHooks = append(deductionDetailsTableAfterSelectHooks, deductionDetailsTableHook)
+		deductionDetailAfterSelectHooks = append(deductionDetailAfterSelectHooks, deductionDetailHook)
 	case boil.BeforeInsertHook:
-		deductionDetailsTableBeforeInsertHooks = append(deductionDetailsTableBeforeInsertHooks, deductionDetailsTableHook)
+		deductionDetailBeforeInsertHooks = append(deductionDetailBeforeInsertHooks, deductionDetailHook)
 	case boil.AfterInsertHook:
-		deductionDetailsTableAfterInsertHooks = append(deductionDetailsTableAfterInsertHooks, deductionDetailsTableHook)
+		deductionDetailAfterInsertHooks = append(deductionDetailAfterInsertHooks, deductionDetailHook)
 	case boil.BeforeUpdateHook:
-		deductionDetailsTableBeforeUpdateHooks = append(deductionDetailsTableBeforeUpdateHooks, deductionDetailsTableHook)
+		deductionDetailBeforeUpdateHooks = append(deductionDetailBeforeUpdateHooks, deductionDetailHook)
 	case boil.AfterUpdateHook:
-		deductionDetailsTableAfterUpdateHooks = append(deductionDetailsTableAfterUpdateHooks, deductionDetailsTableHook)
+		deductionDetailAfterUpdateHooks = append(deductionDetailAfterUpdateHooks, deductionDetailHook)
 	case boil.BeforeDeleteHook:
-		deductionDetailsTableBeforeDeleteHooks = append(deductionDetailsTableBeforeDeleteHooks, deductionDetailsTableHook)
+		deductionDetailBeforeDeleteHooks = append(deductionDetailBeforeDeleteHooks, deductionDetailHook)
 	case boil.AfterDeleteHook:
-		deductionDetailsTableAfterDeleteHooks = append(deductionDetailsTableAfterDeleteHooks, deductionDetailsTableHook)
+		deductionDetailAfterDeleteHooks = append(deductionDetailAfterDeleteHooks, deductionDetailHook)
 	case boil.BeforeUpsertHook:
-		deductionDetailsTableBeforeUpsertHooks = append(deductionDetailsTableBeforeUpsertHooks, deductionDetailsTableHook)
+		deductionDetailBeforeUpsertHooks = append(deductionDetailBeforeUpsertHooks, deductionDetailHook)
 	case boil.AfterUpsertHook:
-		deductionDetailsTableAfterUpsertHooks = append(deductionDetailsTableAfterUpsertHooks, deductionDetailsTableHook)
+		deductionDetailAfterUpsertHooks = append(deductionDetailAfterUpsertHooks, deductionDetailHook)
 	}
 }
 
-// One returns a single deductionDetailsTable record from the query.
-func (q deductionDetailsTableQuery) One(ctx context.Context, exec boil.ContextExecutor) (*DeductionDetailsTable, error) {
-	o := &DeductionDetailsTable{}
+// One returns a single deductionDetail record from the query.
+func (q deductionDetailQuery) One(ctx context.Context, exec boil.ContextExecutor) (*DeductionDetail, error) {
+	o := &DeductionDetail{}
 
 	queries.SetLimit(q.Query, 1)
 
@@ -382,7 +382,7 @@ func (q deductionDetailsTableQuery) One(ctx context.Context, exec boil.ContextEx
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "models: failed to execute a one query for deduction_details_table")
+		return nil, errors.Wrap(err, "models: failed to execute a one query for deduction_details")
 	}
 
 	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
@@ -392,16 +392,16 @@ func (q deductionDetailsTableQuery) One(ctx context.Context, exec boil.ContextEx
 	return o, nil
 }
 
-// All returns all DeductionDetailsTable records from the query.
-func (q deductionDetailsTableQuery) All(ctx context.Context, exec boil.ContextExecutor) (DeductionDetailsTableSlice, error) {
-	var o []*DeductionDetailsTable
+// All returns all DeductionDetail records from the query.
+func (q deductionDetailQuery) All(ctx context.Context, exec boil.ContextExecutor) (DeductionDetailSlice, error) {
+	var o []*DeductionDetail
 
 	err := q.Bind(ctx, exec, &o)
 	if err != nil {
-		return nil, errors.Wrap(err, "models: failed to assign all query results to DeductionDetailsTable slice")
+		return nil, errors.Wrap(err, "models: failed to assign all query results to DeductionDetail slice")
 	}
 
-	if len(deductionDetailsTableAfterSelectHooks) != 0 {
+	if len(deductionDetailAfterSelectHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
@@ -412,8 +412,8 @@ func (q deductionDetailsTableQuery) All(ctx context.Context, exec boil.ContextEx
 	return o, nil
 }
 
-// Count returns the count of all DeductionDetailsTable records in the query.
-func (q deductionDetailsTableQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+// Count returns the count of all DeductionDetail records in the query.
+func (q deductionDetailQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -421,14 +421,14 @@ func (q deductionDetailsTableQuery) Count(ctx context.Context, exec boil.Context
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to count deduction_details_table rows")
+		return 0, errors.Wrap(err, "models: failed to count deduction_details rows")
 	}
 
 	return count, nil
 }
 
 // Exists checks if the row exists in the table.
-func (q deductionDetailsTableQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+func (q deductionDetailQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -437,14 +437,14 @@ func (q deductionDetailsTableQuery) Exists(ctx context.Context, exec boil.Contex
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return false, errors.Wrap(err, "models: failed to check if deduction_details_table exists")
+		return false, errors.Wrap(err, "models: failed to check if deduction_details exists")
 	}
 
 	return count > 0, nil
 }
 
 // Deduction pointed to by the foreign key.
-func (o *DeductionDetailsTable) Deduction(mods ...qm.QueryMod) deductionQuery {
+func (o *DeductionDetail) Deduction(mods ...qm.QueryMod) deductionQuery {
 	queryMods := []qm.QueryMod{
 		qm.Where("`id` = ?", o.DeductionID),
 	}
@@ -456,28 +456,28 @@ func (o *DeductionDetailsTable) Deduction(mods ...qm.QueryMod) deductionQuery {
 
 // LoadDeduction allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (deductionDetailsTableL) LoadDeduction(ctx context.Context, e boil.ContextExecutor, singular bool, maybeDeductionDetailsTable interface{}, mods queries.Applicator) error {
-	var slice []*DeductionDetailsTable
-	var object *DeductionDetailsTable
+func (deductionDetailL) LoadDeduction(ctx context.Context, e boil.ContextExecutor, singular bool, maybeDeductionDetail interface{}, mods queries.Applicator) error {
+	var slice []*DeductionDetail
+	var object *DeductionDetail
 
 	if singular {
 		var ok bool
-		object, ok = maybeDeductionDetailsTable.(*DeductionDetailsTable)
+		object, ok = maybeDeductionDetail.(*DeductionDetail)
 		if !ok {
-			object = new(DeductionDetailsTable)
-			ok = queries.SetFromEmbeddedStruct(&object, &maybeDeductionDetailsTable)
+			object = new(DeductionDetail)
+			ok = queries.SetFromEmbeddedStruct(&object, &maybeDeductionDetail)
 			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeDeductionDetailsTable))
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeDeductionDetail))
 			}
 		}
 	} else {
-		s, ok := maybeDeductionDetailsTable.(*[]*DeductionDetailsTable)
+		s, ok := maybeDeductionDetail.(*[]*DeductionDetail)
 		if ok {
 			slice = *s
 		} else {
-			ok = queries.SetFromEmbeddedStruct(&slice, maybeDeductionDetailsTable)
+			ok = queries.SetFromEmbeddedStruct(&slice, maybeDeductionDetail)
 			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeDeductionDetailsTable))
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeDeductionDetail))
 			}
 		}
 	}
@@ -485,7 +485,7 @@ func (deductionDetailsTableL) LoadDeduction(ctx context.Context, e boil.ContextE
 	args := make([]interface{}, 0, 1)
 	if singular {
 		if object.R == nil {
-			object.R = &deductionDetailsTableR{}
+			object.R = &deductionDetailR{}
 		}
 		args = append(args, object.DeductionID)
 
@@ -493,7 +493,7 @@ func (deductionDetailsTableL) LoadDeduction(ctx context.Context, e boil.ContextE
 	Outer:
 		for _, obj := range slice {
 			if obj.R == nil {
-				obj.R = &deductionDetailsTableR{}
+				obj.R = &deductionDetailR{}
 			}
 
 			for _, a := range args {
@@ -554,7 +554,7 @@ func (deductionDetailsTableL) LoadDeduction(ctx context.Context, e boil.ContextE
 		if foreign.R == nil {
 			foreign.R = &deductionR{}
 		}
-		foreign.R.DeductionDetailsTables = append(foreign.R.DeductionDetailsTables, object)
+		foreign.R.DeductionDetails = append(foreign.R.DeductionDetails, object)
 		return nil
 	}
 
@@ -565,7 +565,7 @@ func (deductionDetailsTableL) LoadDeduction(ctx context.Context, e boil.ContextE
 				if foreign.R == nil {
 					foreign.R = &deductionR{}
 				}
-				foreign.R.DeductionDetailsTables = append(foreign.R.DeductionDetailsTables, local)
+				foreign.R.DeductionDetails = append(foreign.R.DeductionDetails, local)
 				break
 			}
 		}
@@ -574,10 +574,10 @@ func (deductionDetailsTableL) LoadDeduction(ctx context.Context, e boil.ContextE
 	return nil
 }
 
-// SetDeduction of the deductionDetailsTable to the related item.
+// SetDeduction of the deductionDetail to the related item.
 // Sets o.R.Deduction to related.
-// Adds o to related.R.DeductionDetailsTables.
-func (o *DeductionDetailsTable) SetDeduction(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Deduction) error {
+// Adds o to related.R.DeductionDetails.
+func (o *DeductionDetail) SetDeduction(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Deduction) error {
 	var err error
 	if insert {
 		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
@@ -586,9 +586,9 @@ func (o *DeductionDetailsTable) SetDeduction(ctx context.Context, exec boil.Cont
 	}
 
 	updateQuery := fmt.Sprintf(
-		"UPDATE `deduction_details_table` SET %s WHERE %s",
+		"UPDATE `deduction_details` SET %s WHERE %s",
 		strmangle.SetParamNames("`", "`", 0, []string{"deduction_id"}),
-		strmangle.WhereClause("`", "`", 0, deductionDetailsTablePrimaryKeyColumns),
+		strmangle.WhereClause("`", "`", 0, deductionDetailPrimaryKeyColumns),
 	)
 	values := []interface{}{related.ID, o.ID}
 
@@ -603,7 +603,7 @@ func (o *DeductionDetailsTable) SetDeduction(ctx context.Context, exec boil.Cont
 
 	o.DeductionID = related.ID
 	if o.R == nil {
-		o.R = &deductionDetailsTableR{
+		o.R = &deductionDetailR{
 			Deduction: related,
 		}
 	} else {
@@ -612,61 +612,61 @@ func (o *DeductionDetailsTable) SetDeduction(ctx context.Context, exec boil.Cont
 
 	if related.R == nil {
 		related.R = &deductionR{
-			DeductionDetailsTables: DeductionDetailsTableSlice{o},
+			DeductionDetails: DeductionDetailSlice{o},
 		}
 	} else {
-		related.R.DeductionDetailsTables = append(related.R.DeductionDetailsTables, o)
+		related.R.DeductionDetails = append(related.R.DeductionDetails, o)
 	}
 
 	return nil
 }
 
-// DeductionDetailsTables retrieves all the records using an executor.
-func DeductionDetailsTables(mods ...qm.QueryMod) deductionDetailsTableQuery {
-	mods = append(mods, qm.From("`deduction_details_table`"))
+// DeductionDetails retrieves all the records using an executor.
+func DeductionDetails(mods ...qm.QueryMod) deductionDetailQuery {
+	mods = append(mods, qm.From("`deduction_details`"))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"`deduction_details_table`.*"})
+		queries.SetSelect(q, []string{"`deduction_details`.*"})
 	}
 
-	return deductionDetailsTableQuery{q}
+	return deductionDetailQuery{q}
 }
 
-// FindDeductionDetailsTable retrieves a single record by ID with an executor.
+// FindDeductionDetail retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindDeductionDetailsTable(ctx context.Context, exec boil.ContextExecutor, iD uint32, selectCols ...string) (*DeductionDetailsTable, error) {
-	deductionDetailsTableObj := &DeductionDetailsTable{}
+func FindDeductionDetail(ctx context.Context, exec boil.ContextExecutor, iD uint32, selectCols ...string) (*DeductionDetail, error) {
+	deductionDetailObj := &DeductionDetail{}
 
 	sel := "*"
 	if len(selectCols) > 0 {
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from `deduction_details_table` where `id`=?", sel,
+		"select %s from `deduction_details` where `id`=?", sel,
 	)
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(ctx, exec, deductionDetailsTableObj)
+	err := q.Bind(ctx, exec, deductionDetailObj)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "models: unable to select from deduction_details_table")
+		return nil, errors.Wrap(err, "models: unable to select from deduction_details")
 	}
 
-	if err = deductionDetailsTableObj.doAfterSelectHooks(ctx, exec); err != nil {
-		return deductionDetailsTableObj, err
+	if err = deductionDetailObj.doAfterSelectHooks(ctx, exec); err != nil {
+		return deductionDetailObj, err
 	}
 
-	return deductionDetailsTableObj, nil
+	return deductionDetailObj, nil
 }
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *DeductionDetailsTable) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
+func (o *DeductionDetail) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
-		return errors.New("models: no deduction_details_table provided for insertion")
+		return errors.New("models: no deduction_details provided for insertion")
 	}
 
 	var err error
@@ -685,39 +685,39 @@ func (o *DeductionDetailsTable) Insert(ctx context.Context, exec boil.ContextExe
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(deductionDetailsTableColumnsWithDefault, o)
+	nzDefaults := queries.NonZeroDefaultSet(deductionDetailColumnsWithDefault, o)
 
 	key := makeCacheKey(columns, nzDefaults)
-	deductionDetailsTableInsertCacheMut.RLock()
-	cache, cached := deductionDetailsTableInsertCache[key]
-	deductionDetailsTableInsertCacheMut.RUnlock()
+	deductionDetailInsertCacheMut.RLock()
+	cache, cached := deductionDetailInsertCache[key]
+	deductionDetailInsertCacheMut.RUnlock()
 
 	if !cached {
 		wl, returnColumns := columns.InsertColumnSet(
-			deductionDetailsTableAllColumns,
-			deductionDetailsTableColumnsWithDefault,
-			deductionDetailsTableColumnsWithoutDefault,
+			deductionDetailAllColumns,
+			deductionDetailColumnsWithDefault,
+			deductionDetailColumnsWithoutDefault,
 			nzDefaults,
 		)
 
-		cache.valueMapping, err = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, wl)
+		cache.valueMapping, err = queries.BindMapping(deductionDetailType, deductionDetailMapping, wl)
 		if err != nil {
 			return err
 		}
-		cache.retMapping, err = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, returnColumns)
+		cache.retMapping, err = queries.BindMapping(deductionDetailType, deductionDetailMapping, returnColumns)
 		if err != nil {
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO `deduction_details_table` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO `deduction_details` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO `deduction_details_table` () VALUES ()%s%s"
+			cache.query = "INSERT INTO `deduction_details` () VALUES ()%s%s"
 		}
 
 		var queryOutput, queryReturning string
 
 		if len(cache.retMapping) != 0 {
-			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `deduction_details_table` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, deductionDetailsTablePrimaryKeyColumns))
+			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `deduction_details` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, deductionDetailPrimaryKeyColumns))
 		}
 
 		cache.query = fmt.Sprintf(cache.query, queryOutput, queryReturning)
@@ -734,7 +734,7 @@ func (o *DeductionDetailsTable) Insert(ctx context.Context, exec boil.ContextExe
 	result, err := exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "models: unable to insert into deduction_details_table")
+		return errors.Wrap(err, "models: unable to insert into deduction_details")
 	}
 
 	var lastID int64
@@ -750,7 +750,7 @@ func (o *DeductionDetailsTable) Insert(ctx context.Context, exec boil.ContextExe
 	}
 
 	o.ID = uint32(lastID)
-	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == deductionDetailsTableMapping["id"] {
+	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == deductionDetailMapping["id"] {
 		goto CacheNoHooks
 	}
 
@@ -765,23 +765,23 @@ func (o *DeductionDetailsTable) Insert(ctx context.Context, exec boil.ContextExe
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, identifierCols...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to populate default values for deduction_details_table")
+		return errors.Wrap(err, "models: unable to populate default values for deduction_details")
 	}
 
 CacheNoHooks:
 	if !cached {
-		deductionDetailsTableInsertCacheMut.Lock()
-		deductionDetailsTableInsertCache[key] = cache
-		deductionDetailsTableInsertCacheMut.Unlock()
+		deductionDetailInsertCacheMut.Lock()
+		deductionDetailInsertCache[key] = cache
+		deductionDetailInsertCacheMut.Unlock()
 	}
 
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// Update uses an executor to update the DeductionDetailsTable.
+// Update uses an executor to update the DeductionDetail.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *DeductionDetailsTable) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
+func (o *DeductionDetail) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	if !boil.TimestampsAreSkipped(ctx) {
 		currTime := time.Now().In(boil.GetLocation())
 
@@ -793,28 +793,28 @@ func (o *DeductionDetailsTable) Update(ctx context.Context, exec boil.ContextExe
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
-	deductionDetailsTableUpdateCacheMut.RLock()
-	cache, cached := deductionDetailsTableUpdateCache[key]
-	deductionDetailsTableUpdateCacheMut.RUnlock()
+	deductionDetailUpdateCacheMut.RLock()
+	cache, cached := deductionDetailUpdateCache[key]
+	deductionDetailUpdateCacheMut.RUnlock()
 
 	if !cached {
 		wl := columns.UpdateColumnSet(
-			deductionDetailsTableAllColumns,
-			deductionDetailsTablePrimaryKeyColumns,
+			deductionDetailAllColumns,
+			deductionDetailPrimaryKeyColumns,
 		)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
 		}
 		if len(wl) == 0 {
-			return 0, errors.New("models: unable to update deduction_details_table, could not build whitelist")
+			return 0, errors.New("models: unable to update deduction_details, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE `deduction_details_table` SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE `deduction_details` SET %s WHERE %s",
 			strmangle.SetParamNames("`", "`", 0, wl),
-			strmangle.WhereClause("`", "`", 0, deductionDetailsTablePrimaryKeyColumns),
+			strmangle.WhereClause("`", "`", 0, deductionDetailPrimaryKeyColumns),
 		)
-		cache.valueMapping, err = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, append(wl, deductionDetailsTablePrimaryKeyColumns...))
+		cache.valueMapping, err = queries.BindMapping(deductionDetailType, deductionDetailMapping, append(wl, deductionDetailPrimaryKeyColumns...))
 		if err != nil {
 			return 0, err
 		}
@@ -830,42 +830,42 @@ func (o *DeductionDetailsTable) Update(ctx context.Context, exec boil.ContextExe
 	var result sql.Result
 	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update deduction_details_table row")
+		return 0, errors.Wrap(err, "models: unable to update deduction_details row")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by update for deduction_details_table")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by update for deduction_details")
 	}
 
 	if !cached {
-		deductionDetailsTableUpdateCacheMut.Lock()
-		deductionDetailsTableUpdateCache[key] = cache
-		deductionDetailsTableUpdateCacheMut.Unlock()
+		deductionDetailUpdateCacheMut.Lock()
+		deductionDetailUpdateCache[key] = cache
+		deductionDetailUpdateCacheMut.Unlock()
 	}
 
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q deductionDetailsTableQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (q deductionDetailQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update all for deduction_details_table")
+		return 0, errors.Wrap(err, "models: unable to update all for deduction_details")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to retrieve rows affected for deduction_details_table")
+		return 0, errors.Wrap(err, "models: unable to retrieve rows affected for deduction_details")
 	}
 
 	return rowsAff, nil
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o DeductionDetailsTableSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (o DeductionDetailSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -887,13 +887,13 @@ func (o DeductionDetailsTableSlice) UpdateAll(ctx context.Context, exec boil.Con
 
 	// Append all of the primary key values for each column
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), deductionDetailsTablePrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), deductionDetailPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE `deduction_details_table` SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE `deduction_details` SET %s WHERE %s",
 		strmangle.SetParamNames("`", "`", 0, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, deductionDetailsTablePrimaryKeyColumns, len(o)))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, deductionDetailPrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -902,25 +902,25 @@ func (o DeductionDetailsTableSlice) UpdateAll(ctx context.Context, exec boil.Con
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update all in deductionDetailsTable slice")
+		return 0, errors.Wrap(err, "models: unable to update all in deductionDetail slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to retrieve rows affected all in update all deductionDetailsTable")
+		return 0, errors.Wrap(err, "models: unable to retrieve rows affected all in update all deductionDetail")
 	}
 	return rowsAff, nil
 }
 
-var mySQLDeductionDetailsTableUniqueColumns = []string{
+var mySQLDeductionDetailUniqueColumns = []string{
 	"id",
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *DeductionDetailsTable) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
+func (o *DeductionDetail) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
-		return errors.New("models: no deduction_details_table provided for upsert")
+		return errors.New("models: no deduction_details provided for upsert")
 	}
 	if !boil.TimestampsAreSkipped(ctx) {
 		currTime := time.Now().In(boil.GetLocation())
@@ -935,8 +935,8 @@ func (o *DeductionDetailsTable) Upsert(ctx context.Context, exec boil.ContextExe
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(deductionDetailsTableColumnsWithDefault, o)
-	nzUniques := queries.NonZeroDefaultSet(mySQLDeductionDetailsTableUniqueColumns, o)
+	nzDefaults := queries.NonZeroDefaultSet(deductionDetailColumnsWithDefault, o)
+	nzUniques := queries.NonZeroDefaultSet(mySQLDeductionDetailUniqueColumns, o)
 
 	if len(nzUniques) == 0 {
 		return errors.New("cannot upsert with a table that cannot conflict on a unique column")
@@ -964,43 +964,43 @@ func (o *DeductionDetailsTable) Upsert(ctx context.Context, exec boil.ContextExe
 	key := buf.String()
 	strmangle.PutBuffer(buf)
 
-	deductionDetailsTableUpsertCacheMut.RLock()
-	cache, cached := deductionDetailsTableUpsertCache[key]
-	deductionDetailsTableUpsertCacheMut.RUnlock()
+	deductionDetailUpsertCacheMut.RLock()
+	cache, cached := deductionDetailUpsertCache[key]
+	deductionDetailUpsertCacheMut.RUnlock()
 
 	var err error
 
 	if !cached {
 		insert, ret := insertColumns.InsertColumnSet(
-			deductionDetailsTableAllColumns,
-			deductionDetailsTableColumnsWithDefault,
-			deductionDetailsTableColumnsWithoutDefault,
+			deductionDetailAllColumns,
+			deductionDetailColumnsWithDefault,
+			deductionDetailColumnsWithoutDefault,
 			nzDefaults,
 		)
 
 		update := updateColumns.UpdateColumnSet(
-			deductionDetailsTableAllColumns,
-			deductionDetailsTablePrimaryKeyColumns,
+			deductionDetailAllColumns,
+			deductionDetailPrimaryKeyColumns,
 		)
 
 		if !updateColumns.IsNone() && len(update) == 0 {
-			return errors.New("models: unable to upsert deduction_details_table, could not build update column list")
+			return errors.New("models: unable to upsert deduction_details, could not build update column list")
 		}
 
 		ret = strmangle.SetComplement(ret, nzUniques)
-		cache.query = buildUpsertQueryMySQL(dialect, "`deduction_details_table`", update, insert)
+		cache.query = buildUpsertQueryMySQL(dialect, "`deduction_details`", update, insert)
 		cache.retQuery = fmt.Sprintf(
-			"SELECT %s FROM `deduction_details_table` WHERE %s",
+			"SELECT %s FROM `deduction_details` WHERE %s",
 			strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, ret), ","),
 			strmangle.WhereClause("`", "`", 0, nzUniques),
 		)
 
-		cache.valueMapping, err = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, insert)
+		cache.valueMapping, err = queries.BindMapping(deductionDetailType, deductionDetailMapping, insert)
 		if err != nil {
 			return err
 		}
 		if len(ret) != 0 {
-			cache.retMapping, err = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, ret)
+			cache.retMapping, err = queries.BindMapping(deductionDetailType, deductionDetailMapping, ret)
 			if err != nil {
 				return err
 			}
@@ -1022,7 +1022,7 @@ func (o *DeductionDetailsTable) Upsert(ctx context.Context, exec boil.ContextExe
 	result, err := exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "models: unable to upsert for deduction_details_table")
+		return errors.Wrap(err, "models: unable to upsert for deduction_details")
 	}
 
 	var lastID int64
@@ -1039,13 +1039,13 @@ func (o *DeductionDetailsTable) Upsert(ctx context.Context, exec boil.ContextExe
 	}
 
 	o.ID = uint32(lastID)
-	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == deductionDetailsTableMapping["id"] {
+	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == deductionDetailMapping["id"] {
 		goto CacheNoHooks
 	}
 
-	uniqueMap, err = queries.BindMapping(deductionDetailsTableType, deductionDetailsTableMapping, nzUniques)
+	uniqueMap, err = queries.BindMapping(deductionDetailType, deductionDetailMapping, nzUniques)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to retrieve unique values for deduction_details_table")
+		return errors.Wrap(err, "models: unable to retrieve unique values for deduction_details")
 	}
 	nzUniqueCols = queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), uniqueMap)
 
@@ -1056,32 +1056,32 @@ func (o *DeductionDetailsTable) Upsert(ctx context.Context, exec boil.ContextExe
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, nzUniqueCols...).Scan(returns...)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to populate default values for deduction_details_table")
+		return errors.Wrap(err, "models: unable to populate default values for deduction_details")
 	}
 
 CacheNoHooks:
 	if !cached {
-		deductionDetailsTableUpsertCacheMut.Lock()
-		deductionDetailsTableUpsertCache[key] = cache
-		deductionDetailsTableUpsertCacheMut.Unlock()
+		deductionDetailUpsertCacheMut.Lock()
+		deductionDetailUpsertCache[key] = cache
+		deductionDetailUpsertCacheMut.Unlock()
 	}
 
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// Delete deletes a single DeductionDetailsTable record with an executor.
+// Delete deletes a single DeductionDetail record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *DeductionDetailsTable) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o *DeductionDetail) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
-		return 0, errors.New("models: no DeductionDetailsTable provided for delete")
+		return 0, errors.New("models: no DeductionDetail provided for delete")
 	}
 
 	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
-	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), deductionDetailsTablePrimaryKeyMapping)
-	sql := "DELETE FROM `deduction_details_table` WHERE `id`=?"
+	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), deductionDetailPrimaryKeyMapping)
+	sql := "DELETE FROM `deduction_details` WHERE `id`=?"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1090,12 +1090,12 @@ func (o *DeductionDetailsTable) Delete(ctx context.Context, exec boil.ContextExe
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete from deduction_details_table")
+		return 0, errors.Wrap(err, "models: unable to delete from deduction_details")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for deduction_details_table")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for deduction_details")
 	}
 
 	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
@@ -1106,33 +1106,33 @@ func (o *DeductionDetailsTable) Delete(ctx context.Context, exec boil.ContextExe
 }
 
 // DeleteAll deletes all matching rows.
-func (q deductionDetailsTableQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (q deductionDetailQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
-		return 0, errors.New("models: no deductionDetailsTableQuery provided for delete all")
+		return 0, errors.New("models: no deductionDetailQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete all from deduction_details_table")
+		return 0, errors.Wrap(err, "models: unable to delete all from deduction_details")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for deduction_details_table")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for deduction_details")
 	}
 
 	return rowsAff, nil
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o DeductionDetailsTableSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o DeductionDetailSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
-	if len(deductionDetailsTableBeforeDeleteHooks) != 0 {
+	if len(deductionDetailBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -1142,12 +1142,12 @@ func (o DeductionDetailsTableSlice) DeleteAll(ctx context.Context, exec boil.Con
 
 	var args []interface{}
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), deductionDetailsTablePrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), deductionDetailPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM `deduction_details_table` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, deductionDetailsTablePrimaryKeyColumns, len(o))
+	sql := "DELETE FROM `deduction_details` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, deductionDetailPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1156,15 +1156,15 @@ func (o DeductionDetailsTableSlice) DeleteAll(ctx context.Context, exec boil.Con
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete all from deductionDetailsTable slice")
+		return 0, errors.Wrap(err, "models: unable to delete all from deductionDetail slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for deduction_details_table")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for deduction_details")
 	}
 
-	if len(deductionDetailsTableAfterDeleteHooks) != 0 {
+	if len(deductionDetailAfterDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -1177,8 +1177,8 @@ func (o DeductionDetailsTableSlice) DeleteAll(ctx context.Context, exec boil.Con
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *DeductionDetailsTable) Reload(ctx context.Context, exec boil.ContextExecutor) error {
-	ret, err := FindDeductionDetailsTable(ctx, exec, o.ID)
+func (o *DeductionDetail) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindDeductionDetail(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -1189,26 +1189,26 @@ func (o *DeductionDetailsTable) Reload(ctx context.Context, exec boil.ContextExe
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *DeductionDetailsTableSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
+func (o *DeductionDetailSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
 
-	slice := DeductionDetailsTableSlice{}
+	slice := DeductionDetailSlice{}
 	var args []interface{}
 	for _, obj := range *o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), deductionDetailsTablePrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), deductionDetailPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT `deduction_details_table`.* FROM `deduction_details_table` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, deductionDetailsTablePrimaryKeyColumns, len(*o))
+	sql := "SELECT `deduction_details`.* FROM `deduction_details` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, deductionDetailPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
 	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to reload all in DeductionDetailsTableSlice")
+		return errors.Wrap(err, "models: unable to reload all in DeductionDetailSlice")
 	}
 
 	*o = slice
@@ -1216,10 +1216,10 @@ func (o *DeductionDetailsTableSlice) ReloadAll(ctx context.Context, exec boil.Co
 	return nil
 }
 
-// DeductionDetailsTableExists checks if the DeductionDetailsTable row exists.
-func DeductionDetailsTableExists(ctx context.Context, exec boil.ContextExecutor, iD uint32) (bool, error) {
+// DeductionDetailExists checks if the DeductionDetail row exists.
+func DeductionDetailExists(ctx context.Context, exec boil.ContextExecutor, iD uint32) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from `deduction_details_table` where `id`=? limit 1)"
+	sql := "select exists(select 1 from `deduction_details` where `id`=? limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1230,13 +1230,13 @@ func DeductionDetailsTableExists(ctx context.Context, exec boil.ContextExecutor,
 
 	err := row.Scan(&exists)
 	if err != nil {
-		return false, errors.Wrap(err, "models: unable to check if deduction_details_table exists")
+		return false, errors.Wrap(err, "models: unable to check if deduction_details exists")
 	}
 
 	return exists, nil
 }
 
-// Exists checks if the DeductionDetailsTable row exists.
-func (o *DeductionDetailsTable) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
-	return DeductionDetailsTableExists(ctx, exec, o.ID)
+// Exists checks if the DeductionDetail row exists.
+func (o *DeductionDetail) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+	return DeductionDetailExists(ctx, exec, o.ID)
 }

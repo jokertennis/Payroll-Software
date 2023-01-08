@@ -896,7 +896,7 @@ func testEarningsSelect(t *testing.T) {
 }
 
 var (
-	earningDBTypes = map[string]string{`ID`: `mediumint`, `Amount`: `int`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
+	earningDBTypes = map[string]string{`ID`: `mediumint`, `Nominal`: `varchar`, `Amount`: `int`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
 	_              = bytes.MinRead
 )
 

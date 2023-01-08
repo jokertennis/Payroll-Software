@@ -668,14 +668,14 @@ func testDeductionOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing
 	}
 }
 
-func testDeductionToManyDeductionDetailsTables(t *testing.T) {
+func testDeductionToManyDeductionDetails(t *testing.T) {
 	var err error
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
 	var a Deduction
-	var b, c DeductionDetailsTable
+	var b, c DeductionDetail
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
@@ -686,10 +686,10 @@ func testDeductionToManyDeductionDetailsTables(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err = randomize.Struct(seed, &b, deductionDetailsTableDBTypes, false, deductionDetailsTableColumnsWithDefault...); err != nil {
+	if err = randomize.Struct(seed, &b, deductionDetailDBTypes, false, deductionDetailColumnsWithDefault...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &c, deductionDetailsTableDBTypes, false, deductionDetailsTableColumnsWithDefault...); err != nil {
+	if err = randomize.Struct(seed, &c, deductionDetailDBTypes, false, deductionDetailColumnsWithDefault...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -703,7 +703,7 @@ func testDeductionToManyDeductionDetailsTables(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	check, err := a.DeductionDetailsTables().All(ctx, tx)
+	check, err := a.DeductionDetails().All(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -726,18 +726,18 @@ func testDeductionToManyDeductionDetailsTables(t *testing.T) {
 	}
 
 	slice := DeductionSlice{&a}
-	if err = a.L.LoadDeductionDetailsTables(ctx, tx, false, (*[]*Deduction)(&slice), nil); err != nil {
+	if err = a.L.LoadDeductionDetails(ctx, tx, false, (*[]*Deduction)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.DeductionDetailsTables); got != 2 {
+	if got := len(a.R.DeductionDetails); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
-	a.R.DeductionDetailsTables = nil
-	if err = a.L.LoadDeductionDetailsTables(ctx, tx, true, &a, nil); err != nil {
+	a.R.DeductionDetails = nil
+	if err = a.L.LoadDeductionDetails(ctx, tx, true, &a, nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.DeductionDetailsTables); got != 2 {
+	if got := len(a.R.DeductionDetails); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
@@ -746,7 +746,7 @@ func testDeductionToManyDeductionDetailsTables(t *testing.T) {
 	}
 }
 
-func testDeductionToManyAddOpDeductionDetailsTables(t *testing.T) {
+func testDeductionToManyAddOpDeductionDetails(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -754,15 +754,15 @@ func testDeductionToManyAddOpDeductionDetailsTables(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a Deduction
-	var b, c, d, e DeductionDetailsTable
+	var b, c, d, e DeductionDetail
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	foreigners := []*DeductionDetailsTable{&b, &c, &d, &e}
+	foreigners := []*DeductionDetail{&b, &c, &d, &e}
 	for _, x := range foreigners {
-		if err = randomize.Struct(seed, x, deductionDetailsTableDBTypes, false, strmangle.SetComplement(deductionDetailsTablePrimaryKeyColumns, deductionDetailsTableColumnsWithoutDefault)...); err != nil {
+		if err = randomize.Struct(seed, x, deductionDetailDBTypes, false, strmangle.SetComplement(deductionDetailPrimaryKeyColumns, deductionDetailColumnsWithoutDefault)...); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -777,13 +777,13 @@ func testDeductionToManyAddOpDeductionDetailsTables(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	foreignersSplitByInsertion := [][]*DeductionDetailsTable{
+	foreignersSplitByInsertion := [][]*DeductionDetail{
 		{&b, &c},
 		{&d, &e},
 	}
 
 	for i, x := range foreignersSplitByInsertion {
-		err = a.AddDeductionDetailsTables(ctx, tx, i != 0, x...)
+		err = a.AddDeductionDetails(ctx, tx, i != 0, x...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -805,14 +805,14 @@ func testDeductionToManyAddOpDeductionDetailsTables(t *testing.T) {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
 
-		if a.R.DeductionDetailsTables[i*2] != first {
+		if a.R.DeductionDetails[i*2] != first {
 			t.Error("relationship struct slice not set to correct value")
 		}
-		if a.R.DeductionDetailsTables[i*2+1] != second {
+		if a.R.DeductionDetails[i*2+1] != second {
 			t.Error("relationship struct slice not set to correct value")
 		}
 
-		count, err := a.DeductionDetailsTables().Count(ctx, tx)
+		count, err := a.DeductionDetails().Count(ctx, tx)
 		if err != nil {
 			t.Fatal(err)
 		}

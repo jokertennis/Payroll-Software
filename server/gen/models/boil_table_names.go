@@ -5,7 +5,7 @@ package models
 
 var TableNames = struct {
 	Companies             string
-	DeductionDetailsTable string
+	DeductionDetails      string
 	Deductions            string
 	EarningDetails        string
 	Earnings              string
@@ -18,7 +18,7 @@ var TableNames = struct {
 	SchemaMigrations      string
 }{
 	Companies:             "companies",
-	DeductionDetailsTable: "deduction_details_table",
+	DeductionDetails:      "deduction_details",
 	Deductions:            "deductions",
 	EarningDetails:        "earning_details",
 	Earnings:              "earnings",
