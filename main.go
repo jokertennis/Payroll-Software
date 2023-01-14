@@ -30,18 +30,18 @@ func main() {
 	}
 
 	// create demo-data for manual test.
-	if err := db.CreateDemoData(ctx, developDbInstance); err != nil {
+	if err := db.CreateData(ctx, developDbInstance); err != nil {
 		fmt.Printf("failed to create demo data. err:%s", err)
 	}
 
-	// create dbInstance which is used when accessing db.
+	// // create dbInstance which is used when accessing db.
 	testDbEnvironment := db.DbEnvironment{Environment: "Test"}
 	testDbInstance, err := db.CreateDbInstance(testDbEnvironment)
 	if err != nil {
 		fmt.Printf("failed to create testDbInstance. err:%s", err)
 	}
 
-	// migrate test_db
+	// // migrate test_db
 	migrateInstanceForTestDb, errorCreateMigrateInstance := db.CreateMigrateInstance(testDbInstance)
 	if errorCreateMigrateInstance != nil {
 		fmt.Printf("failed to create MigrateInstance for test_db. err:%s", errorCreateMigrateInstance)
@@ -49,8 +49,4 @@ func main() {
 	if err := migrateInstanceForTestDb.Up(); err != nil {
 		fmt.Printf("failed to up. err:%s", err)
 	}
-
-// 	if err := db.CreateTestData(ctx, testDbInstance); err != nil {
-// 		fmt.Printf("failed to create test data. err:%s", err)
-// 	}
 }
