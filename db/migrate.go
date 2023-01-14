@@ -9,6 +9,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	_ "github.com/mattes/migrate/source/file"
 )
 
 // TODO:create as enum. only Develop and Test
@@ -19,7 +20,7 @@ type DbEnvironment struct {
 func CreateDbInstance(dbEnvironment DbEnvironment) (*sql.DB, error) {
 	switch dbEnvironment.Environment {
 	case "Develop":
-		// When we executed createDbInstance local environment,localhost will be used.
+		// When we executed createDbInstance on local environment,localhost will be used.
 		// On the other hand we executed createDbInstance inside container,db_container will be used.
 		// Temporary change is not a problem.
 		// We have to separate host_name depending on executed environment.

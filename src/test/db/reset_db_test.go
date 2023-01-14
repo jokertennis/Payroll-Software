@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// confirm that creating test data is successful and reset of test db is successful.
-func TestCreateTestDataAndResetDb(t *testing.T) {
+// confirm that creating test/demo data is successful and reset of db is successful.
+func TestCreateDataAndResetDbOk(t *testing.T) {
 	// create context
 	ctx := context.Background()
 
@@ -18,7 +18,12 @@ func TestCreateTestDataAndResetDb(t *testing.T) {
 	testDbEnvironment := db.DbEnvironment{Environment: "Test"}
 	testDbInstance, err := db.CreateDbInstance(testDbEnvironment)
 	assert.Nil(t, err)
-	err = db.CreateTestData(ctx, testDbInstance)
+
+	// executed reset of test db.
+	err = db.ResetDb(ctx, testDbInstance)
+	assert.Nil(t, err)
+
+	err = db.CreateData(ctx, testDbInstance)
 	assert.Nil(t, err)
 	
 	// confirm that creating test data is successful
