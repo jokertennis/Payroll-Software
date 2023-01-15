@@ -21,17 +21,17 @@ func TestCreateDbInstanceForTestOk(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestCreateDbInstanceForTestException(t *testing.T) {
-	notExistedDbEnvironment := db.DbEnvironment{Environment: "NotExist"}
+func TestCreateDbInstanceForNotSupportException(t *testing.T) {
+	notExistedDbEnvironment := db.DbEnvironment{Environment: "NotSupport"}
 	_, err := db.CreateDbInstance(notExistedDbEnvironment)
 	// only confirm that expetced error occors.
-	assert.EqualError(t, err, "not support specific DbEnviroment:{NotExist}")
+	assert.EqualError(t, err, "not support specific DbEnviroment:{NotSupport}")
 }
 
 // TODO:
 // The test of creating migrate-instance is not successful.
 // I don't understand the reason why fails test.
-// I confirmed that success of creating migrate-instance when using on main.go file.
+// I confirmed that creating migrate-instance was successful when using on main.go file.
 // If I understand the reason why fails test, I will fix implementation of migration process.
 
 // func TestCreateMigrateInstanceOk(t *testing.T) {
