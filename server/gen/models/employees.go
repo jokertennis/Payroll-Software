@@ -23,58 +23,72 @@ import (
 
 // Employee is an object representing the database table.
 type Employee struct {
-	ID        uint32    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	CompanyID uint16    `boil:"company_id" json:"company_id" toml:"company_id" yaml:"company_id"`
-	Name      string    `boil:"name" json:"name" toml:"name" yaml:"name"`
-	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
-	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
+	ID          uint32    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	CompanyID   uint16    `boil:"company_id" json:"company_id" toml:"company_id" yaml:"company_id"`
+	Name        string    `boil:"name" json:"name" toml:"name" yaml:"name"`
+	MailAddress string    `boil:"mail_address" json:"mail_address" toml:"mail_address" yaml:"mail_address"`
+	Password    string    `boil:"password" json:"password" toml:"password" yaml:"password"`
+	CreatedAt   time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	UpdatedAt   time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
 	R *employeeR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L employeeL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var EmployeeColumns = struct {
-	ID        string
-	CompanyID string
-	Name      string
-	CreatedAt string
-	UpdatedAt string
+	ID          string
+	CompanyID   string
+	Name        string
+	MailAddress string
+	Password    string
+	CreatedAt   string
+	UpdatedAt   string
 }{
-	ID:        "id",
-	CompanyID: "company_id",
-	Name:      "name",
-	CreatedAt: "created_at",
-	UpdatedAt: "updated_at",
+	ID:          "id",
+	CompanyID:   "company_id",
+	Name:        "name",
+	MailAddress: "mail_address",
+	Password:    "password",
+	CreatedAt:   "created_at",
+	UpdatedAt:   "updated_at",
 }
 
 var EmployeeTableColumns = struct {
-	ID        string
-	CompanyID string
-	Name      string
-	CreatedAt string
-	UpdatedAt string
+	ID          string
+	CompanyID   string
+	Name        string
+	MailAddress string
+	Password    string
+	CreatedAt   string
+	UpdatedAt   string
 }{
-	ID:        "employees.id",
-	CompanyID: "employees.company_id",
-	Name:      "employees.name",
-	CreatedAt: "employees.created_at",
-	UpdatedAt: "employees.updated_at",
+	ID:          "employees.id",
+	CompanyID:   "employees.company_id",
+	Name:        "employees.name",
+	MailAddress: "employees.mail_address",
+	Password:    "employees.password",
+	CreatedAt:   "employees.created_at",
+	UpdatedAt:   "employees.updated_at",
 }
 
 // Generated where
 
 var EmployeeWhere = struct {
-	ID        whereHelperuint32
-	CompanyID whereHelperuint16
-	Name      whereHelperstring
-	CreatedAt whereHelpertime_Time
-	UpdatedAt whereHelpertime_Time
+	ID          whereHelperuint32
+	CompanyID   whereHelperuint16
+	Name        whereHelperstring
+	MailAddress whereHelperstring
+	Password    whereHelperstring
+	CreatedAt   whereHelpertime_Time
+	UpdatedAt   whereHelpertime_Time
 }{
-	ID:        whereHelperuint32{field: "`employees`.`id`"},
-	CompanyID: whereHelperuint16{field: "`employees`.`company_id`"},
-	Name:      whereHelperstring{field: "`employees`.`name`"},
-	CreatedAt: whereHelpertime_Time{field: "`employees`.`created_at`"},
-	UpdatedAt: whereHelpertime_Time{field: "`employees`.`updated_at`"},
+	ID:          whereHelperuint32{field: "`employees`.`id`"},
+	CompanyID:   whereHelperuint16{field: "`employees`.`company_id`"},
+	Name:        whereHelperstring{field: "`employees`.`name`"},
+	MailAddress: whereHelperstring{field: "`employees`.`mail_address`"},
+	Password:    whereHelperstring{field: "`employees`.`password`"},
+	CreatedAt:   whereHelpertime_Time{field: "`employees`.`created_at`"},
+	UpdatedAt:   whereHelpertime_Time{field: "`employees`.`updated_at`"},
 }
 
 // EmployeeRels is where relationship names are stored.
@@ -115,8 +129,8 @@ func (r *employeeR) GetSalaryStatements() SalaryStatementSlice {
 type employeeL struct{}
 
 var (
-	employeeAllColumns            = []string{"id", "company_id", "name", "created_at", "updated_at"}
-	employeeColumnsWithoutDefault = []string{"company_id", "name", "created_at", "updated_at"}
+	employeeAllColumns            = []string{"id", "company_id", "name", "mail_address", "password", "created_at", "updated_at"}
+	employeeColumnsWithoutDefault = []string{"company_id", "name", "mail_address", "password", "created_at", "updated_at"}
 	employeeColumnsWithDefault    = []string{"id"}
 	employeePrimaryKeyColumns     = []string{"id"}
 	employeeGeneratedColumns      = []string{}
@@ -1052,6 +1066,7 @@ func (o EmployeeSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor,
 
 var mySQLEmployeeUniqueColumns = []string{
 	"id",
+	"mail_address",
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.

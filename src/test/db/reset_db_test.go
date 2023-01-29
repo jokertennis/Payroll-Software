@@ -33,6 +33,9 @@ func TestCreateDataAndResetDbOk(t *testing.T) {
 	boolEmployeeExist, err := models.EmployeeExists(ctx, testDbInstance, 1)
 	assert.True(t, boolEmployeeExist)
 
+	boolAdministratorExist, err := models.AdministratorExists(ctx, testDbInstance, 1)
+	assert.True(t, boolAdministratorExist)
+
 	boolEarningExist, err := models.EarningExists(ctx, testDbInstance, 1)
 	assert.True(t, boolEarningExist)
 
@@ -70,6 +73,9 @@ func TestCreateDataAndResetDbOk(t *testing.T) {
 
 	boolEmployeeExist, err = models.EmployeeExists(ctx, testDbInstance, 1)
 	assert.False(t, boolEmployeeExist)
+
+	boolAdministratorExist, err = models.AdministratorExists(ctx, testDbInstance, 1)
+	assert.False(t, boolAdministratorExist)
 
 	boolEarningExist, err = models.EarningExists(ctx, testDbInstance, 1)
 	assert.False(t, boolEarningExist)

@@ -1,4 +1,4 @@
-CREATE TABLE `employees` (
+CREATE TABLE `administrators` (
     `id` mediumint unsigned AUTO_INCREMENT,
     `company_id` smallint unsigned NOT NULL,
     `name` varchar(255) NOT NULL,

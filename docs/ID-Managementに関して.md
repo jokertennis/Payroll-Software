@@ -1,5 +1,6 @@
-## ID-Management
-ID-ManagementはPayroll-Softwareの認証認可機能を保持するマイクロサービスである。本マイクロサービスの開発方針として、認証認可の機能を実装するか、AWSのBaaS(Backend as a service)を利用するか迷ったため、両者の方法のメリットとデメリットを整理する。
+## ID-Managementに関して
+2023年1月29日時点でID-Managementは作成しない方針になった。今後作成する必要ができた時のために本資料は残しておく。
+<!-- ID-ManagementはPayroll-Softwareの認証認可機能を保持するマイクロサービスである出てきたときのービスの開発方針として、認証認可の機能を実装するか、AWSのBaaS(Backend as a service)を利用するか迷ったため、両者の方法のメリットとデメリットを整理する。
 
 実現方法 | メリット | デメリット
 --------|--------|-----------
@@ -32,4 +33,4 @@ RDSかDynamoDb(RDBかNoSQL)のどちらを採用するかに関して、川田�
 ・[CaaS、Paas、サーバーレス(FaaS,BaaS)の違い あなたはどのサービスを利用しますか](https://www.konosumi.net/entry/2018/08/03/013538)  
 ・[サーバーレス (FaaS) のメリット・デメリット・使いどころについて整理してみる](https://blog.mmmcorp.co.jp/blog/2020/12/25/talk_about_serverless/)  
 ・[サーバーレスアーキテクチャとは何か？　AWSの「Lambda」と「EC2」を比較して解説](https://www.sbbit.jp/article/cont1/32603)  
-・[Lambda パフォーマンスチューニング](https://dev.classmethod.jp/articles/lambda-performance-tuning/)  
+・[Lambda パフォーマンスチューニング](https://dev.classmethod.jp/articles/lambda-performance-tuning/)   -->

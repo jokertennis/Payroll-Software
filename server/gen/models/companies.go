@@ -58,73 +58,6 @@ var CompanyTableColumns = struct {
 
 // Generated where
 
-type whereHelperuint16 struct{ field string }
-
-func (w whereHelperuint16) EQ(x uint16) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperuint16) NEQ(x uint16) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperuint16) LT(x uint16) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperuint16) LTE(x uint16) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperuint16) GT(x uint16) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperuint16) GTE(x uint16) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperuint16) IN(slice []uint16) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperuint16) NIN(slice []uint16) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-type whereHelperstring struct{ field string }
-
-func (w whereHelperstring) EQ(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperstring) NEQ(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperstring) LT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperstring) LTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperstring) GT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperstring) GTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperstring) IN(slice []string) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-type whereHelpertime_Time struct{ field string }
-
-func (w whereHelpertime_Time) EQ(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.EQ, x)
-}
-func (w whereHelpertime_Time) NEQ(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.NEQ, x)
-}
-func (w whereHelpertime_Time) LT(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpertime_Time) LTE(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpertime_Time) GT(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-
 var CompanyWhere = struct {
 	ID        whereHelperuint16
 	Name      whereHelperstring
@@ -139,19 +72,29 @@ var CompanyWhere = struct {
 
 // CompanyRels is where relationship names are stored.
 var CompanyRels = struct {
-	Employees string
+	Administrators string
+	Employees      string
 }{
-	Employees: "Employees",
+	Administrators: "Administrators",
+	Employees:      "Employees",
 }
 
 // companyR is where relationships are stored.
 type companyR struct {
-	Employees EmployeeSlice `boil:"Employees" json:"Employees" toml:"Employees" yaml:"Employees"`
+	Administrators AdministratorSlice `boil:"Administrators" json:"Administrators" toml:"Administrators" yaml:"Administrators"`
+	Employees      EmployeeSlice      `boil:"Employees" json:"Employees" toml:"Employees" yaml:"Employees"`
 }
 
 // NewStruct creates a new relationship struct
 func (*companyR) NewStruct() *companyR {
 	return &companyR{}
+}
+
+func (r *companyR) GetAdministrators() AdministratorSlice {
+	if r == nil {
+		return nil
+	}
+	return r.Administrators
 }
 
 func (r *companyR) GetEmployees() EmployeeSlice {
@@ -450,6 +393,20 @@ func (q companyQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bo
 	return count > 0, nil
 }
 
+// Administrators retrieves all the administrator's Administrators with an executor.
+func (o *Company) Administrators(mods ...qm.QueryMod) administratorQuery {
+	var queryMods []qm.QueryMod
+	if len(mods) != 0 {
+		queryMods = append(queryMods, mods...)
+	}
+
+	queryMods = append(queryMods,
+		qm.Where("`administrators`.`company_id`=?", o.ID),
+	)
+
+	return Administrators(queryMods...)
+}
+
 // Employees retrieves all the employee's Employees with an executor.
 func (o *Company) Employees(mods ...qm.QueryMod) employeeQuery {
 	var queryMods []qm.QueryMod
@@ -462,6 +419,120 @@ func (o *Company) Employees(mods ...qm.QueryMod) employeeQuery {
 	)
 
 	return Employees(queryMods...)
+}
+
+// LoadAdministrators allows an eager lookup of values, cached into the
+// loaded structs of the objects. This is for a 1-M or N-M relationship.
+func (companyL) LoadAdministrators(ctx context.Context, e boil.ContextExecutor, singular bool, maybeCompany interface{}, mods queries.Applicator) error {
+	var slice []*Company
+	var object *Company
+
+	if singular {
+		var ok bool
+		object, ok = maybeCompany.(*Company)
+		if !ok {
+			object = new(Company)
+			ok = queries.SetFromEmbeddedStruct(&object, &maybeCompany)
+			if !ok {
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeCompany))
+			}
+		}
+	} else {
+		s, ok := maybeCompany.(*[]*Company)
+		if ok {
+			slice = *s
+		} else {
+			ok = queries.SetFromEmbeddedStruct(&slice, maybeCompany)
+			if !ok {
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeCompany))
+			}
+		}
+	}
+
+	args := make([]interface{}, 0, 1)
+	if singular {
+		if object.R == nil {
+			object.R = &companyR{}
+		}
+		args = append(args, object.ID)
+	} else {
+	Outer:
+		for _, obj := range slice {
+			if obj.R == nil {
+				obj.R = &companyR{}
+			}
+
+			for _, a := range args {
+				if a == obj.ID {
+					continue Outer
+				}
+			}
+
+			args = append(args, obj.ID)
+		}
+	}
+
+	if len(args) == 0 {
+		return nil
+	}
+
+	query := NewQuery(
+		qm.From(`administrators`),
+		qm.WhereIn(`administrators.company_id in ?`, args...),
+	)
+	if mods != nil {
+		mods.Apply(query)
+	}
+
+	results, err := query.QueryContext(ctx, e)
+	if err != nil {
+		return errors.Wrap(err, "failed to eager load administrators")
+	}
+
+	var resultSlice []*Administrator
+	if err = queries.Bind(results, &resultSlice); err != nil {
+		return errors.Wrap(err, "failed to bind eager loaded slice administrators")
+	}
+
+	if err = results.Close(); err != nil {
+		return errors.Wrap(err, "failed to close results in eager load on administrators")
+	}
+	if err = results.Err(); err != nil {
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for administrators")
+	}
+
+	if len(administratorAfterSelectHooks) != 0 {
+		for _, obj := range resultSlice {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
+				return err
+			}
+		}
+	}
+	if singular {
+		object.R.Administrators = resultSlice
+		for _, foreign := range resultSlice {
+			if foreign.R == nil {
+				foreign.R = &administratorR{}
+			}
+			foreign.R.Company = object
+		}
+		return nil
+	}
+
+	for _, foreign := range resultSlice {
+		for _, local := range slice {
+			if local.ID == foreign.CompanyID {
+				local.R.Administrators = append(local.R.Administrators, foreign)
+				if foreign.R == nil {
+					foreign.R = &administratorR{}
+				}
+				foreign.R.Company = local
+				break
+			}
+		}
+	}
+
+	return nil
 }
 
 // LoadEmployees allows an eager lookup of values, cached into the
@@ -575,6 +646,59 @@ func (companyL) LoadEmployees(ctx context.Context, e boil.ContextExecutor, singu
 		}
 	}
 
+	return nil
+}
+
+// AddAdministrators adds the given related objects to the existing relationships
+// of the company, optionally inserting them as new records.
+// Appends related to o.R.Administrators.
+// Sets related.R.Company appropriately.
+func (o *Company) AddAdministrators(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Administrator) error {
+	var err error
+	for _, rel := range related {
+		if insert {
+			rel.CompanyID = o.ID
+			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
+				return errors.Wrap(err, "failed to insert into foreign table")
+			}
+		} else {
+			updateQuery := fmt.Sprintf(
+				"UPDATE `administrators` SET %s WHERE %s",
+				strmangle.SetParamNames("`", "`", 0, []string{"company_id"}),
+				strmangle.WhereClause("`", "`", 0, administratorPrimaryKeyColumns),
+			)
+			values := []interface{}{o.ID, rel.ID}
+
+			if boil.IsDebug(ctx) {
+				writer := boil.DebugWriterFrom(ctx)
+				fmt.Fprintln(writer, updateQuery)
+				fmt.Fprintln(writer, values)
+			}
+			if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
+				return errors.Wrap(err, "failed to update foreign table")
+			}
+
+			rel.CompanyID = o.ID
+		}
+	}
+
+	if o.R == nil {
+		o.R = &companyR{
+			Administrators: related,
+		}
+	} else {
+		o.R.Administrators = append(o.R.Administrators, related...)
+	}
+
+	for _, rel := range related {
+		if rel.R == nil {
+			rel.R = &administratorR{
+				Company: o,
+			}
+		} else {
+			rel.R.Company = o
+		}
+	}
 	return nil
 }
 
