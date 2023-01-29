@@ -494,6 +494,84 @@ func testCompaniesInsertWhitelist(t *testing.T) {
 	}
 }
 
+func testCompanyToManyAdministrators(t *testing.T) {
+	var err error
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Company
+	var b, c Administrator
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, companyDBTypes, true, companyColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Company struct: %s", err)
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	if err = randomize.Struct(seed, &b, administratorDBTypes, false, administratorColumnsWithDefault...); err != nil {
+		t.Fatal(err)
+	}
+	if err = randomize.Struct(seed, &c, administratorDBTypes, false, administratorColumnsWithDefault...); err != nil {
+		t.Fatal(err)
+	}
+
+	b.CompanyID = a.ID
+	c.CompanyID = a.ID
+
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = c.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	check, err := a.Administrators().All(ctx, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	bFound, cFound := false, false
+	for _, v := range check {
+		if v.CompanyID == b.CompanyID {
+			bFound = true
+		}
+		if v.CompanyID == c.CompanyID {
+			cFound = true
+		}
+	}
+
+	if !bFound {
+		t.Error("expected to find b")
+	}
+	if !cFound {
+		t.Error("expected to find c")
+	}
+
+	slice := CompanySlice{&a}
+	if err = a.L.LoadAdministrators(ctx, tx, false, (*[]*Company)(&slice), nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(a.R.Administrators); got != 2 {
+		t.Error("number of eager loaded records wrong, got:", got)
+	}
+
+	a.R.Administrators = nil
+	if err = a.L.LoadAdministrators(ctx, tx, true, &a, nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(a.R.Administrators); got != 2 {
+		t.Error("number of eager loaded records wrong, got:", got)
+	}
+
+	if t.Failed() {
+		t.Logf("%#v", check)
+	}
+}
+
 func testCompanyToManyEmployees(t *testing.T) {
 	var err error
 	ctx := context.Background()
@@ -572,6 +650,81 @@ func testCompanyToManyEmployees(t *testing.T) {
 	}
 }
 
+func testCompanyToManyAddOpAdministrators(t *testing.T) {
+	var err error
+
+	ctx := context.Background()
+	tx := MustTx(boil.BeginTx(ctx, nil))
+	defer func() { _ = tx.Rollback() }()
+
+	var a Company
+	var b, c, d, e Administrator
+
+	seed := randomize.NewSeed()
+	if err = randomize.Struct(seed, &a, companyDBTypes, false, strmangle.SetComplement(companyPrimaryKeyColumns, companyColumnsWithoutDefault)...); err != nil {
+		t.Fatal(err)
+	}
+	foreigners := []*Administrator{&b, &c, &d, &e}
+	for _, x := range foreigners {
+		if err = randomize.Struct(seed, x, administratorDBTypes, false, strmangle.SetComplement(administratorPrimaryKeyColumns, administratorColumnsWithoutDefault)...); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+	if err = c.Insert(ctx, tx, boil.Infer()); err != nil {
+		t.Fatal(err)
+	}
+
+	foreignersSplitByInsertion := [][]*Administrator{
+		{&b, &c},
+		{&d, &e},
+	}
+
+	for i, x := range foreignersSplitByInsertion {
+		err = a.AddAdministrators(ctx, tx, i != 0, x...)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		first := x[0]
+		second := x[1]
+
+		if a.ID != first.CompanyID {
+			t.Error("foreign key was wrong value", a.ID, first.CompanyID)
+		}
+		if a.ID != second.CompanyID {
+			t.Error("foreign key was wrong value", a.ID, second.CompanyID)
+		}
+
+		if first.R.Company != &a {
+			t.Error("relationship was not added properly to the foreign slice")
+		}
+		if second.R.Company != &a {
+			t.Error("relationship was not added properly to the foreign slice")
+		}
+
+		if a.R.Administrators[i*2] != first {
+			t.Error("relationship struct slice not set to correct value")
+		}
+		if a.R.Administrators[i*2+1] != second {
+			t.Error("relationship struct slice not set to correct value")
+		}
+
+		count, err := a.Administrators().Count(ctx, tx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if want := int64((i + 1) * 2); count != want {
+			t.Error("want", want, "got", count)
+		}
+	}
+}
 func testCompanyToManyAddOpEmployees(t *testing.T) {
 	var err error
 

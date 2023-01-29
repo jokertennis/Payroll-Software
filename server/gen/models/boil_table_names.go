@@ -4,6 +4,7 @@
 package models
 
 var TableNames = struct {
+	Administrators        string
 	Companies             string
 	DeductionDetails      string
 	Deductions            string
@@ -17,6 +18,7 @@ var TableNames = struct {
 	SalaryStatements      string
 	SchemaMigrations      string
 }{
+	Administrators:        "administrators",
 	Companies:             "companies",
 	DeductionDetails:      "deduction_details",
 	Deductions:            "deductions",

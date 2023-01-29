@@ -23,22 +23,31 @@ func CreateData(ctx context.Context, db boil.ContextExecutor) error {
 	}
 
 	employees := []models.Employee{
-		{ID: 1, CompanyID: 1, Name: "Yumi"},
-		{ID: 2, CompanyID: 1, Name: "James"},
-		{ID: 3, CompanyID: 1, Name: "Potter"},
-		{ID: 4, CompanyID: 1, Name: "Kevin"},
-		{ID: 5, CompanyID: 1, Name: "Tom"},
-		{ID: 6, CompanyID: 1, Name: "Ayumi"},
-		{ID: 7, CompanyID: 1, Name: "Bob"},
-		{ID: 8, CompanyID: 1, Name: "Yuji"},
-		{ID: 9, CompanyID: 1, Name: "Charo"},
-		{ID: 10, CompanyID: 1, Name: "Eron"},
-		{ID: 11, CompanyID: 1, Name: "Jim"},
-		{ID: 12, CompanyID: 1, Name: "Steve"}}
+		{ID: 1, CompanyID: 1, Name: "Yumi", MailAddress: "yumi@example.com", Password: "testpass"},
+		{ID: 2, CompanyID: 1, Name: "James", MailAddress: "james@example.com", Password: "testpass"},
+		{ID: 3, CompanyID: 1, Name: "Potter", MailAddress: "potter@example.com", Password: "testpass"},
+		{ID: 4, CompanyID: 1, Name: "Kevin", MailAddress: "kevin@example.com", Password: "testpass"},
+		{ID: 5, CompanyID: 1, Name: "Tom", MailAddress: "tom@example.com", Password: "testpass"},
+		{ID: 6, CompanyID: 1, Name: "Ayumi", MailAddress: "ayumi@example.com", Password: "testpass"},
+		{ID: 7, CompanyID: 1, Name: "Bob", MailAddress: "bob@example.com", Password: "testpass"},
+		{ID: 8, CompanyID: 1, Name: "Yuji", MailAddress: "yuji@example.com", Password: "testpass"},
+		{ID: 9, CompanyID: 1, Name: "Charo", MailAddress: "charo@example.com", Password: "testpass"},
+		{ID: 10, CompanyID: 1, Name: "Eron", MailAddress: "eron@example.com", Password: "testpass"},
+		{ID: 11, CompanyID: 1, Name: "Jim", MailAddress: "jim@example.com", Password: "testpass"},
+		{ID: 12, CompanyID: 1, Name: "Steve", MailAddress: "steve@example.com", Password: "testpass"}}
 
 	for _, employee := range employees {
 		if err := employee.Insert(ctx, db, boil.Infer()); err != nil {
 			return fmt.Errorf("failed to create datas of employee. err:%s", err)
+		}
+	}
+
+	administrators := []models.Administrator{
+		{ID: 1, CompanyID: 1, Name: "administrator", Password: "testpass"}}
+
+	for _, administrator := range administrators {
+		if err := administrator.Insert(ctx, db, boil.Infer()); err != nil {
+			return fmt.Errorf("failed to create datas of administrator. err:%s", err)
 		}
 	}
 

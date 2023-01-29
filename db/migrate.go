@@ -8,8 +8,8 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
-	"github.com/volatiletech/sqlboiler/v4/boil"
 	_ "github.com/mattes/migrate/source/file"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 // TODO:create as enum. only Develop and Test
@@ -96,6 +96,10 @@ func ResetDb(ctx context.Context, db boil.ContextExecutor) error {
 
 	if _, err := models.Employees().DeleteAll(ctx, db); err != nil {
 		return fmt.Errorf("failed to delete datas of employee. err:%s", err)
+	}
+
+	if _, err := models.Administrators().DeleteAll(ctx, db); err != nil {
+		return fmt.Errorf("failed to delete datas of administrator. err:%s", err)
 	}
 
 	if _, err := models.Companies().DeleteAll(ctx, db); err != nil {
