@@ -10,6 +10,8 @@ services:
     volumes:
     - ./:/usr/src/app
     container_name: payroll_management_container
+    ports:
+    - 8080:8080
   db:
     image: mysql:8.0
     environment:

@@ -15,92 +15,92 @@ func TestCreateDataAndResetDbOk(t *testing.T) {
 	ctx := context.Background()
 
 	// create dbInstance which is used when accessing db.
-	testDbEnvironment := db.DbEnvironment{Environment: "Test"}
-	testDbInstance, err := db.CreateDbInstance(testDbEnvironment)
+	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
+	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 	assert.Nil(t, err)
 
-	// executed reset of test db.
-	err = db.ResetDb(ctx, testDbInstance)
+	// executed reset of db.
+	err = db.ResetDb(ctx, dbInstance)
 	assert.Nil(t, err)
 
-	err = db.CreateData(ctx, testDbInstance)
+	err = db.CreateData(ctx, dbInstance)
 	assert.Nil(t, err)
 	
 	// confirm that creating test data is successful
-	boolCompanyExist, err := models.CompanyExists(ctx, testDbInstance, 1)
+	boolCompanyExist, err := models.CompanyExists(ctx, dbInstance, 1)
 	assert.True(t, boolCompanyExist)
 
-	boolEmployeeExist, err := models.EmployeeExists(ctx, testDbInstance, 1)
+	boolEmployeeExist, err := models.EmployeeExists(ctx, dbInstance, 1)
 	assert.True(t, boolEmployeeExist)
 
-	boolAdministratorExist, err := models.AdministratorExists(ctx, testDbInstance, 1)
+	boolAdministratorExist, err := models.AdministratorExists(ctx, dbInstance, 1)
 	assert.True(t, boolAdministratorExist)
 
-	boolEarningExist, err := models.EarningExists(ctx, testDbInstance, 1)
+	boolEarningExist, err := models.EarningExists(ctx, dbInstance, 1)
 	assert.True(t, boolEarningExist)
 
-	boolEarningDetailExist, err := models.EarningDetailExists(ctx, testDbInstance, 1)
+	boolEarningDetailExist, err := models.EarningDetailExists(ctx, dbInstance, 1)
 	assert.True(t, boolEarningDetailExist)
 
-	boolFixedEarningExist, err := models.FixedEarningExists(ctx, testDbInstance, 1)
+	boolFixedEarningExist, err := models.FixedEarningExists(ctx, dbInstance, 1)
 	assert.True(t, boolFixedEarningExist)
 
-	boolFixedEarningDetailExist, err := models.FixedEarningDetailExists(ctx, testDbInstance, 1)
+	boolFixedEarningDetailExist, err := models.FixedEarningDetailExists(ctx, dbInstance, 1)
 	assert.True(t, boolFixedEarningDetailExist)
 
-	boolDeductionExist, err := models.DeductionExists(ctx, testDbInstance, 1)
+	boolDeductionExist, err := models.DeductionExists(ctx, dbInstance, 1)
 	assert.True(t, boolDeductionExist)
 
-	boolDeductionDetailExist, err := models.DeductionDetailExists(ctx, testDbInstance, 1)
+	boolDeductionDetailExist, err := models.DeductionDetailExists(ctx, dbInstance, 1)
 	assert.True(t, boolDeductionDetailExist)
 
-	boolFixedDeductionExist, err := models.FixedDeductionExists(ctx, testDbInstance, 1)
+	boolFixedDeductionExist, err := models.FixedDeductionExists(ctx, dbInstance, 1)
 	assert.True(t, boolFixedDeductionExist)
 
-	boolFixedDeductionDetailExist, err := models.FixedDeductionDetailExists(ctx, testDbInstance, 1)
+	boolFixedDeductionDetailExist, err := models.FixedDeductionDetailExists(ctx, dbInstance, 1)
 	assert.True(t, boolFixedDeductionDetailExist)
 
-	boolSalaryStatementExist, err := models.SalaryStatementExists(ctx, testDbInstance, 1)
+	boolSalaryStatementExist, err := models.SalaryStatementExists(ctx, dbInstance, 1)
 	assert.True(t, boolSalaryStatementExist)
 
 	// executed reset of test db.
-	err = db.ResetDb(ctx, testDbInstance)
+	err = db.ResetDb(ctx, dbInstance)
 	assert.Nil(t, err)
 
 	// confirm that reset of test db is successful.
-	boolCompanyExist, err = models.CompanyExists(ctx, testDbInstance, 1)
+	boolCompanyExist, err = models.CompanyExists(ctx, dbInstance, 1)
 	assert.False(t, boolCompanyExist)
 
-	boolEmployeeExist, err = models.EmployeeExists(ctx, testDbInstance, 1)
+	boolEmployeeExist, err = models.EmployeeExists(ctx, dbInstance, 1)
 	assert.False(t, boolEmployeeExist)
 
-	boolAdministratorExist, err = models.AdministratorExists(ctx, testDbInstance, 1)
+	boolAdministratorExist, err = models.AdministratorExists(ctx, dbInstance, 1)
 	assert.False(t, boolAdministratorExist)
 
-	boolEarningExist, err = models.EarningExists(ctx, testDbInstance, 1)
+	boolEarningExist, err = models.EarningExists(ctx, dbInstance, 1)
 	assert.False(t, boolEarningExist)
 
-	boolEarningDetailExist, err = models.EarningDetailExists(ctx, testDbInstance, 1)
+	boolEarningDetailExist, err = models.EarningDetailExists(ctx, dbInstance, 1)
 	assert.False(t, boolEarningDetailExist)
 
-	boolFixedEarningExist, err = models.FixedEarningExists(ctx, testDbInstance, 1)
+	boolFixedEarningExist, err = models.FixedEarningExists(ctx, dbInstance, 1)
 	assert.False(t, boolFixedEarningExist)
 
-	boolFixedEarningDetailExist, err = models.FixedEarningDetailExists(ctx, testDbInstance, 1)
+	boolFixedEarningDetailExist, err = models.FixedEarningDetailExists(ctx, dbInstance, 1)
 	assert.False(t, boolFixedEarningDetailExist)
 
-	boolDeductionExist, err = models.DeductionExists(ctx, testDbInstance, 1)
+	boolDeductionExist, err = models.DeductionExists(ctx, dbInstance, 1)
 	assert.False(t, boolDeductionExist)
 
-	boolDeductionDetailExist, err = models.DeductionDetailExists(ctx, testDbInstance, 1)
+	boolDeductionDetailExist, err = models.DeductionDetailExists(ctx, dbInstance, 1)
 	assert.False(t, boolDeductionDetailExist)
 
-	boolFixedDeductionExist, err = models.FixedDeductionExists(ctx, testDbInstance, 1)
+	boolFixedDeductionExist, err = models.FixedDeductionExists(ctx, dbInstance, 1)
 	assert.False(t, boolFixedDeductionExist)
 
-	boolFixedDeductionDetailExist, err = models.FixedDeductionDetailExists(ctx, testDbInstance, 1)
+	boolFixedDeductionDetailExist, err = models.FixedDeductionDetailExists(ctx, dbInstance, 1)
 	assert.False(t, boolFixedDeductionDetailExist)
 
-	boolSalaryStatementExist, err = models.SalaryStatementExists(ctx, testDbInstance, 1)
+	boolSalaryStatementExist, err = models.SalaryStatementExists(ctx, dbInstance, 1)
 	assert.False(t, boolSalaryStatementExist)
 }

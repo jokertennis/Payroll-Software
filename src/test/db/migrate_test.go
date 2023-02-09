@@ -14,18 +14,11 @@ func TestCreateDbInstanceForDevelopOk(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestCreateDbInstanceForTestOk(t *testing.T) {
-	testDbEnvironment := db.DbEnvironment{Environment: "Test"}
-	_, err := db.CreateDbInstance(testDbEnvironment)
-	// only confirm that error don't occur when creating db instance.
-	assert.Nil(t, err)
-}
-
 func TestCreateDbInstanceForNotSupportException(t *testing.T) {
 	notExistedDbEnvironment := db.DbEnvironment{Environment: "NotSupport"}
 	_, err := db.CreateDbInstance(notExistedDbEnvironment)
 	// only confirm that expetced error occors.
-	assert.EqualError(t, err, "not support specific DbEnviroment:{NotSupport}")
+	assert.EqualError(t, err, "not support specified DbEnviroment:NotSupport")
 }
 
 // TODO:

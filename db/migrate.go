@@ -12,7 +12,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
-// TODO:create as enum. only Develop and Test
+// TODO:create as enum. only Develop.
 type DbEnvironment struct {
 	Environment string
 }
@@ -24,19 +24,13 @@ func CreateDbInstance(dbEnvironment DbEnvironment) (*sql.DB, error) {
 		// On the other hand we executed createDbInstance inside container,db_container will be used.
 		// Temporary change is not a problem.
 		// We have to separate host_name depending on executed environment.
-		db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/develop_db")
-		if err != nil {
-			return nil, fmt.Errorf("sql.Open error. err:%s", err)
-		}
-		return db, nil
-	case "Test":
-		db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/test_db")
+		db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/develop_db?parseTime=true")
 		if err != nil {
 			return nil, fmt.Errorf("sql.Open error. err:%s", err)
 		}
 		return db, nil
 	}
-	return nil, fmt.Errorf("not support specific DbEnviroment:%s", dbEnvironment)
+	return nil, fmt.Errorf("not support specified DbEnviroment:%s", dbEnvironment.Environment)
 }
 
 // Reference : https://github.com/golang-migrate/migrate/tree/master/database/mysql#use-with-existing-client
