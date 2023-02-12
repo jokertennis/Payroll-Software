@@ -24,14 +24,14 @@ type Executer struct {
 
 func BasicAuth(ctx context.Context, db boil.ContextExecutor, executer Executer, next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Extract the username and password from the request
+		// Extract the mailAddress and password from the request
 		// Authorization header. If no Authentication header is present
 		// or the header value is invalid, then the 'ok' return value
 		// will be false.
 		mailAddress, password, ok := r.BasicAuth()
 
 		if ok {
-			// Calculate SHA-256 hashes for the provided and expected passwords.
+			// Calculate SHA-256 hashes for the provided and expected password.
 			passwordHash := sha256.Sum256([]byte(password))
 
 			expectedUserInformation, err := GetExpectedUserInformation(ctx, db, mailAddress, executer)
@@ -55,7 +55,7 @@ func BasicAuth(ctx context.Context, db boil.ContextExecutor, executer Executer, 
 			// before checking the return values to avoid leaking information.
 			passwordMatch := (subtle.ConstantTimeCompare(passwordHash[:], expectedPasswordHash[:]) == 1)
 
-			// If the password are correct, then call the next handler in the chain.
+			// If the password is correct, then call the next handler in the chain.
 			// Make sure to return afterwards, so that none of the code below is run.
 			if passwordMatch {
 				next.ServeHTTP(w, r)

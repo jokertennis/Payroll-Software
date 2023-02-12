@@ -1,24 +1,32 @@
 package db
 
-import(
+import (
+	"fmt"
 	"testing"
 	"usr/local/go/db"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateDbInstanceForDevelopOk(t *testing.T) {
-	developDbEnvironment := db.DbEnvironment{Environment: "Develop"}
-	_, err := db.CreateDbInstance(developDbEnvironment)
-	// only confirm that error don't occur when creating db instance.
-	assert.Nil(t, err)
-}
+func TestCreateDbInstance(t *testing.T) {
+	cases := map[string]struct {
+		dbEnvironment db.DbEnvironment
+		expectedError error
+	}{
+		"execute at Develop environment": {
+			dbEnvironment: db.DbEnvironment{Environment: "Develop"},
+			expectedError: nil,
+		},
+		"execute at not supported environment": {
+			dbEnvironment: db.DbEnvironment{Environment: "NotSupport"},
+			expectedError: fmt.Errorf("not support specified DbEnviroment:NotSupport"),
+		},
+	}
 
-func TestCreateDbInstanceForNotSupportException(t *testing.T) {
-	notExistedDbEnvironment := db.DbEnvironment{Environment: "NotSupport"}
-	_, err := db.CreateDbInstance(notExistedDbEnvironment)
-	// only confirm that expetced error occors.
-	assert.EqualError(t, err, "not support specified DbEnviroment:NotSupport")
+	for _, value := range cases {
+		_, err := db.CreateDbInstance(value.dbEnvironment)
+		assert.Equal(t, value.expectedError, err)
+	}
 }
 
 // TODO:
@@ -27,14 +35,14 @@ func TestCreateDbInstanceForNotSupportException(t *testing.T) {
 // I confirmed that creating migrate-instance was successful when using on main.go file.
 // If I understand the reason why fails test, I will fix implementation of migration process.
 
-// func TestCreateMigrateInstanceOk(t *testing.T) {
+// func TestCreateMigrateInstance(t *testing.T) {
 // 	// // create dbInstance which is used when accessing db.
-// 	testDbEnvironment := db.DbEnvironment{Environment: "Test"}
-// 	testDbInstance, err := db.CreateDbInstance(testDbEnvironment)
+// 	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
+// 	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 // 	assert.Nil(t, err)
 
-// 	// // migrate test_db
-// 	migrateInstanceForTestDb, errorCreateMigrateInstance := db.CreateMigrateInstance(testDbInstance)
-// 	assert.Nil(t, errorCreateMigrateInstance)
-// 	assert.NotNil(t, migrateInstanceForTestDb)
+// 	// // migrate db
+// 	migrateInstance, err := db.CreateMigrateInstance(dbInstance)
+// 	assert.Nil(t, err)
+// 	assert.NotNil(t, migrateInstance)
 // }

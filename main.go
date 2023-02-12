@@ -48,11 +48,15 @@ func BuildHandler(ctx context.Context, dbInstance *sql.DB) {
 	employee := basicauth.Executer{Executer: "Employee"}
 
 	http.HandleFunc("/unprotected", UnprotectedHandler)
-	http.HandleFunc("/admin/protected", basicauth.BasicAuth(ctx, dbInstance, administrator, ProtectedHandler))
-	http.HandleFunc("/protected", basicauth.BasicAuth(ctx, dbInstance, employee, ProtectedHandler))
+	http.HandleFunc("/admin/protected", basicauth.BasicAuth(ctx, dbInstance, administrator, ProtectedHandlerForAdministrator))
+	http.HandleFunc("/protected", basicauth.BasicAuth(ctx, dbInstance, employee, ProtectedHandlerForEmployee))
 }
 
-func ProtectedHandler(w http.ResponseWriter, r *http.Request) {
+func ProtectedHandlerForEmployee(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "This is the protected handler")
+}
+
+func ProtectedHandlerForAdministrator(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "This is the protected handler")
 }
 
