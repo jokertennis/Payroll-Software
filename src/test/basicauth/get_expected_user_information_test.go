@@ -37,13 +37,13 @@ func TestGetExpectedUserInformation(t *testing.T) {
 		expectedError           error
 		expectedUserInformation *basicauth.ExpectedUserInformation
 	}{
-		"get a registered employee": {
+		"get a registered employee as employee": {
 			email:                   "potter@example.com",
 			executer:                basicauth.Executer{Executer: "Employee"},
 			expectedError:           nil,
 			expectedUserInformation: &basicauth.ExpectedUserInformation{MailAddress: "potter@example.com", Password: "testpass"},
 		},
-		"get a registered administrator": {
+		"get a registered administrator as administrator": {
 			email:                   "test.administrator@example.com",
 			executer:                basicauth.Executer{Executer: "Administrator"},
 			expectedError:           nil,
