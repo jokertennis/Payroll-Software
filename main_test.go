@@ -32,28 +32,28 @@ func TestMain(m *testing.M) {
 
 func TestUnprotectedHandler(t *testing.T) {
 	cases := map[string]struct {
-		email            string
-		password         string
-		expectStatusCode int
-		expectResponse   string
+		email              string
+		password           string
+		expectedStatusCode int
+		expectedResponse   string
 	}{
 		"execute by registered employee": {
-			email:            "potter@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusOK,
-			expectResponse:   "This is the unprotected handler",
+			email:              "potter@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusOK,
+			expectedResponse:   "This is the unprotected handler",
 		},
 		"execute by registered administrator": {
-			email:            "test.administrator@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusOK,
-			expectResponse:   "This is the unprotected handler",
+			email:              "test.administrator@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusOK,
+			expectedResponse:   "This is the unprotected handler",
 		},
 		"Authentication header is not present": {
-			email:            "",
-			password:         "",
-			expectStatusCode: http.StatusOK,
-			expectResponse:   "This is the unprotected handler",
+			email:              "",
+			password:           "",
+			expectedStatusCode: http.StatusOK,
+			expectedResponse:   "This is the unprotected handler",
 		},
 	}
 	client := &http.Client{
@@ -65,55 +65,57 @@ func TestUnprotectedHandler(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, value := range cases {
-		if value.email != "" && value.password != "" {
+		if value.email == "" && value.password == "" {
+			req.Header = http.Header{}
+		} else {
 			req.SetBasicAuth(value.email, value.password)
 		}
 		res, err := client.Do(req)
 		assert.Nil(t, err)
 		defer res.Body.Close()
-		assert.Equal(t, value.expectStatusCode, res.StatusCode)
+		assert.Equal(t, value.expectedStatusCode, res.StatusCode)
 		data, err := ioutil.ReadAll(res.Body)
 		assert.Nil(t, err)
-		assert.Equal(t, value.expectResponse, string(data))
+		assert.Equal(t, value.expectedResponse, string(data))
 	}
 }
 
 func TestProtectedHandlerForEmployee(t *testing.T) {
 	cases := map[string]struct {
-		email            string
-		password         string
-		expectStatusCode int
-		expectResponse   string
+		email              string
+		password           string
+		expectedStatusCode int
+		expectedResponse   string
 	}{
 		"execute by registered employee": {
-			email:            "potter@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusOK,
-			expectResponse:   "This is the protected handler",
+			email:              "potter@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusOK,
+			expectedResponse:   "This is the protected handler",
 		},
 		"execute by registered administrator": {
-			email:            "test.administrator@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			email:              "test.administrator@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
 		},
 		"Authentication header is not present": {
-			email:            "",
-			password:         "",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Please check to see if Authentication header is not present or invalid.\n",
+			email:              "",
+			password:           "",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Please check to see if Authentication header is not present or invalid.\n",
 		},
 		"specify not existed user": {
-			email:            "notfound@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			email:              "notfound@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
 		},
 		"specify not incorrect password": {
-			email:            "potter@example.com",
-			password:         "incorrectpassword",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Please check to see if password is correct.\n",
+			email:              "potter@example.com",
+			password:           "incorrectpassword",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Please check to see if password is correct.\n",
 		},
 	}
 	client := &http.Client{
@@ -134,49 +136,49 @@ func TestProtectedHandlerForEmployee(t *testing.T) {
 		res, err := client.Do(req)
 		assert.Nil(t, err)
 		defer res.Body.Close()
-		assert.Equal(t, value.expectStatusCode, res.StatusCode)
+		assert.Equal(t, value.expectedStatusCode, res.StatusCode)
 		data, err := ioutil.ReadAll(res.Body)
 		assert.Nil(t, err)
-		assert.Equal(t, value.expectResponse, string(data))
+		assert.Equal(t, value.expectedResponse, string(data))
 	}
 }
 
 func TestProtectedHandlerForAdministrator(t *testing.T) {
 	cases := map[string]struct {
-		email            string
-		password         string
-		expectStatusCode int
-		expectResponse   string
+		email              string
+		password           string
+		expectedStatusCode int
+		expectedResponse   string
 	}{
 		"execute by registered administrator": {
-			email:            "test.administrator@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusOK,
-			expectResponse:   "This is the protected handler",
+			email:              "test.administrator@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusOK,
+			expectedResponse:   "This is the protected handler",
 		},
 		"execute by registered employee": {
-			email:            "potter@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			email:              "potter@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
 		},
 		"Authentication header is not present": {
-			email:            "",
-			password:         "",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Please check to see if Authentication header is not present or invalid.\n",
+			email:              "",
+			password:           "",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Please check to see if Authentication header is not present or invalid.\n",
 		},
 		"specify not existed user": {
-			email:            "notfound@example.com",
-			password:         "testpass",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			email:              "notfound@example.com",
+			password:           "testpass",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
 		},
 		"specify not incorrect password": {
-			email:            "test.administrator@example.com",
-			password:         "incorrectpassword",
-			expectStatusCode: http.StatusUnauthorized,
-			expectResponse:   "Unauthorized.Please check to see if password is correct.\n",
+			email:              "test.administrator@example.com",
+			password:           "incorrectpassword",
+			expectedStatusCode: http.StatusUnauthorized,
+			expectedResponse:   "Unauthorized.Please check to see if password is correct.\n",
 		},
 	}
 	client := &http.Client{
@@ -197,9 +199,9 @@ func TestProtectedHandlerForAdministrator(t *testing.T) {
 		res, err := client.Do(req)
 		assert.Nil(t, err)
 		defer res.Body.Close()
-		assert.Equal(t, value.expectStatusCode, res.StatusCode)
+		assert.Equal(t, value.expectedStatusCode, res.StatusCode)
 		data, err := ioutil.ReadAll(res.Body)
 		assert.Nil(t, err)
-		assert.Equal(t, value.expectResponse, string(data))
+		assert.Equal(t, value.expectedResponse, string(data))
 	}
 }

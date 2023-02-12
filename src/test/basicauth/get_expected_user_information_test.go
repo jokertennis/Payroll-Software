@@ -30,7 +30,51 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestGetExpectedUserInformationForEmployeeTest(t *testing.T) {
+func TestGetExpectedUserInformation(t *testing.T) {
+	cases := map[string]struct {
+		email                   string
+		executer                basicauth.Executer
+		expectedError           error
+		expectedUserInformation *basicauth.ExpectedUserInformation
+	}{
+		"get a registered employee": {
+			email:                   "potter@example.com",
+			executer:                basicauth.Executer{Executer: "Employee"},
+			expectedError:           nil,
+			expectedUserInformation: &basicauth.ExpectedUserInformation{MailAddress: "potter@example.com", Password: "testpass"},
+		},
+		"get a registered administrator": {
+			email:                   "test.administrator@example.com",
+			executer:                basicauth.Executer{Executer: "Administrator"},
+			expectedError:           nil,
+			expectedUserInformation: &basicauth.ExpectedUserInformation{MailAddress: "test.administrator@example.com", Password: "testpass"},
+		},
+		"fail to get existed employee as administrator": {
+			email:                   "potter@example.com",
+			executer:                basicauth.Executer{Executer: "Administrator"},
+			expectedError:           nil,
+			expectedUserInformation: nil,
+		},
+		"fail to get existed administrator as employee": {
+			email:                   "test.administrator@example.com",
+			executer:                basicauth.Executer{Executer: "Employee"},
+			expectedError:           nil,
+			expectedUserInformation: nil,
+		},
+		"get not existed user": {
+			email:                   "notfound@example.com",
+			executer:                basicauth.Executer{Executer: "Employee"},
+			expectedError:           nil,
+			expectedUserInformation: nil,
+		},
+		"specify not supported executer": {
+			email:                   "test.administrator@example.com",
+			executer:                basicauth.Executer{Executer: "NotSupport"},
+			expectedError:           fmt.Errorf("not support specified Executer:NotSupport"),
+			expectedUserInformation: nil,
+		},
+	}
+
 	// create context
 	ctx := context.Background()
 
@@ -39,49 +83,9 @@ func TestGetExpectedUserInformationForEmployeeTest(t *testing.T) {
 	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 	assert.Nil(t, err)
 
-	expectedUserInformation, err := basicauth.GetExpectedUserInformation(ctx, dbInstance, "potter@example.com", basicauth.Executer{Executer: "Employee"})
-	assert.Nil(t, err)
-	assert.NotNil(t, expectedUserInformation)
-}
-
-func TestGetExpectedUserInformationForAdministratorTest(t *testing.T) {
-	// create context
-	ctx := context.Background()
-
-	// create dbInstance which is used when accessing db.
-	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
-	dbInstance, err := db.CreateDbInstance(dbEnvironment)
-	assert.Nil(t, err)
-
-	expectedUserInformation, err := basicauth.GetExpectedUserInformation(ctx, dbInstance, "test.administrator@example.com", basicauth.Executer{Executer: "Administrator"})
-	assert.Nil(t, err)
-	assert.NotNil(t, expectedUserInformation)
-}
-
-func TestGetExpectedUserInformationForNotExistUserTest(t *testing.T) {
-	// create context
-	ctx := context.Background()
-
-	// create dbInstance which is used when accessing db.
-	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
-	dbInstance, err := db.CreateDbInstance(dbEnvironment)
-	assert.Nil(t, err)
-
-	expectedUserInformation, err := basicauth.GetExpectedUserInformation(ctx, dbInstance, "potter@example.com", basicauth.Executer{Executer: "Administrator"})
-	assert.Nil(t, err)
-	assert.Nil(t, expectedUserInformation)
-}
-
-func TestGetExpectedUserInformationForNotExistUserTestOk(t *testing.T) {
-	// create context
-	ctx := context.Background()
-
-	// create dbInstance which is used when accessing db.
-	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
-	dbInstance, err := db.CreateDbInstance(dbEnvironment)
-	assert.Nil(t, err)
-
-	expectedUserInformation, err := basicauth.GetExpectedUserInformation(ctx, dbInstance, "potter@example.com", basicauth.Executer{Executer: "NotSupport"})
-	assert.Equal(t, fmt.Errorf("not support specified Executer:NotSupport"), err)
-	assert.Nil(t, expectedUserInformation)
+	for _, value := range cases {
+		gotUserInformation, err := basicauth.GetExpectedUserInformation(ctx, dbInstance, value.email, value.executer)
+		assert.Equal(t, value.expectedError, err)
+		assert.Equal(t, value.expectedUserInformation, gotUserInformation)
+	}
 }
