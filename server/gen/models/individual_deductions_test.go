@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testDeductions(t *testing.T) {
+func testIndividualDeductions(t *testing.T) {
 	t.Parallel()
 
-	query := Deductions()
+	query := IndividualDeductions()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testDeductionsDelete(t *testing.T) {
+func testIndividualDeductionsDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testDeductionsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testDeductionsDelete(t *testing.T) {
 	}
 }
 
-func testDeductionsQueryDeleteAll(t *testing.T) {
+func testIndividualDeductionsQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testDeductionsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Deductions().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := IndividualDeductions().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testDeductionsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testDeductionsSliceDeleteAll(t *testing.T) {
+func testIndividualDeductionsSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testDeductionsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := DeductionSlice{o}
+	slice := IndividualDeductionSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testDeductionsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testDeductionsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testDeductionsExists(t *testing.T) {
+func testIndividualDeductionsExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testDeductionsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := DeductionExists(ctx, tx, o.ID)
+	e, err := IndividualDeductionExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Deduction exists: %s", err)
+		t.Errorf("Unable to check if IndividualDeduction exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected DeductionExists to return true, but got false.")
+		t.Errorf("Expected IndividualDeductionExists to return true, but got false.")
 	}
 }
 
-func testDeductionsFind(t *testing.T) {
+func testIndividualDeductionsFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testDeductionsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	deductionFound, err := FindDeduction(ctx, tx, o.ID)
+	individualDeductionFound, err := FindIndividualDeduction(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if deductionFound == nil {
+	if individualDeductionFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testDeductionsBind(t *testing.T) {
+func testIndividualDeductionsBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testDeductionsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Deductions().Bind(ctx, tx, o); err != nil {
+	if err = IndividualDeductions().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testDeductionsOne(t *testing.T) {
+func testIndividualDeductionsOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testDeductionsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Deductions().One(ctx, tx); err != nil {
+	if x, err := IndividualDeductions().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testDeductionsAll(t *testing.T) {
+func testIndividualDeductionsAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	deductionOne := &Deduction{}
-	deductionTwo := &Deduction{}
-	if err = randomize.Struct(seed, deductionOne, deductionDBTypes, false, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	individualDeductionOne := &IndividualDeduction{}
+	individualDeductionTwo := &IndividualDeduction{}
+	if err = randomize.Struct(seed, individualDeductionOne, individualDeductionDBTypes, false, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
-	if err = randomize.Struct(seed, deductionTwo, deductionDBTypes, false, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err = randomize.Struct(seed, individualDeductionTwo, individualDeductionDBTypes, false, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = deductionOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualDeductionOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = deductionTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualDeductionTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Deductions().All(ctx, tx)
+	slice, err := IndividualDeductions().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testDeductionsAll(t *testing.T) {
 	}
 }
 
-func testDeductionsCount(t *testing.T) {
+func testIndividualDeductionsCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	deductionOne := &Deduction{}
-	deductionTwo := &Deduction{}
-	if err = randomize.Struct(seed, deductionOne, deductionDBTypes, false, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	individualDeductionOne := &IndividualDeduction{}
+	individualDeductionTwo := &IndividualDeduction{}
+	if err = randomize.Struct(seed, individualDeductionOne, individualDeductionDBTypes, false, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
-	if err = randomize.Struct(seed, deductionTwo, deductionDBTypes, false, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err = randomize.Struct(seed, individualDeductionTwo, individualDeductionDBTypes, false, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = deductionOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualDeductionOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = deductionTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualDeductionTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testDeductionsCount(t *testing.T) {
 	}
 }
 
-func deductionBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func deductionAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
-	*o = Deduction{}
+func individualDeductionAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
+	*o = IndividualDeduction{}
 	return nil
 }
 
-func testDeductionsHooks(t *testing.T) {
+func testIndividualDeductionsHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Deduction{}
-	o := &Deduction{}
+	empty := &IndividualDeduction{}
+	o := &IndividualDeduction{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, deductionDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Deduction object: %s", err)
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction object: %s", err)
 	}
 
-	AddDeductionHook(boil.BeforeInsertHook, deductionBeforeInsertHook)
+	AddIndividualDeductionHook(boil.BeforeInsertHook, individualDeductionBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	deductionBeforeInsertHooks = []DeductionHook{}
+	individualDeductionBeforeInsertHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.AfterInsertHook, deductionAfterInsertHook)
+	AddIndividualDeductionHook(boil.AfterInsertHook, individualDeductionAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	deductionAfterInsertHooks = []DeductionHook{}
+	individualDeductionAfterInsertHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.AfterSelectHook, deductionAfterSelectHook)
+	AddIndividualDeductionHook(boil.AfterSelectHook, individualDeductionAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	deductionAfterSelectHooks = []DeductionHook{}
+	individualDeductionAfterSelectHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.BeforeUpdateHook, deductionBeforeUpdateHook)
+	AddIndividualDeductionHook(boil.BeforeUpdateHook, individualDeductionBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	deductionBeforeUpdateHooks = []DeductionHook{}
+	individualDeductionBeforeUpdateHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.AfterUpdateHook, deductionAfterUpdateHook)
+	AddIndividualDeductionHook(boil.AfterUpdateHook, individualDeductionAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	deductionAfterUpdateHooks = []DeductionHook{}
+	individualDeductionAfterUpdateHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.BeforeDeleteHook, deductionBeforeDeleteHook)
+	AddIndividualDeductionHook(boil.BeforeDeleteHook, individualDeductionBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	deductionBeforeDeleteHooks = []DeductionHook{}
+	individualDeductionBeforeDeleteHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.AfterDeleteHook, deductionAfterDeleteHook)
+	AddIndividualDeductionHook(boil.AfterDeleteHook, individualDeductionAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	deductionAfterDeleteHooks = []DeductionHook{}
+	individualDeductionAfterDeleteHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.BeforeUpsertHook, deductionBeforeUpsertHook)
+	AddIndividualDeductionHook(boil.BeforeUpsertHook, individualDeductionBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	deductionBeforeUpsertHooks = []DeductionHook{}
+	individualDeductionBeforeUpsertHooks = []IndividualDeductionHook{}
 
-	AddDeductionHook(boil.AfterUpsertHook, deductionAfterUpsertHook)
+	AddIndividualDeductionHook(boil.AfterUpsertHook, individualDeductionAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	deductionAfterUpsertHooks = []DeductionHook{}
+	individualDeductionAfterUpsertHooks = []IndividualDeductionHook{}
 }
 
-func testDeductionsInsert(t *testing.T) {
+func testIndividualDeductionsInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testDeductionsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testDeductionsInsert(t *testing.T) {
 	}
 }
 
-func testDeductionsInsertWhitelist(t *testing.T) {
+func testIndividualDeductionsInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(deductionColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(individualDeductionColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,27 +494,27 @@ func testDeductionsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testDeductionOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
+func testIndividualDeductionOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
 	var foreign SalaryStatement
-	var local Deduction
+	var local IndividualDeduction
 
 	seed := randomize.NewSeed()
 	if err := randomize.Struct(seed, &foreign, salaryStatementDBTypes, true, salaryStatementColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize SalaryStatement struct: %s", err)
 	}
-	if err := randomize.Struct(seed, &local, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err := randomize.Struct(seed, &local, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	if err := local.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	queries.Assign(&foreign.DeductionID, local.ID)
+	queries.Assign(&foreign.IndividualDeductionID, local.ID)
 	if err := foreign.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
@@ -524,8 +524,8 @@ func testDeductionOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !queries.Equal(check.DeductionID, foreign.DeductionID) {
-		t.Errorf("want: %v, got %v", foreign.DeductionID, check.DeductionID)
+	if !queries.Equal(check.IndividualDeductionID, foreign.IndividualDeductionID) {
+		t.Errorf("want: %v, got %v", foreign.IndividualDeductionID, check.IndividualDeductionID)
 	}
 
 	ranAfterSelectHook := false
@@ -534,8 +534,8 @@ func testDeductionOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 		return nil
 	})
 
-	slice := DeductionSlice{&local}
-	if err = local.L.LoadSalaryStatement(ctx, tx, false, (*[]*Deduction)(&slice), nil); err != nil {
+	slice := IndividualDeductionSlice{&local}
+	if err = local.L.LoadSalaryStatement(ctx, tx, false, (*[]*IndividualDeduction)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
 	if local.R.SalaryStatement == nil {
@@ -555,18 +555,18 @@ func testDeductionOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 	}
 }
 
-func testDeductionOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T) {
+func testIndividualDeductionOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Deduction
+	var a IndividualDeduction
 	var b, c SalaryStatement
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, individualDeductionDBTypes, false, strmangle.SetComplement(individualDeductionPrimaryKeyColumns, individualDeductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	if err = randomize.Struct(seed, &b, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
@@ -592,23 +592,23 @@ func testDeductionOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T)
 		if a.R.SalaryStatement != x {
 			t.Error("relationship struct not set to correct value")
 		}
-		if x.R.Deduction != &a {
+		if x.R.IndividualDeduction != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
 
-		if !queries.Equal(a.ID, x.DeductionID) {
+		if !queries.Equal(a.ID, x.IndividualDeductionID) {
 			t.Error("foreign key was wrong value", a.ID)
 		}
 
-		zero := reflect.Zero(reflect.TypeOf(x.DeductionID))
-		reflect.Indirect(reflect.ValueOf(&x.DeductionID)).Set(zero)
+		zero := reflect.Zero(reflect.TypeOf(x.IndividualDeductionID))
+		reflect.Indirect(reflect.ValueOf(&x.IndividualDeductionID)).Set(zero)
 
 		if err = x.Reload(ctx, tx); err != nil {
 			t.Fatal("failed to reload", err)
 		}
 
-		if !queries.Equal(a.ID, x.DeductionID) {
-			t.Error("foreign key was wrong value", a.ID, x.DeductionID)
+		if !queries.Equal(a.ID, x.IndividualDeductionID) {
+			t.Error("foreign key was wrong value", a.ID, x.IndividualDeductionID)
 		}
 
 		if _, err = x.Delete(ctx, tx); err != nil {
@@ -617,18 +617,18 @@ func testDeductionOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T)
 	}
 }
 
-func testDeductionOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing.T) {
+func testIndividualDeductionOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Deduction
+	var a IndividualDeduction
 	var b SalaryStatement
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, individualDeductionDBTypes, false, strmangle.SetComplement(individualDeductionPrimaryKeyColumns, individualDeductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	if err = randomize.Struct(seed, &b, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
@@ -659,42 +659,42 @@ func testDeductionOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing
 		t.Error("R struct entry should be nil")
 	}
 
-	if !queries.IsValuerNil(b.DeductionID) {
+	if !queries.IsValuerNil(b.IndividualDeductionID) {
 		t.Error("foreign key column should be nil")
 	}
 
-	if b.R.Deduction != nil {
+	if b.R.IndividualDeduction != nil {
 		t.Error("failed to remove a from b's relationships")
 	}
 }
 
-func testDeductionToManyDeductionDetails(t *testing.T) {
+func testIndividualDeductionToManyIndividualDeductionDetails(t *testing.T) {
 	var err error
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Deduction
-	var b, c DeductionDetail
+	var a IndividualDeduction
+	var b, c IndividualDeductionDetail
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err = randomize.Struct(seed, &a, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	if err = randomize.Struct(seed, &b, deductionDetailDBTypes, false, deductionDetailColumnsWithDefault...); err != nil {
+	if err = randomize.Struct(seed, &b, individualDeductionDetailDBTypes, false, individualDeductionDetailColumnsWithDefault...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &c, deductionDetailDBTypes, false, deductionDetailColumnsWithDefault...); err != nil {
+	if err = randomize.Struct(seed, &c, individualDeductionDetailDBTypes, false, individualDeductionDetailColumnsWithDefault...); err != nil {
 		t.Fatal(err)
 	}
 
-	b.DeductionID = a.ID
-	c.DeductionID = a.ID
+	b.IndividualDeductionID = a.ID
+	c.IndividualDeductionID = a.ID
 
 	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
@@ -703,17 +703,17 @@ func testDeductionToManyDeductionDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	check, err := a.DeductionDetails().All(ctx, tx)
+	check, err := a.IndividualDeductionDetails().All(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	bFound, cFound := false, false
 	for _, v := range check {
-		if v.DeductionID == b.DeductionID {
+		if v.IndividualDeductionID == b.IndividualDeductionID {
 			bFound = true
 		}
-		if v.DeductionID == c.DeductionID {
+		if v.IndividualDeductionID == c.IndividualDeductionID {
 			cFound = true
 		}
 	}
@@ -725,19 +725,19 @@ func testDeductionToManyDeductionDetails(t *testing.T) {
 		t.Error("expected to find c")
 	}
 
-	slice := DeductionSlice{&a}
-	if err = a.L.LoadDeductionDetails(ctx, tx, false, (*[]*Deduction)(&slice), nil); err != nil {
+	slice := IndividualDeductionSlice{&a}
+	if err = a.L.LoadIndividualDeductionDetails(ctx, tx, false, (*[]*IndividualDeduction)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.DeductionDetails); got != 2 {
+	if got := len(a.R.IndividualDeductionDetails); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
-	a.R.DeductionDetails = nil
-	if err = a.L.LoadDeductionDetails(ctx, tx, true, &a, nil); err != nil {
+	a.R.IndividualDeductionDetails = nil
+	if err = a.L.LoadIndividualDeductionDetails(ctx, tx, true, &a, nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.DeductionDetails); got != 2 {
+	if got := len(a.R.IndividualDeductionDetails); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
@@ -746,23 +746,23 @@ func testDeductionToManyDeductionDetails(t *testing.T) {
 	}
 }
 
-func testDeductionToManyAddOpDeductionDetails(t *testing.T) {
+func testIndividualDeductionToManyAddOpIndividualDeductionDetails(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Deduction
-	var b, c, d, e DeductionDetail
+	var a IndividualDeduction
+	var b, c, d, e IndividualDeductionDetail
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, individualDeductionDBTypes, false, strmangle.SetComplement(individualDeductionPrimaryKeyColumns, individualDeductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	foreigners := []*DeductionDetail{&b, &c, &d, &e}
+	foreigners := []*IndividualDeductionDetail{&b, &c, &d, &e}
 	for _, x := range foreigners {
-		if err = randomize.Struct(seed, x, deductionDetailDBTypes, false, strmangle.SetComplement(deductionDetailPrimaryKeyColumns, deductionDetailColumnsWithoutDefault)...); err != nil {
+		if err = randomize.Struct(seed, x, individualDeductionDetailDBTypes, false, strmangle.SetComplement(individualDeductionDetailPrimaryKeyColumns, individualDeductionDetailColumnsWithoutDefault)...); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -777,13 +777,13 @@ func testDeductionToManyAddOpDeductionDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	foreignersSplitByInsertion := [][]*DeductionDetail{
+	foreignersSplitByInsertion := [][]*IndividualDeductionDetail{
 		{&b, &c},
 		{&d, &e},
 	}
 
 	for i, x := range foreignersSplitByInsertion {
-		err = a.AddDeductionDetails(ctx, tx, i != 0, x...)
+		err = a.AddIndividualDeductionDetails(ctx, tx, i != 0, x...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -791,28 +791,28 @@ func testDeductionToManyAddOpDeductionDetails(t *testing.T) {
 		first := x[0]
 		second := x[1]
 
-		if a.ID != first.DeductionID {
-			t.Error("foreign key was wrong value", a.ID, first.DeductionID)
+		if a.ID != first.IndividualDeductionID {
+			t.Error("foreign key was wrong value", a.ID, first.IndividualDeductionID)
 		}
-		if a.ID != second.DeductionID {
-			t.Error("foreign key was wrong value", a.ID, second.DeductionID)
+		if a.ID != second.IndividualDeductionID {
+			t.Error("foreign key was wrong value", a.ID, second.IndividualDeductionID)
 		}
 
-		if first.R.Deduction != &a {
+		if first.R.IndividualDeduction != &a {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
-		if second.R.Deduction != &a {
+		if second.R.IndividualDeduction != &a {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
 
-		if a.R.DeductionDetails[i*2] != first {
+		if a.R.IndividualDeductionDetails[i*2] != first {
 			t.Error("relationship struct slice not set to correct value")
 		}
-		if a.R.DeductionDetails[i*2+1] != second {
+		if a.R.IndividualDeductionDetails[i*2+1] != second {
 			t.Error("relationship struct slice not set to correct value")
 		}
 
-		count, err := a.DeductionDetails().Count(ctx, tx)
+		count, err := a.IndividualDeductionDetails().Count(ctx, tx)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -822,14 +822,14 @@ func testDeductionToManyAddOpDeductionDetails(t *testing.T) {
 	}
 }
 
-func testDeductionsReload(t *testing.T) {
+func testIndividualDeductionsReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -844,14 +844,14 @@ func testDeductionsReload(t *testing.T) {
 	}
 }
 
-func testDeductionsReloadAll(t *testing.T) {
+func testIndividualDeductionsReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -861,21 +861,21 @@ func testDeductionsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := DeductionSlice{o}
+	slice := IndividualDeductionSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testDeductionsSelect(t *testing.T) {
+func testIndividualDeductionsSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -885,7 +885,7 @@ func testDeductionsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Deductions().All(ctx, tx)
+	slice, err := IndividualDeductions().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -896,25 +896,25 @@ func testDeductionsSelect(t *testing.T) {
 }
 
 var (
-	deductionDBTypes = map[string]string{`ID`: `mediumint`, `Amount`: `int`, `Nominal`: `varchar`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
-	_                = bytes.MinRead
+	individualDeductionDBTypes = map[string]string{`ID`: `mediumint`, `Amount`: `int`, `Nominal`: `varchar`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
+	_                          = bytes.MinRead
 )
 
-func testDeductionsUpdate(t *testing.T) {
+func testIndividualDeductionsUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(deductionPrimaryKeyColumns) {
+	if 0 == len(individualDeductionPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(deductionAllColumns) == len(deductionPrimaryKeyColumns) {
+	if len(individualDeductionAllColumns) == len(individualDeductionPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -924,7 +924,7 @@ func testDeductionsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -933,8 +933,8 @@ func testDeductionsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -944,18 +944,18 @@ func testDeductionsUpdate(t *testing.T) {
 	}
 }
 
-func testDeductionsSliceUpdateAll(t *testing.T) {
+func testIndividualDeductionsSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(deductionAllColumns) == len(deductionPrimaryKeyColumns) {
+	if len(individualDeductionAllColumns) == len(individualDeductionPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Deduction{}
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := &IndividualDeduction{}
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -965,7 +965,7 @@ func testDeductionsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -974,18 +974,18 @@ func testDeductionsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, deductionDBTypes, true, deductionPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err = randomize.Struct(seed, o, individualDeductionDBTypes, true, individualDeductionPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(deductionAllColumns, deductionPrimaryKeyColumns) {
-		fields = deductionAllColumns
+	if strmangle.StringSliceMatch(individualDeductionAllColumns, individualDeductionPrimaryKeyColumns) {
+		fields = individualDeductionAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			deductionAllColumns,
-			deductionPrimaryKeyColumns,
+			individualDeductionAllColumns,
+			individualDeductionPrimaryKeyColumns,
 		)
 	}
 
@@ -1003,7 +1003,7 @@ func testDeductionsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := DeductionSlice{o}
+	slice := IndividualDeductionSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -1011,32 +1011,32 @@ func testDeductionsSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testDeductionsUpsert(t *testing.T) {
+func testIndividualDeductionsUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(deductionAllColumns) == len(deductionPrimaryKeyColumns) {
+	if len(individualDeductionAllColumns) == len(individualDeductionPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
-	if len(mySQLDeductionUniqueColumns) == 0 {
+	if len(mySQLIndividualDeductionUniqueColumns) == 0 {
 		t.Skip("Skipping table with no unique columns to conflict on")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Deduction{}
-	if err = randomize.Struct(seed, &o, deductionDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	o := IndividualDeduction{}
+	if err = randomize.Struct(seed, &o, individualDeductionDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Deduction: %s", err)
+		t.Errorf("Unable to upsert IndividualDeduction: %s", err)
 	}
 
-	count, err := Deductions().Count(ctx, tx)
+	count, err := IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1045,15 +1045,15 @@ func testDeductionsUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, deductionDBTypes, false, deductionPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err = randomize.Struct(seed, &o, individualDeductionDBTypes, false, individualDeductionPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Deduction: %s", err)
+		t.Errorf("Unable to upsert IndividualDeduction: %s", err)
 	}
 
-	count, err = Deductions().Count(ctx, tx)
+	count, err = IndividualDeductions().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}

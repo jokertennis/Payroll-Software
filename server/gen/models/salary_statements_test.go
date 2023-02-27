@@ -494,32 +494,32 @@ func testSalaryStatementsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testSalaryStatementToOneEarningUsingEarning(t *testing.T) {
+func testSalaryStatementToOneIndividualEarningUsingIndividualEarning(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
 	var local SalaryStatement
-	var foreign Earning
+	var foreign IndividualEarning
 
 	seed := randomize.NewSeed()
 	if err := randomize.Struct(seed, &local, salaryStatementDBTypes, true, salaryStatementColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize SalaryStatement struct: %s", err)
 	}
-	if err := randomize.Struct(seed, &foreign, earningDBTypes, false, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err := randomize.Struct(seed, &foreign, individualEarningDBTypes, false, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	if err := foreign.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	queries.Assign(&local.EarningID, foreign.ID)
+	queries.Assign(&local.IndividualEarningID, foreign.ID)
 	if err := local.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	check, err := local.Earning().One(ctx, tx)
+	check, err := local.IndividualEarning().One(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -529,24 +529,24 @@ func testSalaryStatementToOneEarningUsingEarning(t *testing.T) {
 	}
 
 	ranAfterSelectHook := false
-	AddEarningHook(boil.AfterSelectHook, func(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
+	AddIndividualEarningHook(boil.AfterSelectHook, func(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
 		ranAfterSelectHook = true
 		return nil
 	})
 
 	slice := SalaryStatementSlice{&local}
-	if err = local.L.LoadEarning(ctx, tx, false, (*[]*SalaryStatement)(&slice), nil); err != nil {
+	if err = local.L.LoadIndividualEarning(ctx, tx, false, (*[]*SalaryStatement)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if local.R.Earning == nil {
+	if local.R.IndividualEarning == nil {
 		t.Error("struct should have been eager loaded")
 	}
 
-	local.R.Earning = nil
-	if err = local.L.LoadEarning(ctx, tx, true, &local, nil); err != nil {
+	local.R.IndividualEarning = nil
+	if err = local.L.LoadIndividualEarning(ctx, tx, true, &local, nil); err != nil {
 		t.Fatal(err)
 	}
-	if local.R.Earning == nil {
+	if local.R.IndividualEarning == nil {
 		t.Error("struct should have been eager loaded")
 	}
 
@@ -616,32 +616,32 @@ func testSalaryStatementToOneFixedEarningUsingFixedEarning(t *testing.T) {
 	}
 }
 
-func testSalaryStatementToOneDeductionUsingDeduction(t *testing.T) {
+func testSalaryStatementToOneIndividualDeductionUsingIndividualDeduction(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
 	var local SalaryStatement
-	var foreign Deduction
+	var foreign IndividualDeduction
 
 	seed := randomize.NewSeed()
 	if err := randomize.Struct(seed, &local, salaryStatementDBTypes, true, salaryStatementColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize SalaryStatement struct: %s", err)
 	}
-	if err := randomize.Struct(seed, &foreign, deductionDBTypes, false, deductionColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Deduction struct: %s", err)
+	if err := randomize.Struct(seed, &foreign, individualDeductionDBTypes, false, individualDeductionColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualDeduction struct: %s", err)
 	}
 
 	if err := foreign.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	queries.Assign(&local.DeductionID, foreign.ID)
+	queries.Assign(&local.IndividualDeductionID, foreign.ID)
 	if err := local.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	check, err := local.Deduction().One(ctx, tx)
+	check, err := local.IndividualDeduction().One(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -651,24 +651,24 @@ func testSalaryStatementToOneDeductionUsingDeduction(t *testing.T) {
 	}
 
 	ranAfterSelectHook := false
-	AddDeductionHook(boil.AfterSelectHook, func(ctx context.Context, e boil.ContextExecutor, o *Deduction) error {
+	AddIndividualDeductionHook(boil.AfterSelectHook, func(ctx context.Context, e boil.ContextExecutor, o *IndividualDeduction) error {
 		ranAfterSelectHook = true
 		return nil
 	})
 
 	slice := SalaryStatementSlice{&local}
-	if err = local.L.LoadDeduction(ctx, tx, false, (*[]*SalaryStatement)(&slice), nil); err != nil {
+	if err = local.L.LoadIndividualDeduction(ctx, tx, false, (*[]*SalaryStatement)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if local.R.Deduction == nil {
+	if local.R.IndividualDeduction == nil {
 		t.Error("struct should have been eager loaded")
 	}
 
-	local.R.Deduction = nil
-	if err = local.L.LoadDeduction(ctx, tx, true, &local, nil); err != nil {
+	local.R.IndividualDeduction = nil
+	if err = local.L.LoadIndividualDeduction(ctx, tx, true, &local, nil); err != nil {
 		t.Fatal(err)
 	}
-	if local.R.Deduction == nil {
+	if local.R.IndividualDeduction == nil {
 		t.Error("struct should have been eager loaded")
 	}
 
@@ -799,7 +799,7 @@ func testSalaryStatementToOneEmployeeUsingEmployee(t *testing.T) {
 	}
 }
 
-func testSalaryStatementToOneSetOpEarningUsingEarning(t *testing.T) {
+func testSalaryStatementToOneSetOpIndividualEarningUsingIndividualEarning(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -807,16 +807,16 @@ func testSalaryStatementToOneSetOpEarningUsingEarning(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a SalaryStatement
-	var b, c Earning
+	var b, c IndividualEarning
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &b, earningDBTypes, false, strmangle.SetComplement(earningPrimaryKeyColumns, earningColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &b, individualEarningDBTypes, false, strmangle.SetComplement(individualEarningPrimaryKeyColumns, individualEarningColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &c, earningDBTypes, false, strmangle.SetComplement(earningPrimaryKeyColumns, earningColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &c, individualEarningDBTypes, false, strmangle.SetComplement(individualEarningPrimaryKeyColumns, individualEarningColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -827,37 +827,37 @@ func testSalaryStatementToOneSetOpEarningUsingEarning(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for i, x := range []*Earning{&b, &c} {
-		err = a.SetEarning(ctx, tx, i != 0, x)
+	for i, x := range []*IndividualEarning{&b, &c} {
+		err = a.SetIndividualEarning(ctx, tx, i != 0, x)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if a.R.Earning != x {
+		if a.R.IndividualEarning != x {
 			t.Error("relationship struct not set to correct value")
 		}
 
 		if x.R.SalaryStatement != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
-		if !queries.Equal(a.EarningID, x.ID) {
-			t.Error("foreign key was wrong value", a.EarningID)
+		if !queries.Equal(a.IndividualEarningID, x.ID) {
+			t.Error("foreign key was wrong value", a.IndividualEarningID)
 		}
 
-		zero := reflect.Zero(reflect.TypeOf(a.EarningID))
-		reflect.Indirect(reflect.ValueOf(&a.EarningID)).Set(zero)
+		zero := reflect.Zero(reflect.TypeOf(a.IndividualEarningID))
+		reflect.Indirect(reflect.ValueOf(&a.IndividualEarningID)).Set(zero)
 
 		if err = a.Reload(ctx, tx); err != nil {
 			t.Fatal("failed to reload", err)
 		}
 
-		if !queries.Equal(a.EarningID, x.ID) {
-			t.Error("foreign key was wrong value", a.EarningID, x.ID)
+		if !queries.Equal(a.IndividualEarningID, x.ID) {
+			t.Error("foreign key was wrong value", a.IndividualEarningID, x.ID)
 		}
 	}
 }
 
-func testSalaryStatementToOneRemoveOpEarningUsingEarning(t *testing.T) {
+func testSalaryStatementToOneRemoveOpIndividualEarningUsingIndividualEarning(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -865,13 +865,13 @@ func testSalaryStatementToOneRemoveOpEarningUsingEarning(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a SalaryStatement
-	var b Earning
+	var b IndividualEarning
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &b, earningDBTypes, false, strmangle.SetComplement(earningPrimaryKeyColumns, earningColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &b, individualEarningDBTypes, false, strmangle.SetComplement(individualEarningPrimaryKeyColumns, individualEarningColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -879,15 +879,15 @@ func testSalaryStatementToOneRemoveOpEarningUsingEarning(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err = a.SetEarning(ctx, tx, true, &b); err != nil {
+	if err = a.SetIndividualEarning(ctx, tx, true, &b); err != nil {
 		t.Fatal(err)
 	}
 
-	if err = a.RemoveEarning(ctx, tx, &b); err != nil {
+	if err = a.RemoveIndividualEarning(ctx, tx, &b); err != nil {
 		t.Error("failed to remove relationship")
 	}
 
-	count, err := a.Earning().Count(ctx, tx)
+	count, err := a.IndividualEarning().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -895,11 +895,11 @@ func testSalaryStatementToOneRemoveOpEarningUsingEarning(t *testing.T) {
 		t.Error("want no relationships remaining")
 	}
 
-	if a.R.Earning != nil {
+	if a.R.IndividualEarning != nil {
 		t.Error("R struct entry should be nil")
 	}
 
-	if !queries.IsValuerNil(a.EarningID) {
+	if !queries.IsValuerNil(a.IndividualEarningID) {
 		t.Error("foreign key value should be nil")
 	}
 
@@ -1018,7 +1018,7 @@ func testSalaryStatementToOneRemoveOpFixedEarningUsingFixedEarning(t *testing.T)
 	}
 }
 
-func testSalaryStatementToOneSetOpDeductionUsingDeduction(t *testing.T) {
+func testSalaryStatementToOneSetOpIndividualDeductionUsingIndividualDeduction(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -1026,16 +1026,16 @@ func testSalaryStatementToOneSetOpDeductionUsingDeduction(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a SalaryStatement
-	var b, c Deduction
+	var b, c IndividualDeduction
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &b, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &b, individualDeductionDBTypes, false, strmangle.SetComplement(individualDeductionPrimaryKeyColumns, individualDeductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &c, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &c, individualDeductionDBTypes, false, strmangle.SetComplement(individualDeductionPrimaryKeyColumns, individualDeductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -1046,37 +1046,37 @@ func testSalaryStatementToOneSetOpDeductionUsingDeduction(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for i, x := range []*Deduction{&b, &c} {
-		err = a.SetDeduction(ctx, tx, i != 0, x)
+	for i, x := range []*IndividualDeduction{&b, &c} {
+		err = a.SetIndividualDeduction(ctx, tx, i != 0, x)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if a.R.Deduction != x {
+		if a.R.IndividualDeduction != x {
 			t.Error("relationship struct not set to correct value")
 		}
 
 		if x.R.SalaryStatement != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
-		if !queries.Equal(a.DeductionID, x.ID) {
-			t.Error("foreign key was wrong value", a.DeductionID)
+		if !queries.Equal(a.IndividualDeductionID, x.ID) {
+			t.Error("foreign key was wrong value", a.IndividualDeductionID)
 		}
 
-		zero := reflect.Zero(reflect.TypeOf(a.DeductionID))
-		reflect.Indirect(reflect.ValueOf(&a.DeductionID)).Set(zero)
+		zero := reflect.Zero(reflect.TypeOf(a.IndividualDeductionID))
+		reflect.Indirect(reflect.ValueOf(&a.IndividualDeductionID)).Set(zero)
 
 		if err = a.Reload(ctx, tx); err != nil {
 			t.Fatal("failed to reload", err)
 		}
 
-		if !queries.Equal(a.DeductionID, x.ID) {
-			t.Error("foreign key was wrong value", a.DeductionID, x.ID)
+		if !queries.Equal(a.IndividualDeductionID, x.ID) {
+			t.Error("foreign key was wrong value", a.IndividualDeductionID, x.ID)
 		}
 	}
 }
 
-func testSalaryStatementToOneRemoveOpDeductionUsingDeduction(t *testing.T) {
+func testSalaryStatementToOneRemoveOpIndividualDeductionUsingIndividualDeduction(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -1084,13 +1084,13 @@ func testSalaryStatementToOneRemoveOpDeductionUsingDeduction(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a SalaryStatement
-	var b Deduction
+	var b IndividualDeduction
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &b, deductionDBTypes, false, strmangle.SetComplement(deductionPrimaryKeyColumns, deductionColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &b, individualDeductionDBTypes, false, strmangle.SetComplement(individualDeductionPrimaryKeyColumns, individualDeductionColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -1098,15 +1098,15 @@ func testSalaryStatementToOneRemoveOpDeductionUsingDeduction(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err = a.SetDeduction(ctx, tx, true, &b); err != nil {
+	if err = a.SetIndividualDeduction(ctx, tx, true, &b); err != nil {
 		t.Fatal(err)
 	}
 
-	if err = a.RemoveDeduction(ctx, tx, &b); err != nil {
+	if err = a.RemoveIndividualDeduction(ctx, tx, &b); err != nil {
 		t.Error("failed to remove relationship")
 	}
 
-	count, err := a.Deduction().Count(ctx, tx)
+	count, err := a.IndividualDeduction().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1114,11 +1114,11 @@ func testSalaryStatementToOneRemoveOpDeductionUsingDeduction(t *testing.T) {
 		t.Error("want no relationships remaining")
 	}
 
-	if a.R.Deduction != nil {
+	if a.R.IndividualDeduction != nil {
 		t.Error("R struct entry should be nil")
 	}
 
-	if !queries.IsValuerNil(a.DeductionID) {
+	if !queries.IsValuerNil(a.IndividualDeductionID) {
 		t.Error("foreign key value should be nil")
 	}
 
@@ -1369,7 +1369,7 @@ func testSalaryStatementsSelect(t *testing.T) {
 }
 
 var (
-	salaryStatementDBTypes = map[string]string{`ID`: `mediumint`, `EarningID`: `mediumint`, `FixedEarningID`: `mediumint`, `DeductionID`: `mediumint`, `FixedDeductionID`: `mediumint`, `EmployeeID`: `mediumint`, `Nominal`: `varchar`, `Payday`: `date`, `TargetPeriod`: `varchar`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
+	salaryStatementDBTypes = map[string]string{`ID`: `mediumint`, `IndividualEarningID`: `mediumint`, `FixedEarningID`: `mediumint`, `IndividualDeductionID`: `mediumint`, `FixedDeductionID`: `mediumint`, `EmployeeID`: `mediumint`, `Nominal`: `varchar`, `Payday`: `date`, `TargetPeriod`: `varchar`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
 	_                      = bytes.MinRead
 )
 
