@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testEarnings(t *testing.T) {
+func testIndividualEarnings(t *testing.T) {
 	t.Parallel()
 
-	query := Earnings()
+	query := IndividualEarnings()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testEarningsDelete(t *testing.T) {
+func testIndividualEarningsDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testEarningsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testEarningsDelete(t *testing.T) {
 	}
 }
 
-func testEarningsQueryDeleteAll(t *testing.T) {
+func testIndividualEarningsQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testEarningsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Earnings().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := IndividualEarnings().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testEarningsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testEarningsSliceDeleteAll(t *testing.T) {
+func testIndividualEarningsSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testEarningsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := EarningSlice{o}
+	slice := IndividualEarningSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testEarningsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testEarningsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testEarningsExists(t *testing.T) {
+func testIndividualEarningsExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testEarningsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := EarningExists(ctx, tx, o.ID)
+	e, err := IndividualEarningExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Earning exists: %s", err)
+		t.Errorf("Unable to check if IndividualEarning exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected EarningExists to return true, but got false.")
+		t.Errorf("Expected IndividualEarningExists to return true, but got false.")
 	}
 }
 
-func testEarningsFind(t *testing.T) {
+func testIndividualEarningsFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testEarningsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	earningFound, err := FindEarning(ctx, tx, o.ID)
+	individualEarningFound, err := FindIndividualEarning(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if earningFound == nil {
+	if individualEarningFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testEarningsBind(t *testing.T) {
+func testIndividualEarningsBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testEarningsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Earnings().Bind(ctx, tx, o); err != nil {
+	if err = IndividualEarnings().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testEarningsOne(t *testing.T) {
+func testIndividualEarningsOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testEarningsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Earnings().One(ctx, tx); err != nil {
+	if x, err := IndividualEarnings().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testEarningsAll(t *testing.T) {
+func testIndividualEarningsAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	earningOne := &Earning{}
-	earningTwo := &Earning{}
-	if err = randomize.Struct(seed, earningOne, earningDBTypes, false, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	individualEarningOne := &IndividualEarning{}
+	individualEarningTwo := &IndividualEarning{}
+	if err = randomize.Struct(seed, individualEarningOne, individualEarningDBTypes, false, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
-	if err = randomize.Struct(seed, earningTwo, earningDBTypes, false, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err = randomize.Struct(seed, individualEarningTwo, individualEarningDBTypes, false, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = earningOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualEarningOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = earningTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualEarningTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Earnings().All(ctx, tx)
+	slice, err := IndividualEarnings().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testEarningsAll(t *testing.T) {
 	}
 }
 
-func testEarningsCount(t *testing.T) {
+func testIndividualEarningsCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	earningOne := &Earning{}
-	earningTwo := &Earning{}
-	if err = randomize.Struct(seed, earningOne, earningDBTypes, false, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	individualEarningOne := &IndividualEarning{}
+	individualEarningTwo := &IndividualEarning{}
+	if err = randomize.Struct(seed, individualEarningOne, individualEarningDBTypes, false, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
-	if err = randomize.Struct(seed, earningTwo, earningDBTypes, false, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err = randomize.Struct(seed, individualEarningTwo, individualEarningDBTypes, false, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = earningOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualEarningOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = earningTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = individualEarningTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testEarningsCount(t *testing.T) {
 	}
 }
 
-func earningBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func earningAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Earning) error {
-	*o = Earning{}
+func individualEarningAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *IndividualEarning) error {
+	*o = IndividualEarning{}
 	return nil
 }
 
-func testEarningsHooks(t *testing.T) {
+func testIndividualEarningsHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Earning{}
-	o := &Earning{}
+	empty := &IndividualEarning{}
+	o := &IndividualEarning{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, earningDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Earning object: %s", err)
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning object: %s", err)
 	}
 
-	AddEarningHook(boil.BeforeInsertHook, earningBeforeInsertHook)
+	AddIndividualEarningHook(boil.BeforeInsertHook, individualEarningBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	earningBeforeInsertHooks = []EarningHook{}
+	individualEarningBeforeInsertHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.AfterInsertHook, earningAfterInsertHook)
+	AddIndividualEarningHook(boil.AfterInsertHook, individualEarningAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	earningAfterInsertHooks = []EarningHook{}
+	individualEarningAfterInsertHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.AfterSelectHook, earningAfterSelectHook)
+	AddIndividualEarningHook(boil.AfterSelectHook, individualEarningAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	earningAfterSelectHooks = []EarningHook{}
+	individualEarningAfterSelectHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.BeforeUpdateHook, earningBeforeUpdateHook)
+	AddIndividualEarningHook(boil.BeforeUpdateHook, individualEarningBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	earningBeforeUpdateHooks = []EarningHook{}
+	individualEarningBeforeUpdateHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.AfterUpdateHook, earningAfterUpdateHook)
+	AddIndividualEarningHook(boil.AfterUpdateHook, individualEarningAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	earningAfterUpdateHooks = []EarningHook{}
+	individualEarningAfterUpdateHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.BeforeDeleteHook, earningBeforeDeleteHook)
+	AddIndividualEarningHook(boil.BeforeDeleteHook, individualEarningBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	earningBeforeDeleteHooks = []EarningHook{}
+	individualEarningBeforeDeleteHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.AfterDeleteHook, earningAfterDeleteHook)
+	AddIndividualEarningHook(boil.AfterDeleteHook, individualEarningAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	earningAfterDeleteHooks = []EarningHook{}
+	individualEarningAfterDeleteHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.BeforeUpsertHook, earningBeforeUpsertHook)
+	AddIndividualEarningHook(boil.BeforeUpsertHook, individualEarningBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	earningBeforeUpsertHooks = []EarningHook{}
+	individualEarningBeforeUpsertHooks = []IndividualEarningHook{}
 
-	AddEarningHook(boil.AfterUpsertHook, earningAfterUpsertHook)
+	AddIndividualEarningHook(boil.AfterUpsertHook, individualEarningAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	earningAfterUpsertHooks = []EarningHook{}
+	individualEarningAfterUpsertHooks = []IndividualEarningHook{}
 }
 
-func testEarningsInsert(t *testing.T) {
+func testIndividualEarningsInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testEarningsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testEarningsInsert(t *testing.T) {
 	}
 }
 
-func testEarningsInsertWhitelist(t *testing.T) {
+func testIndividualEarningsInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(earningColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(individualEarningColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,27 +494,27 @@ func testEarningsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testEarningOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
+func testIndividualEarningOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
 	var foreign SalaryStatement
-	var local Earning
+	var local IndividualEarning
 
 	seed := randomize.NewSeed()
 	if err := randomize.Struct(seed, &foreign, salaryStatementDBTypes, true, salaryStatementColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize SalaryStatement struct: %s", err)
 	}
-	if err := randomize.Struct(seed, &local, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err := randomize.Struct(seed, &local, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	if err := local.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	queries.Assign(&foreign.EarningID, local.ID)
+	queries.Assign(&foreign.IndividualEarningID, local.ID)
 	if err := foreign.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
@@ -524,8 +524,8 @@ func testEarningOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !queries.Equal(check.EarningID, foreign.EarningID) {
-		t.Errorf("want: %v, got %v", foreign.EarningID, check.EarningID)
+	if !queries.Equal(check.IndividualEarningID, foreign.IndividualEarningID) {
+		t.Errorf("want: %v, got %v", foreign.IndividualEarningID, check.IndividualEarningID)
 	}
 
 	ranAfterSelectHook := false
@@ -534,8 +534,8 @@ func testEarningOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 		return nil
 	})
 
-	slice := EarningSlice{&local}
-	if err = local.L.LoadSalaryStatement(ctx, tx, false, (*[]*Earning)(&slice), nil); err != nil {
+	slice := IndividualEarningSlice{&local}
+	if err = local.L.LoadSalaryStatement(ctx, tx, false, (*[]*IndividualEarning)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
 	if local.R.SalaryStatement == nil {
@@ -555,18 +555,18 @@ func testEarningOneToOneSalaryStatementUsingSalaryStatement(t *testing.T) {
 	}
 }
 
-func testEarningOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T) {
+func testIndividualEarningOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Earning
+	var a IndividualEarning
 	var b, c SalaryStatement
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, earningDBTypes, false, strmangle.SetComplement(earningPrimaryKeyColumns, earningColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, individualEarningDBTypes, false, strmangle.SetComplement(individualEarningPrimaryKeyColumns, individualEarningColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	if err = randomize.Struct(seed, &b, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
@@ -592,23 +592,23 @@ func testEarningOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T) {
 		if a.R.SalaryStatement != x {
 			t.Error("relationship struct not set to correct value")
 		}
-		if x.R.Earning != &a {
+		if x.R.IndividualEarning != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
 
-		if !queries.Equal(a.ID, x.EarningID) {
+		if !queries.Equal(a.ID, x.IndividualEarningID) {
 			t.Error("foreign key was wrong value", a.ID)
 		}
 
-		zero := reflect.Zero(reflect.TypeOf(x.EarningID))
-		reflect.Indirect(reflect.ValueOf(&x.EarningID)).Set(zero)
+		zero := reflect.Zero(reflect.TypeOf(x.IndividualEarningID))
+		reflect.Indirect(reflect.ValueOf(&x.IndividualEarningID)).Set(zero)
 
 		if err = x.Reload(ctx, tx); err != nil {
 			t.Fatal("failed to reload", err)
 		}
 
-		if !queries.Equal(a.ID, x.EarningID) {
-			t.Error("foreign key was wrong value", a.ID, x.EarningID)
+		if !queries.Equal(a.ID, x.IndividualEarningID) {
+			t.Error("foreign key was wrong value", a.ID, x.IndividualEarningID)
 		}
 
 		if _, err = x.Delete(ctx, tx); err != nil {
@@ -617,18 +617,18 @@ func testEarningOneToOneSetOpSalaryStatementUsingSalaryStatement(t *testing.T) {
 	}
 }
 
-func testEarningOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing.T) {
+func testIndividualEarningOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Earning
+	var a IndividualEarning
 	var b SalaryStatement
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, earningDBTypes, false, strmangle.SetComplement(earningPrimaryKeyColumns, earningColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, individualEarningDBTypes, false, strmangle.SetComplement(individualEarningPrimaryKeyColumns, individualEarningColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	if err = randomize.Struct(seed, &b, salaryStatementDBTypes, false, strmangle.SetComplement(salaryStatementPrimaryKeyColumns, salaryStatementColumnsWithoutDefault)...); err != nil {
@@ -659,42 +659,42 @@ func testEarningOneToOneRemoveOpSalaryStatementUsingSalaryStatement(t *testing.T
 		t.Error("R struct entry should be nil")
 	}
 
-	if !queries.IsValuerNil(b.EarningID) {
+	if !queries.IsValuerNil(b.IndividualEarningID) {
 		t.Error("foreign key column should be nil")
 	}
 
-	if b.R.Earning != nil {
+	if b.R.IndividualEarning != nil {
 		t.Error("failed to remove a from b's relationships")
 	}
 }
 
-func testEarningToManyEarningDetails(t *testing.T) {
+func testIndividualEarningToManyIndividualEarningDetails(t *testing.T) {
 	var err error
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Earning
-	var b, c EarningDetail
+	var a IndividualEarning
+	var b, c IndividualEarningDetail
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err = randomize.Struct(seed, &a, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
 	}
 
-	if err = randomize.Struct(seed, &b, earningDetailDBTypes, false, earningDetailColumnsWithDefault...); err != nil {
+	if err = randomize.Struct(seed, &b, individualEarningDetailDBTypes, false, individualEarningDetailColumnsWithDefault...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &c, earningDetailDBTypes, false, earningDetailColumnsWithDefault...); err != nil {
+	if err = randomize.Struct(seed, &c, individualEarningDetailDBTypes, false, individualEarningDetailColumnsWithDefault...); err != nil {
 		t.Fatal(err)
 	}
 
-	b.EarningID = a.ID
-	c.EarningID = a.ID
+	b.IndividualEarningID = a.ID
+	c.IndividualEarningID = a.ID
 
 	if err = b.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Fatal(err)
@@ -703,17 +703,17 @@ func testEarningToManyEarningDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	check, err := a.EarningDetails().All(ctx, tx)
+	check, err := a.IndividualEarningDetails().All(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	bFound, cFound := false, false
 	for _, v := range check {
-		if v.EarningID == b.EarningID {
+		if v.IndividualEarningID == b.IndividualEarningID {
 			bFound = true
 		}
-		if v.EarningID == c.EarningID {
+		if v.IndividualEarningID == c.IndividualEarningID {
 			cFound = true
 		}
 	}
@@ -725,19 +725,19 @@ func testEarningToManyEarningDetails(t *testing.T) {
 		t.Error("expected to find c")
 	}
 
-	slice := EarningSlice{&a}
-	if err = a.L.LoadEarningDetails(ctx, tx, false, (*[]*Earning)(&slice), nil); err != nil {
+	slice := IndividualEarningSlice{&a}
+	if err = a.L.LoadIndividualEarningDetails(ctx, tx, false, (*[]*IndividualEarning)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.EarningDetails); got != 2 {
+	if got := len(a.R.IndividualEarningDetails); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
-	a.R.EarningDetails = nil
-	if err = a.L.LoadEarningDetails(ctx, tx, true, &a, nil); err != nil {
+	a.R.IndividualEarningDetails = nil
+	if err = a.L.LoadIndividualEarningDetails(ctx, tx, true, &a, nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.EarningDetails); got != 2 {
+	if got := len(a.R.IndividualEarningDetails); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
@@ -746,23 +746,23 @@ func testEarningToManyEarningDetails(t *testing.T) {
 	}
 }
 
-func testEarningToManyAddOpEarningDetails(t *testing.T) {
+func testIndividualEarningToManyAddOpIndividualEarningDetails(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Earning
-	var b, c, d, e EarningDetail
+	var a IndividualEarning
+	var b, c, d, e IndividualEarningDetail
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, earningDBTypes, false, strmangle.SetComplement(earningPrimaryKeyColumns, earningColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, individualEarningDBTypes, false, strmangle.SetComplement(individualEarningPrimaryKeyColumns, individualEarningColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	foreigners := []*EarningDetail{&b, &c, &d, &e}
+	foreigners := []*IndividualEarningDetail{&b, &c, &d, &e}
 	for _, x := range foreigners {
-		if err = randomize.Struct(seed, x, earningDetailDBTypes, false, strmangle.SetComplement(earningDetailPrimaryKeyColumns, earningDetailColumnsWithoutDefault)...); err != nil {
+		if err = randomize.Struct(seed, x, individualEarningDetailDBTypes, false, strmangle.SetComplement(individualEarningDetailPrimaryKeyColumns, individualEarningDetailColumnsWithoutDefault)...); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -777,13 +777,13 @@ func testEarningToManyAddOpEarningDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	foreignersSplitByInsertion := [][]*EarningDetail{
+	foreignersSplitByInsertion := [][]*IndividualEarningDetail{
 		{&b, &c},
 		{&d, &e},
 	}
 
 	for i, x := range foreignersSplitByInsertion {
-		err = a.AddEarningDetails(ctx, tx, i != 0, x...)
+		err = a.AddIndividualEarningDetails(ctx, tx, i != 0, x...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -791,28 +791,28 @@ func testEarningToManyAddOpEarningDetails(t *testing.T) {
 		first := x[0]
 		second := x[1]
 
-		if a.ID != first.EarningID {
-			t.Error("foreign key was wrong value", a.ID, first.EarningID)
+		if a.ID != first.IndividualEarningID {
+			t.Error("foreign key was wrong value", a.ID, first.IndividualEarningID)
 		}
-		if a.ID != second.EarningID {
-			t.Error("foreign key was wrong value", a.ID, second.EarningID)
+		if a.ID != second.IndividualEarningID {
+			t.Error("foreign key was wrong value", a.ID, second.IndividualEarningID)
 		}
 
-		if first.R.Earning != &a {
+		if first.R.IndividualEarning != &a {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
-		if second.R.Earning != &a {
+		if second.R.IndividualEarning != &a {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
 
-		if a.R.EarningDetails[i*2] != first {
+		if a.R.IndividualEarningDetails[i*2] != first {
 			t.Error("relationship struct slice not set to correct value")
 		}
-		if a.R.EarningDetails[i*2+1] != second {
+		if a.R.IndividualEarningDetails[i*2+1] != second {
 			t.Error("relationship struct slice not set to correct value")
 		}
 
-		count, err := a.EarningDetails().Count(ctx, tx)
+		count, err := a.IndividualEarningDetails().Count(ctx, tx)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -822,14 +822,14 @@ func testEarningToManyAddOpEarningDetails(t *testing.T) {
 	}
 }
 
-func testEarningsReload(t *testing.T) {
+func testIndividualEarningsReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -844,14 +844,14 @@ func testEarningsReload(t *testing.T) {
 	}
 }
 
-func testEarningsReloadAll(t *testing.T) {
+func testIndividualEarningsReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -861,21 +861,21 @@ func testEarningsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := EarningSlice{o}
+	slice := IndividualEarningSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testEarningsSelect(t *testing.T) {
+func testIndividualEarningsSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -885,7 +885,7 @@ func testEarningsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Earnings().All(ctx, tx)
+	slice, err := IndividualEarnings().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -896,25 +896,25 @@ func testEarningsSelect(t *testing.T) {
 }
 
 var (
-	earningDBTypes = map[string]string{`ID`: `mediumint`, `Nominal`: `varchar`, `Amount`: `int`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
-	_              = bytes.MinRead
+	individualEarningDBTypes = map[string]string{`ID`: `mediumint`, `Nominal`: `varchar`, `Amount`: `int`, `CreatedAt`: `timestamp`, `UpdatedAt`: `timestamp`}
+	_                        = bytes.MinRead
 )
 
-func testEarningsUpdate(t *testing.T) {
+func testIndividualEarningsUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(earningPrimaryKeyColumns) {
+	if 0 == len(individualEarningPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(earningAllColumns) == len(earningPrimaryKeyColumns) {
+	if len(individualEarningAllColumns) == len(individualEarningPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -924,7 +924,7 @@ func testEarningsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -933,8 +933,8 @@ func testEarningsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -944,18 +944,18 @@ func testEarningsUpdate(t *testing.T) {
 	}
 }
 
-func testEarningsSliceUpdateAll(t *testing.T) {
+func testIndividualEarningsSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(earningAllColumns) == len(earningPrimaryKeyColumns) {
+	if len(individualEarningAllColumns) == len(individualEarningPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Earning{}
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := &IndividualEarning{}
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -965,7 +965,7 @@ func testEarningsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -974,18 +974,18 @@ func testEarningsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, earningDBTypes, true, earningPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err = randomize.Struct(seed, o, individualEarningDBTypes, true, individualEarningPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(earningAllColumns, earningPrimaryKeyColumns) {
-		fields = earningAllColumns
+	if strmangle.StringSliceMatch(individualEarningAllColumns, individualEarningPrimaryKeyColumns) {
+		fields = individualEarningAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			earningAllColumns,
-			earningPrimaryKeyColumns,
+			individualEarningAllColumns,
+			individualEarningPrimaryKeyColumns,
 		)
 	}
 
@@ -1003,7 +1003,7 @@ func testEarningsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := EarningSlice{o}
+	slice := IndividualEarningSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -1011,32 +1011,32 @@ func testEarningsSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testEarningsUpsert(t *testing.T) {
+func testIndividualEarningsUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(earningAllColumns) == len(earningPrimaryKeyColumns) {
+	if len(individualEarningAllColumns) == len(individualEarningPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
-	if len(mySQLEarningUniqueColumns) == 0 {
+	if len(mySQLIndividualEarningUniqueColumns) == 0 {
 		t.Skip("Skipping table with no unique columns to conflict on")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Earning{}
-	if err = randomize.Struct(seed, &o, earningDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	o := IndividualEarning{}
+	if err = randomize.Struct(seed, &o, individualEarningDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Earning: %s", err)
+		t.Errorf("Unable to upsert IndividualEarning: %s", err)
 	}
 
-	count, err := Earnings().Count(ctx, tx)
+	count, err := IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1045,15 +1045,15 @@ func testEarningsUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, earningDBTypes, false, earningPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Earning struct: %s", err)
+	if err = randomize.Struct(seed, &o, individualEarningDBTypes, false, individualEarningPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize IndividualEarning struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Earning: %s", err)
+		t.Errorf("Unable to upsert IndividualEarning: %s", err)
 	}
 
-	count, err = Earnings().Count(ctx, tx)
+	count, err = IndividualEarnings().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}

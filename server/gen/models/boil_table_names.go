@@ -4,31 +4,31 @@
 package models
 
 var TableNames = struct {
-	Administrators        string
-	Companies             string
-	DeductionDetails      string
-	Deductions            string
-	EarningDetails        string
-	Earnings              string
-	Employees             string
-	FixedDeductionDetails string
-	FixedDeductions       string
-	FixedEarningDetails   string
-	FixedEarnings         string
-	SalaryStatements      string
-	SchemaMigrations      string
+	Administrators             string
+	Companies                  string
+	Employees                  string
+	FixedDeductionDetails      string
+	FixedDeductions            string
+	FixedEarningDetails        string
+	FixedEarnings              string
+	IndividualDeductionDetails string
+	IndividualDeductions       string
+	IndividualEarningDetails   string
+	IndividualEarnings         string
+	SalaryStatements           string
+	SchemaMigrations           string
 }{
-	Administrators:        "administrators",
-	Companies:             "companies",
-	DeductionDetails:      "deduction_details",
-	Deductions:            "deductions",
-	EarningDetails:        "earning_details",
-	Earnings:              "earnings",
-	Employees:             "employees",
-	FixedDeductionDetails: "fixed_deduction_details",
-	FixedDeductions:       "fixed_deductions",
-	FixedEarningDetails:   "fixed_earning_details",
-	FixedEarnings:         "fixed_earnings",
-	SalaryStatements:      "salary_statements",
-	SchemaMigrations:      "schema_migrations",
+	Administrators:             "administrators",
+	Companies:                  "companies",
+	Employees:                  "employees",
+	FixedDeductionDetails:      "fixed_deduction_details",
+	FixedDeductions:            "fixed_deductions",
+	FixedEarningDetails:        "fixed_earning_details",
+	FixedEarnings:              "fixed_earnings",
+	IndividualDeductionDetails: "individual_deduction_details",
+	IndividualDeductions:       "individual_deductions",
+	IndividualEarningDetails:   "individual_earning_details",
+	IndividualEarnings:         "individual_earnings",
+	SalaryStatements:           "salary_statements",
+	SchemaMigrations:           "schema_migrations",
 }
