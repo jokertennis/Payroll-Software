@@ -1,0 +1,123 @@
+left to right direction
+
+hide circle
+hide method
+
+
+package ドメインモデルの関係性に関して {
+  class 企業 {
+    +企業名 
+  }
+  class 従業員 {
+    +従業員名
+    +メールアドレス
+    +パスワード
+  }
+  class 給料明細書 {
+    +名目
+    +給料支払日
+    +対象期間
+  }
+  class 支給 {
+    +名目
+    +支給総額
+  }
+  class 控除詳細 {
+    +名目
+    +控除額
+  }
+  class 個別控除詳細 extends 控除詳細 {
+    +個別控除ID
+  }
+
+  note "集約関係を表現している。\n企業が従業員のグループを形成している状態" as AggregationDescription
+  従業員 --> AggregationDescription
+
+  note "合成関係を表現している。\n企業が従業員のグループを形成している状態" as CompositionDescription
+  支給 --> CompositionDescription
+
+  note "汎化関係を表現している。" as  GeneralizationDescription
+  個別控除詳細 --> GeneralizationDescription
+
+  企業 o-- 従業員 : has-many
+  給料明細書 *-- 支給 : has-one
+}
+
+package DomainModel {
+    class 企業 {
+      +企業名
+    }
+    class 従業員 {
+      +従業員名
+      +メールアドレス
+      +パスワード
+    }
+    class 管理者 {
+      +管理者名
+      +メールアドレス
+      +パスワード
+    }
+
+    note "管理者は管理者が所属している企業に所属する\n従業員が保持するデータにアクセス可能である。\n給料明細書は管理者が作成する。" as AdministratorDescription
+    管理者 --> AdministratorDescription
+
+    class 給料明細書 {
+      +名目
+      +給料支払日
+      +対象期間
+    }
+    class 支給 {
+      +名目
+      +支給総額
+    }
+
+    note "支給作成時に固定支給詳細と個別支給雨詳細は混在して利用されない。" as EarningDescription
+    支給 --> EarningDescription
+
+    class 個別支給 extends 支給{
+    }
+    class 固定支給 extends 支給{
+    }
+    class 支給詳細 {
+      +名目
+      +支給額
+    }
+    class 個別支給詳細 extends 支給詳細{
+      +個別支給ID
+    }
+    class 固定支給詳細 extends 支給詳細{
+      +固定支給ID
+    }
+    class 控除 {
+      +名目
+      +控除総額
+    }
+
+    note "控除作成時に固定控除詳細と個別控除詳細は混在して利用されない。" as DeductionDescription
+    控除 --> DeductionDescription
+
+    class 個別控除 extends 控除{
+    }
+    class 固定控除 extends 控除{
+    }
+    class 控除詳細 {
+      +名目
+      +控除額
+    }
+    class 個別控除詳細 extends 控除詳細 {
+      +個別控除ID
+    }
+    class 固定控除詳細 extends 控除詳細 {
+      +固定控除ID
+    }
+    mix_actor 従業員
+    mix_actor 管理者
+
+    企業 o-- 従業員 : has-many
+    企業 o-- 管理者 : has-many
+    従業員 o-- 給料明細書 : has-many
+    給料明細書 *-- 支給 : has-one
+    給料明細書 *-- 控除 : has-one
+    支給 *-- 支給詳細 : has-many
+    控除 *-- 控除詳細 : has-many
+}

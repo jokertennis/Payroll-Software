@@ -24,72 +24,72 @@ import (
 
 // SalaryStatement is an object representing the database table.
 type SalaryStatement struct {
-	ID               uint32      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EarningID        null.Uint32 `boil:"earning_id" json:"earning_id,omitempty" toml:"earning_id" yaml:"earning_id,omitempty"`
-	FixedEarningID   null.Uint32 `boil:"fixed_earning_id" json:"fixed_earning_id,omitempty" toml:"fixed_earning_id" yaml:"fixed_earning_id,omitempty"`
-	DeductionID      null.Uint32 `boil:"deduction_id" json:"deduction_id,omitempty" toml:"deduction_id" yaml:"deduction_id,omitempty"`
-	FixedDeductionID null.Uint32 `boil:"fixed_deduction_id" json:"fixed_deduction_id,omitempty" toml:"fixed_deduction_id" yaml:"fixed_deduction_id,omitempty"`
-	EmployeeID       uint32      `boil:"employee_id" json:"employee_id" toml:"employee_id" yaml:"employee_id"`
-	Nominal          string      `boil:"nominal" json:"nominal" toml:"nominal" yaml:"nominal"`
-	Payday           time.Time   `boil:"payday" json:"payday" toml:"payday" yaml:"payday"`
-	TargetPeriod     string      `boil:"target_period" json:"target_period" toml:"target_period" yaml:"target_period"`
-	CreatedAt        time.Time   `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
-	UpdatedAt        time.Time   `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
+	ID                    uint32      `boil:"id" json:"id" toml:"id" yaml:"id"`
+	IndividualEarningID   null.Uint32 `boil:"individual_earning_id" json:"individual_earning_id,omitempty" toml:"individual_earning_id" yaml:"individual_earning_id,omitempty"`
+	FixedEarningID        null.Uint32 `boil:"fixed_earning_id" json:"fixed_earning_id,omitempty" toml:"fixed_earning_id" yaml:"fixed_earning_id,omitempty"`
+	IndividualDeductionID null.Uint32 `boil:"individual_deduction_id" json:"individual_deduction_id,omitempty" toml:"individual_deduction_id" yaml:"individual_deduction_id,omitempty"`
+	FixedDeductionID      null.Uint32 `boil:"fixed_deduction_id" json:"fixed_deduction_id,omitempty" toml:"fixed_deduction_id" yaml:"fixed_deduction_id,omitempty"`
+	EmployeeID            uint32      `boil:"employee_id" json:"employee_id" toml:"employee_id" yaml:"employee_id"`
+	Nominal               string      `boil:"nominal" json:"nominal" toml:"nominal" yaml:"nominal"`
+	Payday                time.Time   `boil:"payday" json:"payday" toml:"payday" yaml:"payday"`
+	TargetPeriod          string      `boil:"target_period" json:"target_period" toml:"target_period" yaml:"target_period"`
+	CreatedAt             time.Time   `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	UpdatedAt             time.Time   `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
 	R *salaryStatementR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L salaryStatementL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var SalaryStatementColumns = struct {
-	ID               string
-	EarningID        string
-	FixedEarningID   string
-	DeductionID      string
-	FixedDeductionID string
-	EmployeeID       string
-	Nominal          string
-	Payday           string
-	TargetPeriod     string
-	CreatedAt        string
-	UpdatedAt        string
+	ID                    string
+	IndividualEarningID   string
+	FixedEarningID        string
+	IndividualDeductionID string
+	FixedDeductionID      string
+	EmployeeID            string
+	Nominal               string
+	Payday                string
+	TargetPeriod          string
+	CreatedAt             string
+	UpdatedAt             string
 }{
-	ID:               "id",
-	EarningID:        "earning_id",
-	FixedEarningID:   "fixed_earning_id",
-	DeductionID:      "deduction_id",
-	FixedDeductionID: "fixed_deduction_id",
-	EmployeeID:       "employee_id",
-	Nominal:          "nominal",
-	Payday:           "payday",
-	TargetPeriod:     "target_period",
-	CreatedAt:        "created_at",
-	UpdatedAt:        "updated_at",
+	ID:                    "id",
+	IndividualEarningID:   "individual_earning_id",
+	FixedEarningID:        "fixed_earning_id",
+	IndividualDeductionID: "individual_deduction_id",
+	FixedDeductionID:      "fixed_deduction_id",
+	EmployeeID:            "employee_id",
+	Nominal:               "nominal",
+	Payday:                "payday",
+	TargetPeriod:          "target_period",
+	CreatedAt:             "created_at",
+	UpdatedAt:             "updated_at",
 }
 
 var SalaryStatementTableColumns = struct {
-	ID               string
-	EarningID        string
-	FixedEarningID   string
-	DeductionID      string
-	FixedDeductionID string
-	EmployeeID       string
-	Nominal          string
-	Payday           string
-	TargetPeriod     string
-	CreatedAt        string
-	UpdatedAt        string
+	ID                    string
+	IndividualEarningID   string
+	FixedEarningID        string
+	IndividualDeductionID string
+	FixedDeductionID      string
+	EmployeeID            string
+	Nominal               string
+	Payday                string
+	TargetPeriod          string
+	CreatedAt             string
+	UpdatedAt             string
 }{
-	ID:               "salary_statements.id",
-	EarningID:        "salary_statements.earning_id",
-	FixedEarningID:   "salary_statements.fixed_earning_id",
-	DeductionID:      "salary_statements.deduction_id",
-	FixedDeductionID: "salary_statements.fixed_deduction_id",
-	EmployeeID:       "salary_statements.employee_id",
-	Nominal:          "salary_statements.nominal",
-	Payday:           "salary_statements.payday",
-	TargetPeriod:     "salary_statements.target_period",
-	CreatedAt:        "salary_statements.created_at",
-	UpdatedAt:        "salary_statements.updated_at",
+	ID:                    "salary_statements.id",
+	IndividualEarningID:   "salary_statements.individual_earning_id",
+	FixedEarningID:        "salary_statements.fixed_earning_id",
+	IndividualDeductionID: "salary_statements.individual_deduction_id",
+	FixedDeductionID:      "salary_statements.fixed_deduction_id",
+	EmployeeID:            "salary_statements.employee_id",
+	Nominal:               "salary_statements.nominal",
+	Payday:                "salary_statements.payday",
+	TargetPeriod:          "salary_statements.target_period",
+	CreatedAt:             "salary_statements.created_at",
+	UpdatedAt:             "salary_statements.updated_at",
 }
 
 // Generated where
@@ -133,53 +133,53 @@ func (w whereHelpernull_Uint32) IsNull() qm.QueryMod    { return qmhelper.WhereI
 func (w whereHelpernull_Uint32) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 var SalaryStatementWhere = struct {
-	ID               whereHelperuint32
-	EarningID        whereHelpernull_Uint32
-	FixedEarningID   whereHelpernull_Uint32
-	DeductionID      whereHelpernull_Uint32
-	FixedDeductionID whereHelpernull_Uint32
-	EmployeeID       whereHelperuint32
-	Nominal          whereHelperstring
-	Payday           whereHelpertime_Time
-	TargetPeriod     whereHelperstring
-	CreatedAt        whereHelpertime_Time
-	UpdatedAt        whereHelpertime_Time
+	ID                    whereHelperuint32
+	IndividualEarningID   whereHelpernull_Uint32
+	FixedEarningID        whereHelpernull_Uint32
+	IndividualDeductionID whereHelpernull_Uint32
+	FixedDeductionID      whereHelpernull_Uint32
+	EmployeeID            whereHelperuint32
+	Nominal               whereHelperstring
+	Payday                whereHelpertime_Time
+	TargetPeriod          whereHelperstring
+	CreatedAt             whereHelpertime_Time
+	UpdatedAt             whereHelpertime_Time
 }{
-	ID:               whereHelperuint32{field: "`salary_statements`.`id`"},
-	EarningID:        whereHelpernull_Uint32{field: "`salary_statements`.`earning_id`"},
-	FixedEarningID:   whereHelpernull_Uint32{field: "`salary_statements`.`fixed_earning_id`"},
-	DeductionID:      whereHelpernull_Uint32{field: "`salary_statements`.`deduction_id`"},
-	FixedDeductionID: whereHelpernull_Uint32{field: "`salary_statements`.`fixed_deduction_id`"},
-	EmployeeID:       whereHelperuint32{field: "`salary_statements`.`employee_id`"},
-	Nominal:          whereHelperstring{field: "`salary_statements`.`nominal`"},
-	Payday:           whereHelpertime_Time{field: "`salary_statements`.`payday`"},
-	TargetPeriod:     whereHelperstring{field: "`salary_statements`.`target_period`"},
-	CreatedAt:        whereHelpertime_Time{field: "`salary_statements`.`created_at`"},
-	UpdatedAt:        whereHelpertime_Time{field: "`salary_statements`.`updated_at`"},
+	ID:                    whereHelperuint32{field: "`salary_statements`.`id`"},
+	IndividualEarningID:   whereHelpernull_Uint32{field: "`salary_statements`.`individual_earning_id`"},
+	FixedEarningID:        whereHelpernull_Uint32{field: "`salary_statements`.`fixed_earning_id`"},
+	IndividualDeductionID: whereHelpernull_Uint32{field: "`salary_statements`.`individual_deduction_id`"},
+	FixedDeductionID:      whereHelpernull_Uint32{field: "`salary_statements`.`fixed_deduction_id`"},
+	EmployeeID:            whereHelperuint32{field: "`salary_statements`.`employee_id`"},
+	Nominal:               whereHelperstring{field: "`salary_statements`.`nominal`"},
+	Payday:                whereHelpertime_Time{field: "`salary_statements`.`payday`"},
+	TargetPeriod:          whereHelperstring{field: "`salary_statements`.`target_period`"},
+	CreatedAt:             whereHelpertime_Time{field: "`salary_statements`.`created_at`"},
+	UpdatedAt:             whereHelpertime_Time{field: "`salary_statements`.`updated_at`"},
 }
 
 // SalaryStatementRels is where relationship names are stored.
 var SalaryStatementRels = struct {
-	Earning        string
-	FixedEarning   string
-	Deduction      string
-	FixedDeduction string
-	Employee       string
+	IndividualEarning   string
+	FixedEarning        string
+	IndividualDeduction string
+	FixedDeduction      string
+	Employee            string
 }{
-	Earning:        "Earning",
-	FixedEarning:   "FixedEarning",
-	Deduction:      "Deduction",
-	FixedDeduction: "FixedDeduction",
-	Employee:       "Employee",
+	IndividualEarning:   "IndividualEarning",
+	FixedEarning:        "FixedEarning",
+	IndividualDeduction: "IndividualDeduction",
+	FixedDeduction:      "FixedDeduction",
+	Employee:            "Employee",
 }
 
 // salaryStatementR is where relationships are stored.
 type salaryStatementR struct {
-	Earning        *Earning        `boil:"Earning" json:"Earning" toml:"Earning" yaml:"Earning"`
-	FixedEarning   *FixedEarning   `boil:"FixedEarning" json:"FixedEarning" toml:"FixedEarning" yaml:"FixedEarning"`
-	Deduction      *Deduction      `boil:"Deduction" json:"Deduction" toml:"Deduction" yaml:"Deduction"`
-	FixedDeduction *FixedDeduction `boil:"FixedDeduction" json:"FixedDeduction" toml:"FixedDeduction" yaml:"FixedDeduction"`
-	Employee       *Employee       `boil:"Employee" json:"Employee" toml:"Employee" yaml:"Employee"`
+	IndividualEarning   *IndividualEarning   `boil:"IndividualEarning" json:"IndividualEarning" toml:"IndividualEarning" yaml:"IndividualEarning"`
+	FixedEarning        *FixedEarning        `boil:"FixedEarning" json:"FixedEarning" toml:"FixedEarning" yaml:"FixedEarning"`
+	IndividualDeduction *IndividualDeduction `boil:"IndividualDeduction" json:"IndividualDeduction" toml:"IndividualDeduction" yaml:"IndividualDeduction"`
+	FixedDeduction      *FixedDeduction      `boil:"FixedDeduction" json:"FixedDeduction" toml:"FixedDeduction" yaml:"FixedDeduction"`
+	Employee            *Employee            `boil:"Employee" json:"Employee" toml:"Employee" yaml:"Employee"`
 }
 
 // NewStruct creates a new relationship struct
@@ -187,11 +187,11 @@ func (*salaryStatementR) NewStruct() *salaryStatementR {
 	return &salaryStatementR{}
 }
 
-func (r *salaryStatementR) GetEarning() *Earning {
+func (r *salaryStatementR) GetIndividualEarning() *IndividualEarning {
 	if r == nil {
 		return nil
 	}
-	return r.Earning
+	return r.IndividualEarning
 }
 
 func (r *salaryStatementR) GetFixedEarning() *FixedEarning {
@@ -201,11 +201,11 @@ func (r *salaryStatementR) GetFixedEarning() *FixedEarning {
 	return r.FixedEarning
 }
 
-func (r *salaryStatementR) GetDeduction() *Deduction {
+func (r *salaryStatementR) GetIndividualDeduction() *IndividualDeduction {
 	if r == nil {
 		return nil
 	}
-	return r.Deduction
+	return r.IndividualDeduction
 }
 
 func (r *salaryStatementR) GetFixedDeduction() *FixedDeduction {
@@ -226,8 +226,8 @@ func (r *salaryStatementR) GetEmployee() *Employee {
 type salaryStatementL struct{}
 
 var (
-	salaryStatementAllColumns            = []string{"id", "earning_id", "fixed_earning_id", "deduction_id", "fixed_deduction_id", "employee_id", "nominal", "payday", "target_period", "created_at", "updated_at"}
-	salaryStatementColumnsWithoutDefault = []string{"earning_id", "fixed_earning_id", "deduction_id", "fixed_deduction_id", "employee_id", "nominal", "payday", "target_period", "created_at", "updated_at"}
+	salaryStatementAllColumns            = []string{"id", "individual_earning_id", "fixed_earning_id", "individual_deduction_id", "fixed_deduction_id", "employee_id", "nominal", "payday", "target_period", "created_at", "updated_at"}
+	salaryStatementColumnsWithoutDefault = []string{"individual_earning_id", "fixed_earning_id", "individual_deduction_id", "fixed_deduction_id", "employee_id", "nominal", "payday", "target_period", "created_at", "updated_at"}
 	salaryStatementColumnsWithDefault    = []string{"id"}
 	salaryStatementPrimaryKeyColumns     = []string{"id"}
 	salaryStatementGeneratedColumns      = []string{}
@@ -511,15 +511,15 @@ func (q salaryStatementQuery) Exists(ctx context.Context, exec boil.ContextExecu
 	return count > 0, nil
 }
 
-// Earning pointed to by the foreign key.
-func (o *SalaryStatement) Earning(mods ...qm.QueryMod) earningQuery {
+// IndividualEarning pointed to by the foreign key.
+func (o *SalaryStatement) IndividualEarning(mods ...qm.QueryMod) individualEarningQuery {
 	queryMods := []qm.QueryMod{
-		qm.Where("`id` = ?", o.EarningID),
+		qm.Where("`id` = ?", o.IndividualEarningID),
 	}
 
 	queryMods = append(queryMods, mods...)
 
-	return Earnings(queryMods...)
+	return IndividualEarnings(queryMods...)
 }
 
 // FixedEarning pointed to by the foreign key.
@@ -533,15 +533,15 @@ func (o *SalaryStatement) FixedEarning(mods ...qm.QueryMod) fixedEarningQuery {
 	return FixedEarnings(queryMods...)
 }
 
-// Deduction pointed to by the foreign key.
-func (o *SalaryStatement) Deduction(mods ...qm.QueryMod) deductionQuery {
+// IndividualDeduction pointed to by the foreign key.
+func (o *SalaryStatement) IndividualDeduction(mods ...qm.QueryMod) individualDeductionQuery {
 	queryMods := []qm.QueryMod{
-		qm.Where("`id` = ?", o.DeductionID),
+		qm.Where("`id` = ?", o.IndividualDeductionID),
 	}
 
 	queryMods = append(queryMods, mods...)
 
-	return Deductions(queryMods...)
+	return IndividualDeductions(queryMods...)
 }
 
 // FixedDeduction pointed to by the foreign key.
@@ -566,9 +566,9 @@ func (o *SalaryStatement) Employee(mods ...qm.QueryMod) employeeQuery {
 	return Employees(queryMods...)
 }
 
-// LoadEarning allows an eager lookup of values, cached into the
+// LoadIndividualEarning allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor, singular bool, maybeSalaryStatement interface{}, mods queries.Applicator) error {
+func (salaryStatementL) LoadIndividualEarning(ctx context.Context, e boil.ContextExecutor, singular bool, maybeSalaryStatement interface{}, mods queries.Applicator) error {
 	var slice []*SalaryStatement
 	var object *SalaryStatement
 
@@ -599,8 +599,8 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 		if object.R == nil {
 			object.R = &salaryStatementR{}
 		}
-		if !queries.IsNil(object.EarningID) {
-			args = append(args, object.EarningID)
+		if !queries.IsNil(object.IndividualEarningID) {
+			args = append(args, object.IndividualEarningID)
 		}
 
 	} else {
@@ -611,13 +611,13 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 			}
 
 			for _, a := range args {
-				if queries.Equal(a, obj.EarningID) {
+				if queries.Equal(a, obj.IndividualEarningID) {
 					continue Outer
 				}
 			}
 
-			if !queries.IsNil(obj.EarningID) {
-				args = append(args, obj.EarningID)
+			if !queries.IsNil(obj.IndividualEarningID) {
+				args = append(args, obj.IndividualEarningID)
 			}
 
 		}
@@ -628,8 +628,8 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 	}
 
 	query := NewQuery(
-		qm.From(`earnings`),
-		qm.WhereIn(`earnings.id in ?`, args...),
+		qm.From(`individual_earnings`),
+		qm.WhereIn(`individual_earnings.id in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -637,22 +637,22 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 
 	results, err := query.QueryContext(ctx, e)
 	if err != nil {
-		return errors.Wrap(err, "failed to eager load Earning")
+		return errors.Wrap(err, "failed to eager load IndividualEarning")
 	}
 
-	var resultSlice []*Earning
+	var resultSlice []*IndividualEarning
 	if err = queries.Bind(results, &resultSlice); err != nil {
-		return errors.Wrap(err, "failed to bind eager loaded slice Earning")
+		return errors.Wrap(err, "failed to bind eager loaded slice IndividualEarning")
 	}
 
 	if err = results.Close(); err != nil {
-		return errors.Wrap(err, "failed to close results of eager load for earnings")
+		return errors.Wrap(err, "failed to close results of eager load for individual_earnings")
 	}
 	if err = results.Err(); err != nil {
-		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for earnings")
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for individual_earnings")
 	}
 
-	if len(earningAfterSelectHooks) != 0 {
+	if len(individualEarningAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
 			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
@@ -666,9 +666,9 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 
 	if singular {
 		foreign := resultSlice[0]
-		object.R.Earning = foreign
+		object.R.IndividualEarning = foreign
 		if foreign.R == nil {
-			foreign.R = &earningR{}
+			foreign.R = &individualEarningR{}
 		}
 		foreign.R.SalaryStatement = object
 		return nil
@@ -676,10 +676,10 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if queries.Equal(local.EarningID, foreign.ID) {
-				local.R.Earning = foreign
+			if queries.Equal(local.IndividualEarningID, foreign.ID) {
+				local.R.IndividualEarning = foreign
 				if foreign.R == nil {
-					foreign.R = &earningR{}
+					foreign.R = &individualEarningR{}
 				}
 				foreign.R.SalaryStatement = local
 				break
@@ -814,9 +814,9 @@ func (salaryStatementL) LoadFixedEarning(ctx context.Context, e boil.ContextExec
 	return nil
 }
 
-// LoadDeduction allows an eager lookup of values, cached into the
+// LoadIndividualDeduction allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecutor, singular bool, maybeSalaryStatement interface{}, mods queries.Applicator) error {
+func (salaryStatementL) LoadIndividualDeduction(ctx context.Context, e boil.ContextExecutor, singular bool, maybeSalaryStatement interface{}, mods queries.Applicator) error {
 	var slice []*SalaryStatement
 	var object *SalaryStatement
 
@@ -847,8 +847,8 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 		if object.R == nil {
 			object.R = &salaryStatementR{}
 		}
-		if !queries.IsNil(object.DeductionID) {
-			args = append(args, object.DeductionID)
+		if !queries.IsNil(object.IndividualDeductionID) {
+			args = append(args, object.IndividualDeductionID)
 		}
 
 	} else {
@@ -859,13 +859,13 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 			}
 
 			for _, a := range args {
-				if queries.Equal(a, obj.DeductionID) {
+				if queries.Equal(a, obj.IndividualDeductionID) {
 					continue Outer
 				}
 			}
 
-			if !queries.IsNil(obj.DeductionID) {
-				args = append(args, obj.DeductionID)
+			if !queries.IsNil(obj.IndividualDeductionID) {
+				args = append(args, obj.IndividualDeductionID)
 			}
 
 		}
@@ -876,8 +876,8 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 	}
 
 	query := NewQuery(
-		qm.From(`deductions`),
-		qm.WhereIn(`deductions.id in ?`, args...),
+		qm.From(`individual_deductions`),
+		qm.WhereIn(`individual_deductions.id in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -885,22 +885,22 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 
 	results, err := query.QueryContext(ctx, e)
 	if err != nil {
-		return errors.Wrap(err, "failed to eager load Deduction")
+		return errors.Wrap(err, "failed to eager load IndividualDeduction")
 	}
 
-	var resultSlice []*Deduction
+	var resultSlice []*IndividualDeduction
 	if err = queries.Bind(results, &resultSlice); err != nil {
-		return errors.Wrap(err, "failed to bind eager loaded slice Deduction")
+		return errors.Wrap(err, "failed to bind eager loaded slice IndividualDeduction")
 	}
 
 	if err = results.Close(); err != nil {
-		return errors.Wrap(err, "failed to close results of eager load for deductions")
+		return errors.Wrap(err, "failed to close results of eager load for individual_deductions")
 	}
 	if err = results.Err(); err != nil {
-		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for deductions")
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for individual_deductions")
 	}
 
-	if len(deductionAfterSelectHooks) != 0 {
+	if len(individualDeductionAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
 			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
@@ -914,9 +914,9 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 
 	if singular {
 		foreign := resultSlice[0]
-		object.R.Deduction = foreign
+		object.R.IndividualDeduction = foreign
 		if foreign.R == nil {
-			foreign.R = &deductionR{}
+			foreign.R = &individualDeductionR{}
 		}
 		foreign.R.SalaryStatement = object
 		return nil
@@ -924,10 +924,10 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if queries.Equal(local.DeductionID, foreign.ID) {
-				local.R.Deduction = foreign
+			if queries.Equal(local.IndividualDeductionID, foreign.ID) {
+				local.R.IndividualDeduction = foreign
 				if foreign.R == nil {
-					foreign.R = &deductionR{}
+					foreign.R = &individualDeductionR{}
 				}
 				foreign.R.SalaryStatement = local
 				break
@@ -1182,10 +1182,10 @@ func (salaryStatementL) LoadEmployee(ctx context.Context, e boil.ContextExecutor
 	return nil
 }
 
-// SetEarning of the salaryStatement to the related item.
-// Sets o.R.Earning to related.
+// SetIndividualEarning of the salaryStatement to the related item.
+// Sets o.R.IndividualEarning to related.
 // Adds o to related.R.SalaryStatement.
-func (o *SalaryStatement) SetEarning(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Earning) error {
+func (o *SalaryStatement) SetIndividualEarning(ctx context.Context, exec boil.ContextExecutor, insert bool, related *IndividualEarning) error {
 	var err error
 	if insert {
 		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
@@ -1195,7 +1195,7 @@ func (o *SalaryStatement) SetEarning(ctx context.Context, exec boil.ContextExecu
 
 	updateQuery := fmt.Sprintf(
 		"UPDATE `salary_statements` SET %s WHERE %s",
-		strmangle.SetParamNames("`", "`", 0, []string{"earning_id"}),
+		strmangle.SetParamNames("`", "`", 0, []string{"individual_earning_id"}),
 		strmangle.WhereClause("`", "`", 0, salaryStatementPrimaryKeyColumns),
 	)
 	values := []interface{}{related.ID, o.ID}
@@ -1209,17 +1209,17 @@ func (o *SalaryStatement) SetEarning(ctx context.Context, exec boil.ContextExecu
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	queries.Assign(&o.EarningID, related.ID)
+	queries.Assign(&o.IndividualEarningID, related.ID)
 	if o.R == nil {
 		o.R = &salaryStatementR{
-			Earning: related,
+			IndividualEarning: related,
 		}
 	} else {
-		o.R.Earning = related
+		o.R.IndividualEarning = related
 	}
 
 	if related.R == nil {
-		related.R = &earningR{
+		related.R = &individualEarningR{
 			SalaryStatement: o,
 		}
 	} else {
@@ -1229,19 +1229,19 @@ func (o *SalaryStatement) SetEarning(ctx context.Context, exec boil.ContextExecu
 	return nil
 }
 
-// RemoveEarning relationship.
-// Sets o.R.Earning to nil.
+// RemoveIndividualEarning relationship.
+// Sets o.R.IndividualEarning to nil.
 // Removes o from all passed in related items' relationships struct.
-func (o *SalaryStatement) RemoveEarning(ctx context.Context, exec boil.ContextExecutor, related *Earning) error {
+func (o *SalaryStatement) RemoveIndividualEarning(ctx context.Context, exec boil.ContextExecutor, related *IndividualEarning) error {
 	var err error
 
-	queries.SetScanner(&o.EarningID, nil)
-	if _, err = o.Update(ctx, exec, boil.Whitelist("earning_id")); err != nil {
+	queries.SetScanner(&o.IndividualEarningID, nil)
+	if _, err = o.Update(ctx, exec, boil.Whitelist("individual_earning_id")); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
 	if o.R != nil {
-		o.R.Earning = nil
+		o.R.IndividualEarning = nil
 	}
 	if related == nil || related.R == nil {
 		return nil
@@ -1331,10 +1331,10 @@ func (o *SalaryStatement) RemoveFixedEarning(ctx context.Context, exec boil.Cont
 	return nil
 }
 
-// SetDeduction of the salaryStatement to the related item.
-// Sets o.R.Deduction to related.
+// SetIndividualDeduction of the salaryStatement to the related item.
+// Sets o.R.IndividualDeduction to related.
 // Adds o to related.R.SalaryStatement.
-func (o *SalaryStatement) SetDeduction(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Deduction) error {
+func (o *SalaryStatement) SetIndividualDeduction(ctx context.Context, exec boil.ContextExecutor, insert bool, related *IndividualDeduction) error {
 	var err error
 	if insert {
 		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
@@ -1344,7 +1344,7 @@ func (o *SalaryStatement) SetDeduction(ctx context.Context, exec boil.ContextExe
 
 	updateQuery := fmt.Sprintf(
 		"UPDATE `salary_statements` SET %s WHERE %s",
-		strmangle.SetParamNames("`", "`", 0, []string{"deduction_id"}),
+		strmangle.SetParamNames("`", "`", 0, []string{"individual_deduction_id"}),
 		strmangle.WhereClause("`", "`", 0, salaryStatementPrimaryKeyColumns),
 	)
 	values := []interface{}{related.ID, o.ID}
@@ -1358,17 +1358,17 @@ func (o *SalaryStatement) SetDeduction(ctx context.Context, exec boil.ContextExe
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	queries.Assign(&o.DeductionID, related.ID)
+	queries.Assign(&o.IndividualDeductionID, related.ID)
 	if o.R == nil {
 		o.R = &salaryStatementR{
-			Deduction: related,
+			IndividualDeduction: related,
 		}
 	} else {
-		o.R.Deduction = related
+		o.R.IndividualDeduction = related
 	}
 
 	if related.R == nil {
-		related.R = &deductionR{
+		related.R = &individualDeductionR{
 			SalaryStatement: o,
 		}
 	} else {
@@ -1378,19 +1378,19 @@ func (o *SalaryStatement) SetDeduction(ctx context.Context, exec boil.ContextExe
 	return nil
 }
 
-// RemoveDeduction relationship.
-// Sets o.R.Deduction to nil.
+// RemoveIndividualDeduction relationship.
+// Sets o.R.IndividualDeduction to nil.
 // Removes o from all passed in related items' relationships struct.
-func (o *SalaryStatement) RemoveDeduction(ctx context.Context, exec boil.ContextExecutor, related *Deduction) error {
+func (o *SalaryStatement) RemoveIndividualDeduction(ctx context.Context, exec boil.ContextExecutor, related *IndividualDeduction) error {
 	var err error
 
-	queries.SetScanner(&o.DeductionID, nil)
-	if _, err = o.Update(ctx, exec, boil.Whitelist("deduction_id")); err != nil {
+	queries.SetScanner(&o.IndividualDeductionID, nil)
+	if _, err = o.Update(ctx, exec, boil.Whitelist("individual_deduction_id")); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
 	if o.R != nil {
-		o.R.Deduction = nil
+		o.R.IndividualDeduction = nil
 	}
 	if related == nil || related.R == nil {
 		return nil
@@ -1820,8 +1820,8 @@ func (o SalaryStatementSlice) UpdateAll(ctx context.Context, exec boil.ContextEx
 
 var mySQLSalaryStatementUniqueColumns = []string{
 	"id",
-	"earning_id",
-	"deduction_id",
+	"individual_earning_id",
+	"individual_deduction_id",
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.

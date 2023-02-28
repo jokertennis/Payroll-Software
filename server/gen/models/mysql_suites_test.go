@@ -10,14 +10,6 @@ func TestUpsert(t *testing.T) {
 
 	t.Run("Companies", testCompaniesUpsert)
 
-	t.Run("DeductionDetails", testDeductionDetailsUpsert)
-
-	t.Run("Deductions", testDeductionsUpsert)
-
-	t.Run("EarningDetails", testEarningDetailsUpsert)
-
-	t.Run("Earnings", testEarningsUpsert)
-
 	t.Run("Employees", testEmployeesUpsert)
 
 	t.Run("FixedDeductionDetails", testFixedDeductionDetailsUpsert)
@@ -27,6 +19,14 @@ func TestUpsert(t *testing.T) {
 	t.Run("FixedEarningDetails", testFixedEarningDetailsUpsert)
 
 	t.Run("FixedEarnings", testFixedEarningsUpsert)
+
+	t.Run("IndividualDeductionDetails", testIndividualDeductionDetailsUpsert)
+
+	t.Run("IndividualDeductions", testIndividualDeductionsUpsert)
+
+	t.Run("IndividualEarningDetails", testIndividualEarningDetailsUpsert)
+
+	t.Run("IndividualEarnings", testIndividualEarningsUpsert)
 
 	t.Run("SalaryStatements", testSalaryStatementsUpsert)
 
