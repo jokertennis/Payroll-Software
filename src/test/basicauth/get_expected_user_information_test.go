@@ -7,6 +7,8 @@ import (
 	"testing"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
+	"usr/local/go/src/main/domain-service/repository"
+	"usr/local/go/src/main/infrastructure"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -83,8 +85,14 @@ func TestGetExpectedUserInformation(t *testing.T) {
 	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 	assert.Nil(t, err)
 
+	employeeRepositoryStruct := infrastructure.NewEmployeeRepository(dbInstance)
+	var employeeRepository repository.EmployeeRepository = &employeeRepositoryStruct
+
+	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(dbInstance)
+	var administratorRepository repository.AdministratorRepository = &administratorRepositoryStruct
+
 	for _, value := range cases {
-		gotUserInformation, err := basicauth.GetExpectedUserInformation(ctx, dbInstance, value.email, value.executer)
+		gotUserInformation, err := basicauth.GetExpectedUserInformation(ctx, employeeRepository, administratorRepository, value.email, value.executer)
 		assert.Equal(t, value.expectedError, err)
 		assert.Equal(t, value.expectedUserInformation, gotUserInformation)
 	}

@@ -6,10 +6,7 @@ import (
 	"crypto/subtle"
 	"fmt"
 	"net/http"
-	"usr/local/go/server/gen/models"
-
-	"github.com/volatiletech/sqlboiler/v4/boil"
-	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+	"usr/local/go/src/main/domain-service/repository"
 )
 
 type ExpectedUserInformation struct {
@@ -22,7 +19,7 @@ type Executer struct {
 	Executer string
 }
 
-func BasicAuth(ctx context.Context, db boil.ContextExecutor, executer Executer, next http.HandlerFunc) http.HandlerFunc {
+func BasicAuth(ctx context.Context, employeeRepository repository.EmployeeRepository, administratorRepository repository.AdministratorRepository, executer Executer, next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Extract the mailAddress and password from the request
 		// Authorization header. If no Authentication header is present
@@ -34,7 +31,7 @@ func BasicAuth(ctx context.Context, db boil.ContextExecutor, executer Executer, 
 			// Calculate SHA-256 hashes for the provided and expected password.
 			passwordHash := sha256.Sum256([]byte(password))
 
-			expectedUserInformation, err := GetExpectedUserInformation(ctx, db, mailAddress, executer)
+			expectedUserInformation, err := GetExpectedUserInformation(ctx, employeeRepository, administratorRepository, mailAddress, executer)
 			if err != nil {
 				w.Header().Set("WWW-Authenticate", `Basic realm="restricted", charset="UTF-8"`)
 				http.Error(w, fmt.Sprintf("InternalServerError:error:%s", err), http.StatusInternalServerError)
@@ -76,26 +73,26 @@ func BasicAuth(ctx context.Context, db boil.ContextExecutor, executer Executer, 
 	})
 }
 
-func GetExpectedUserInformation(ctx context.Context, db boil.ContextExecutor, mailAddress string, executer Executer) (*ExpectedUserInformation, error) {
+func GetExpectedUserInformation(ctx context.Context,  employeeRepository repository.EmployeeRepository, administratorRepository repository.AdministratorRepository, mailAddress string, executer Executer) (*ExpectedUserInformation, error) {
 	switch executer.Executer {
 	case "Employee":
-		employees, err := models.Employees(qm.Where("mail_address=?", mailAddress)).All(ctx, db)
+		employee, err := employeeRepository.GetEmployeeByMailAddress(ctx, mailAddress)
 		if err != nil {
 			return nil, err
 		}
-		if employees == nil {
+		if employee == nil {
 			return nil, nil
 		}
-		return &ExpectedUserInformation{employees[0].MailAddress, employees[0].Password}, nil
+		return &ExpectedUserInformation{employee.MailAddress, employee.Password}, nil
 	case "Administrator":
-		administrators, err := models.Administrators(qm.Where("mail_address=?", mailAddress)).All(ctx, db)
+		administrator, err := administratorRepository.GetAdministratorByMailAddress(ctx, mailAddress)
 		if err != nil {
 			return nil, err
 		}
-		if administrators == nil {
+		if administrator == nil {
 			return nil, nil
 		}
-		return &ExpectedUserInformation{administrators[0].MailAddress, administrators[0].Password}, nil
+		return &ExpectedUserInformation{administrator.MailAddress, administrator.Password}, nil
 	}
 	return nil, fmt.Errorf("not support specified Executer:%s", executer.Executer)
 }

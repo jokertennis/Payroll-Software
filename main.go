@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
+	"usr/local/go/src/main/infrastructure"
+	"usr/local/go/src/main/domain-service/repository"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -44,12 +46,18 @@ func main() {
 
 func BuildHandler(ctx context.Context, dbInstance *sql.DB) {
 
-	administrator := basicauth.Executer{Executer: "Administrator"}
-	employee := basicauth.Executer{Executer: "Employee"}
+	administratorExecuter := basicauth.Executer{Executer: "Administrator"}
+	employeeExecuter := basicauth.Executer{Executer: "Employee"}
+
+	employeeRepositoryStruct := infrastructure.NewEmployeeRepository(dbInstance)
+	var employeeRepository repository.EmployeeRepository = &employeeRepositoryStruct
+
+	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(dbInstance)
+	var administratorRepository repository.AdministratorRepository = &administratorRepositoryStruct
 
 	http.HandleFunc("/unprotected", UnprotectedHandler)
-	http.HandleFunc("/admin/protected", basicauth.BasicAuth(ctx, dbInstance, administrator, ProtectedHandlerForAdministrator))
-	http.HandleFunc("/protected", basicauth.BasicAuth(ctx, dbInstance, employee, ProtectedHandlerForEmployee))
+	http.HandleFunc("/admin/protected", basicauth.BasicAuth(ctx, employeeRepository, administratorRepository, administratorExecuter, ProtectedHandlerForAdministrator))
+	http.HandleFunc("/protected", basicauth.BasicAuth(ctx, employeeRepository, administratorRepository, employeeExecuter, ProtectedHandlerForEmployee))
 }
 
 func ProtectedHandlerForEmployee(w http.ResponseWriter, r *http.Request) {
