@@ -14,6 +14,14 @@ require (
 )
 
 require (
+	github.com/CloudyKit/jet/v4 v4.1.0 // indirect
+	github.com/aymerick/raymond v2.0.3-0.20180322193309-b565731e1464+incompatible // indirect
+	github.com/iris-contrib/jade v1.1.4 // indirect
+	github.com/iris-contrib/pongo2 v0.0.1 // indirect
+	github.com/ryanuber/columnize v2.1.0+incompatible // indirect
+)
+
+require (
 	cloud.google.com/go v0.104.0 // indirect
 	cloud.google.com/go/compute v1.12.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
@@ -118,6 +126,7 @@ require (
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/kataras/blocks v0.0.7 // indirect
 	github.com/kataras/golog v0.1.8 // indirect
+	github.com/kataras/iris v0.0.2
 	github.com/kataras/iris/v12 v12.2.0-beta7.0.20221226212647-196063d4db34 // indirect
 	github.com/kataras/pio v0.0.11 // indirect
 	github.com/kataras/sitemap v0.0.6 // indirect

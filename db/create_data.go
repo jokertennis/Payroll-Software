@@ -43,7 +43,8 @@ func CreateData(ctx context.Context, db boil.ContextExecutor) error {
 	}
 
 	administrators := []models.Administrator{
-		{ID: 1, CompanyID: 1, Name: "administrator", Password: "testpass"}}
+		{ID: 1, CompanyID: 1, Name: "YumiAdministrator", MailAddress: "yumi@example.com", Password: "testpass"},
+		{ID: 2, CompanyID: 1, Name: "TestForAdministrator", MailAddress: "test.administrator@example.com", Password: "testpass"}}
 
 	for _, administrator := range administrators {
 		if err := administrator.Insert(ctx, db, boil.Infer()); err != nil {
@@ -103,7 +104,7 @@ func CreateData(ctx context.Context, db boil.ContextExecutor) error {
 		{ID: 7, Nominal: "年俸600万１ヶ月分", Amount: 500000},
 		{ID: 8, Nominal: "Jimさんの給料１ヶ月分", Amount: 300000},
 		{ID: 9, Nominal: "Steveさんの給料１ヶ月分", Amount: 350000}}
-	
+
 	for _, fixed_earning := range fixed_earnings {
 		if err := fixed_earning.Insert(ctx, db, boil.Infer()); err != nil {
 			return fmt.Errorf("failed to create datas of fixed_earning. err:%s", err)
@@ -130,7 +131,7 @@ func CreateData(ctx context.Context, db boil.ContextExecutor) error {
 		{ID: 17, FixedEarningID: 9, Nominal: "基本給", Amount: 250000},
 		{ID: 18, FixedEarningID: 9, Nominal: "固定残業代", Amount: 50000},
 		{ID: 19, FixedEarningID: 9, Nominal: "家族手当(1人分)", Amount: 50000}}
-	
+
 	for _, fixed_earning_detail := range fixed_earning_details {
 		if err := fixed_earning_detail.Insert(ctx, db, boil.Infer()); err != nil {
 			return fmt.Errorf("failed to create datas of fixed_earning_detail. err:%s", err)
@@ -217,7 +218,7 @@ func CreateData(ctx context.Context, db boil.ContextExecutor) error {
 		{ID: 7, Nominal: "年俸600万１ヶ月分控除", Amount: 100000},
 		{ID: 8, Nominal: "Jimさんの給料1ヶ月分控除", Amount: 60000},
 		{ID: 9, Nominal: "Steveさんの給料1ヶ月分控除", Amount: 70000}}
-		
+
 	for _, fixed_deduction := range fixed_deductions {
 		if err := fixed_deduction.Insert(ctx, db, boil.Infer()); err != nil {
 			return fmt.Errorf("failed to create datas of fixed_deduction. err:%s", err)
@@ -305,7 +306,7 @@ func CreateData(ctx context.Context, db boil.ContextExecutor) error {
 		{ID: 25, FixedEarningID: null.Uint32{Uint32: 7, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 7, Valid: true}, EmployeeID: 9, Nominal: "2021年12月 給与明細", Payday: time.Date(2021, 12, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
 		{ID: 26, FixedEarningID: null.Uint32{Uint32: 8, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 8, Valid: true}, EmployeeID: 9, Nominal: "2021年12月 給与明細", Payday: time.Date(2021, 12, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
 		{ID: 27, FixedEarningID: null.Uint32{Uint32: 9, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 9, Valid: true}, EmployeeID: 9, Nominal: "2021年12月 給与明細", Payday: time.Date(2021, 12, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"}}
-		
+
 	for _, salary_statement := range salary_statements {
 		if err := salary_statement.Insert(ctx, db, boil.Infer()); err != nil {
 			return fmt.Errorf("failed to create datas of salary_statement. err:%s", err)
