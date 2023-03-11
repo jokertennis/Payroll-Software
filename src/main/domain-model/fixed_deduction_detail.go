@@ -8,6 +8,6 @@ type FixedDeductionDetail struct {
 }
 
 // Not yet created value object for each attribute.
-func NewFixedDeductionDetail(id uint32, fixedDeductionId uint32, nominal string, amount int) (*IndividualDeductionDetail, error) {
-	return &IndividualDeductionDetail{id, fixedDeductionId, nominal, amount}, nil
+func NewFixedDeductionDetail(id uint32, fixedDeductionId uint32, nominal string, amount int) (*FixedDeductionDetail, error) {
+	return &FixedDeductionDetail{id, fixedDeductionId, nominal, amount}, nil
 }

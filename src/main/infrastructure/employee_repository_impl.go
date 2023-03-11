@@ -28,11 +28,3 @@ func (r *EmployeeRepository) GetEmployeeByMailAddress(ctx context.Context, mailA
 
 	return MappingEmployeeDomainObject(employees[0])
 }
-
-func MappingEmployeeDomainObject(m *models.Employee) (*domainmodel.Employee, error) {
-	employee, err := domainmodel.NewEmployee(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
-	if err != nil {
-        return nil, err
-    }
-    return employee, nil
-}

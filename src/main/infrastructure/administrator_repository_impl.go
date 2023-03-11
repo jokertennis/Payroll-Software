@@ -28,11 +28,3 @@ func (r *AdministratorRepository) GetAdministratorByMailAddress(ctx context.Cont
 
 	return MappingAdministratorDomainObject(administrators[0])
 }
-
-func MappingAdministratorDomainObject(m *models.Administrator) (*domainmodel.Administrator, error) {
-	administrator, err := domainmodel.NewAdministrator(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
-	if err != nil {
-        return nil, err
-    }
-    return administrator, nil
-}
