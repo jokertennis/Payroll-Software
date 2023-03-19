@@ -16,7 +16,6 @@ type GetEmployeeSalaryStatementHandlerFunc func(GetEmployeeSalaryStatementParams
 
 // Handle executing the request and returning a response
 func (fn GetEmployeeSalaryStatementHandlerFunc) Handle(params GetEmployeeSalaryStatementParams) middleware.Responder {
-	mailAddress, _, _ := params.HTTPRequest.BasicAuth()
 	return fn(params)
 }
 
