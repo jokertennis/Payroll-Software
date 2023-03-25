@@ -40,6 +40,9 @@ func init() {
     "/employee/protected": {
       "$ref": "./prompt/protected_for_employee.yml"
     },
+    "/employee/salary_statement": {
+      "$ref": "./salary_statement/get_for_employee.yml"
+    },
     "/unprotected": {
       "$ref": "./prompt/unprotected.yml"
     }
@@ -142,6 +145,89 @@ func init() {
         }
       }
     },
+    "/employee/salary_statement": {
+      "get": {
+        "description": "特定の年月の給料明細を取得するための従業員向けAPI",
+        "parameters": [
+          {
+            "maximum": 3000,
+            "minimum": 1500,
+            "type": "integer",
+            "format": "int32",
+            "description": "欲しい給料明細の年",
+            "name": "year",
+            "in": "query",
+            "required": true
+          },
+          {
+            "maximum": 12,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "description": "欲しい給料明細の月",
+            "name": "month",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount_of_deduction": {
+                  "description": "控除の総額",
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "deduction_details": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/DeductionDetailsItems0"
+                  }
+                },
+                "name_of_employee": {
+                  "description": "従業員名",
+                  "type": "string"
+                },
+                "payday": {
+                  "description": "給料支払い日時",
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "target_period": {
+                  "description": "給料明細の対象期間",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/unprotected": {
       "get": {
         "description": "誰でも実行できるお試しAPI",
@@ -157,6 +243,47 @@ func init() {
               }
             }
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "DeductionDetailsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_deduction_detail": {
+          "description": "控除詳細の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "amount_of_earning": {
+          "description": "支給の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "earning_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeductionDetailsItems0EarningDetailsItems0"
+          }
+        },
+        "nominal": {
+          "description": "控除詳細の名目",
+          "type": "string"
+        }
+      }
+    },
+    "DeductionDetailsItems0EarningDetailsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_earning_detail": {
+          "description": "支給詳細の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "nominal": {
+          "description": "支給詳細の名目",
+          "type": "string"
         }
       }
     }
