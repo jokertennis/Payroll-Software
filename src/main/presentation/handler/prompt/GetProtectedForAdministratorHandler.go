@@ -15,7 +15,6 @@ import (
 
 type GetAdministratorProtectedHandlerStruct struct {}
 
-// Handle executing the request and returning a response
 func (s *GetAdministratorProtectedHandlerStruct) Handle(params operations.GetAdministratorProtectedParams) middleware.Responder {
 	// create context
 	ctx := context.Background()

@@ -15,7 +15,6 @@ import (
 
 type GetEmployeeProtectedHandlerStruct struct {}
 
-// Handle executing the request and returning a response
 func (s *GetEmployeeProtectedHandlerStruct) Handle(params operations.GetEmployeeProtectedParams) middleware.Responder {
 	// create context
 	ctx := context.Background()
