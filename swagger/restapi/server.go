@@ -24,7 +24,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"usr/local/go/swagger/employee/salary_statement/restapi/operations"
+	"usr/local/go/swagger/restapi/operations"
 )
 
 const (

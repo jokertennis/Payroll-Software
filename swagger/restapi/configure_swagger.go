@@ -10,11 +10,10 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"usr/local/go/swagger/employee/salary_statement/restapi/operations"
-	"usr/local/go/swagger/employee/salary_statement/restapi/operations/get_salary_statement_for_employee"
+	"usr/local/go/swagger/restapi/operations"
 )
 
-//go:generate swagger generate server --target ../../salary_statement --name Swagger --spec ../get.yml --principal interface{}
+//go:generate swagger generate server --target ../../swagger --name Swagger --spec ../swagger.yml --principal interface{}
 
 func configureFlags(api *operations.SwaggerAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -38,9 +37,19 @@ func configureAPI(api *operations.SwaggerAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler == nil {
-		api.GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler = get_salary_statement_for_employee.GetEmployeeSalaryStatementHandlerFunc(func(params get_salary_statement_for_employee.GetEmployeeSalaryStatementParams) middleware.Responder {
-			return middleware.NotImplemented("operation get_salary_statement_for_employee.GetEmployeeSalaryStatement has not yet been implemented")
+	if api.GetAdministratorProtectedHandler == nil {
+		api.GetAdministratorProtectedHandler = operations.GetAdministratorProtectedHandlerFunc(func(params operations.GetAdministratorProtectedParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetAdministratorProtected has not yet been implemented")
+		})
+	}
+	if api.GetEmployeeProtectedHandler == nil {
+		api.GetEmployeeProtectedHandler = operations.GetEmployeeProtectedHandlerFunc(func(params operations.GetEmployeeProtectedParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetEmployeeProtected has not yet been implemented")
+		})
+	}
+	if api.GetUnprotectedHandler == nil {
+		api.GetUnprotectedHandler = operations.GetUnprotectedHandlerFunc(func(params operations.GetUnprotectedParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetUnprotected has not yet been implemented")
 		})
 	}
 

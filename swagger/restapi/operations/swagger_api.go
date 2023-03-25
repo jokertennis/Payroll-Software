@@ -18,8 +18,6 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	"usr/local/go/swagger/employee/salary_statement/restapi/operations/get_salary_statement_for_employee"
 )
 
 // NewSwaggerAPI creates a new Swagger instance
@@ -44,13 +42,19 @@ func NewSwaggerAPI(spec *loads.Document) *SwaggerAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler: get_salary_statement_for_employee.GetEmployeeSalaryStatementHandlerFunc(func(params get_salary_statement_for_employee.GetEmployeeSalaryStatementParams) middleware.Responder {
-			return middleware.NotImplemented("operation get_salary_statement_for_employee.GetEmployeeSalaryStatement has not yet been implemented")
+		GetAdministratorProtectedHandler: GetAdministratorProtectedHandlerFunc(func(params GetAdministratorProtectedParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetAdministratorProtected has not yet been implemented")
+		}),
+		GetEmployeeProtectedHandler: GetEmployeeProtectedHandlerFunc(func(params GetEmployeeProtectedParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetEmployeeProtected has not yet been implemented")
+		}),
+		GetUnprotectedHandler: GetUnprotectedHandlerFunc(func(params GetUnprotectedParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUnprotected has not yet been implemented")
 		}),
 	}
 }
 
-/*SwaggerAPI the swagger API */
+/*SwaggerAPI Swagger */
 type SwaggerAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
@@ -83,8 +87,12 @@ type SwaggerAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
-	// GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler sets the operation handler for the get employee salary statement operation
-	GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler get_salary_statement_for_employee.GetEmployeeSalaryStatementHandler
+	// GetAdministratorProtectedHandler sets the operation handler for the get administrator protected operation
+	GetAdministratorProtectedHandler GetAdministratorProtectedHandler
+	// GetEmployeeProtectedHandler sets the operation handler for the get employee protected operation
+	GetEmployeeProtectedHandler GetEmployeeProtectedHandler
+	// GetUnprotectedHandler sets the operation handler for the get unprotected operation
+	GetUnprotectedHandler GetUnprotectedHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -162,8 +170,14 @@ func (o *SwaggerAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler == nil {
-		unregistered = append(unregistered, "get_salary_statement_for_employee.GetEmployeeSalaryStatementHandler")
+	if o.GetAdministratorProtectedHandler == nil {
+		unregistered = append(unregistered, "GetAdministratorProtectedHandler")
+	}
+	if o.GetEmployeeProtectedHandler == nil {
+		unregistered = append(unregistered, "GetEmployeeProtectedHandler")
+	}
+	if o.GetUnprotectedHandler == nil {
+		unregistered = append(unregistered, "GetUnprotectedHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -256,7 +270,15 @@ func (o *SwaggerAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/employee/salary_statement"] = get_salary_statement_for_employee.NewGetEmployeeSalaryStatement(o.context, o.GetSalaryStatementForEmployeeGetEmployeeSalaryStatementHandler)
+	o.handlers["GET"]["/administrator/protected"] = NewGetAdministratorProtected(o.context, o.GetAdministratorProtectedHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/employee/protected"] = NewGetEmployeeProtected(o.context, o.GetEmployeeProtectedHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/unprotected"] = NewGetUnprotected(o.context, o.GetUnprotectedHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

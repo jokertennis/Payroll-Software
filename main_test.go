@@ -41,19 +41,19 @@ func TestUnprotectedHandler(t *testing.T) {
 			email:              "potter@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "This is the unprotected handler",
+			expectedResponse:   "{\"message\":\"This is the unprotected handler\"}\n",
 		},
 		"execute by registered administrator": {
 			email:              "test.administrator@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "This is the unprotected handler",
+			expectedResponse:   "{\"message\":\"This is the unprotected handler\"}\n",
 		},
 		"Authentication header is not present": {
 			email:              "",
 			password:           "",
 			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "This is the unprotected handler",
+			expectedResponse:   "{\"message\":\"This is the unprotected handler\"}\n",
 		},
 	}
 	client := &http.Client{
@@ -91,31 +91,31 @@ func TestProtectedHandlerForEmployee(t *testing.T) {
 			email:              "potter@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "This is the protected handler",
+			expectedResponse:   "{\"message\":\"This is the protected handler\"}\n",
 		},
 		"execute by registered administrator": {
 			email:              "test.administrator@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Specified mailAddress is not found in registered user datas.\"}\n",
 		},
 		"Authentication header is not present": {
 			email:              "",
 			password:           "",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Please check to see if Authentication header is not present or invalid.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Please check to see if Authentication header is not present or invalid.\"}\n",
 		},
 		"specify not existed user": {
 			email:              "notfound@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Specified mailAddress is not found in registered user datas.\"}\n",
 		},
 		"specify not incorrect password": {
 			email:              "potter@example.com",
 			password:           "incorrectpassword",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Please check to see if password is correct.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Please check to see if password is correct.\"}\n",
 		},
 	}
 	client := &http.Client{
@@ -124,7 +124,7 @@ func TestProtectedHandlerForEmployee(t *testing.T) {
 		},
 	}
 
-	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/protected", nil)
+	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/employee/protected", nil)
 	assert.Nil(t, err)
 
 	for _, value := range cases {
@@ -154,40 +154,36 @@ func TestProtectedHandlerForAdministrator(t *testing.T) {
 			email:              "test.administrator@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "This is the protected handler",
+			expectedResponse:   "{\"message\":\"This is the protected handler\"}\n",
 		},
 		"execute by registered employee": {
 			email:              "potter@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Specified mailAddress is not found in registered user datas.\"}\n",
 		},
 		"Authentication header is not present": {
 			email:              "",
 			password:           "",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Please check to see if Authentication header is not present or invalid.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Please check to see if Authentication header is not present or invalid.\"}\n",
 		},
 		"specify not existed user": {
 			email:              "notfound@example.com",
 			password:           "testpass",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Specified mailAddress is not found in registered user datas.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Specified mailAddress is not found in registered user datas.\"}\n",
 		},
 		"specify not incorrect password": {
 			email:              "test.administrator@example.com",
 			password:           "incorrectpassword",
 			expectedStatusCode: http.StatusUnauthorized,
-			expectedResponse:   "Unauthorized.Please check to see if password is correct.\n",
+			expectedResponse:   "{\"message\":\"Unauthorized. Please check to see if password is correct.\"}\n",
 		},
 	}
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
+	client := &http.Client{}
 
-	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/admin/protected", nil)
+	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/administrator/protected", nil)
 	assert.Nil(t, err)
 
 	for _, value := range cases {
