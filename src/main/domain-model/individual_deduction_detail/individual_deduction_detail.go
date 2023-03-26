@@ -1,4 +1,4 @@
-package domainmodel
+package individual_deduction_detail
 
 type IndividualDeductionDetail struct {
 	ID                    uint32

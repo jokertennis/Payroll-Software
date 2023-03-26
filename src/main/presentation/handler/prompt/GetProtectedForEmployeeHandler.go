@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
-	"usr/local/go/src/main/domain-service/repository"
+	"usr/local/go/src/main/domain-service/repository/administrator_repository"
+	"usr/local/go/src/main/domain-service/repository/employee_repository"
 	"usr/local/go/src/main/infrastructure"
 	"usr/local/go/swagger/restapi/operations"
 
@@ -28,13 +29,13 @@ func (s *GetEmployeeProtectedHandlerStruct) Handle(params operations.GetEmployee
 	
 	administratorExecuter := basicauth.Executer{Executer: "Employee"}
 
-	employeeRepositoryStruct := infrastructure.NewEmployeeRepository(dbInstance)
-	var employeeRepository repository.EmployeeRepository = &employeeRepositoryStruct
+	employeeRepositoryStruct := infrastructure.NewEmployeeRepository(ctx, dbInstance)
+	var employeeRepository employee_repository.EmployeeRepository = &employeeRepositoryStruct
 
-	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(dbInstance)
-	var administratorRepository repository.AdministratorRepository = &administratorRepositoryStruct
+	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(ctx, dbInstance)
+	var administratorRepository administrator_repository.AdministratorRepository = &administratorRepositoryStruct
 
-	statusCode, err := basicauth.BasicAuth(ctx, employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
+	statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
 
 	if statusCode == http.StatusUnauthorized {
 		return operations.NewGetEmployeeProtectedUnauthorized().WithPayload(&operations.GetEmployeeProtectedUnauthorizedBody{

@@ -1,4 +1,4 @@
-package domainmodel
+package fixed_deduction_detail
 
 type FixedDeductionDetail struct {
 	ID               uint32

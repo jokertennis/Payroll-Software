@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"usr/local/go/db"
 	"usr/local/go/src/main/presentation/handler/prompt"
+	"usr/local/go/src/main/presentation/handler/salary_statement"
 	"usr/local/go/swagger/restapi"
 	"usr/local/go/swagger/restapi/operations"
 
@@ -68,4 +69,8 @@ func configureAPI(api *operations.SwaggerAPI, ctx context.Context, dbInstance *s
 	getAdministratorProtectedHandlerStruct := prompt.GetAdministratorProtectedHandlerStruct{}
 	var getAdministratorProtectedHandler operations.GetAdministratorProtectedHandler = &getAdministratorProtectedHandlerStruct
 	api.GetAdministratorProtectedHandler = getAdministratorProtectedHandler
+
+	getSalaryStatementForEmployeeHandlerStruct := salary_statement.GetSalaryStatementForEmployeeHandlerStruct{}
+	var getSalaryStatementForEmployeeHandler operations.GetEmployeeSalaryStatementHandler = &getSalaryStatementForEmployeeHandlerStruct
+	api.GetEmployeeSalaryStatementHandler = getSalaryStatementForEmployeeHandler
 }

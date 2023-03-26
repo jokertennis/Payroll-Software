@@ -1,4 +1,4 @@
-package prompt
+package salary_statement
 
 import (
 	"context"
@@ -8,15 +8,17 @@ import (
 	"usr/local/go/db"
 	"usr/local/go/src/main/domain-service/repository/administrator_repository"
 	"usr/local/go/src/main/domain-service/repository/employee_repository"
+	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+
 	"usr/local/go/src/main/infrastructure"
 	"usr/local/go/swagger/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
-type GetAdministratorProtectedHandlerStruct struct {}
+type GetSalaryStatementForEmployeeHandlerStruct struct {}
 
-func (s *GetAdministratorProtectedHandlerStruct) Handle(params operations.GetAdministratorProtectedParams) middleware.Responder {
+func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.GetEmployeeSalaryStatementParams) middleware.Responder {
 	// create context
 	ctx := context.Background()
 
@@ -27,7 +29,7 @@ func (s *GetAdministratorProtectedHandlerStruct) Handle(params operations.GetAdm
 		fmt.Printf("failed to create dbInstance. err:%s", err)
 	}
 	
-	administratorExecuter := basicauth.Executer{Executer: "Administrator"}
+	administratorExecuter := basicauth.Executer{Executer: "Employee"}
 
 	employeeRepositoryStruct := infrastructure.NewEmployeeRepository(ctx, dbInstance)
 	var employeeRepository employee_repository.EmployeeRepository = &employeeRepositoryStruct
@@ -35,19 +37,24 @@ func (s *GetAdministratorProtectedHandlerStruct) Handle(params operations.GetAdm
 	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(ctx, dbInstance)
 	var administratorRepository administrator_repository.AdministratorRepository = &administratorRepositoryStruct
 
-	statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
+	mailAddress, statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
 
-	if statusCode == http.StatusUnauthorized{
-		return operations.NewGetAdministratorProtectedUnauthorized().WithPayload(&operations.GetAdministratorProtectedUnauthorizedBody{
+	if statusCode == http.StatusUnauthorized {
+		return operations.NewGetEmployeeSalaryStatementUnauthorized().WithPayload(&operations.GetEmployeeSalaryStatementUnauthorizedBody{
 			Message: err.Error(),
 		})
 	} else if statusCode == http.StatusInternalServerError {
-		return operations.NewGetAdministratorProtectedInternalServerError().WithPayload(&operations.GetAdministratorProtectedInternalServerErrorBody{
+		return operations.NewGetEmployeeSalaryStatementInternalServerError().WithPayload(&operations.GetEmployeeSalaryStatementInternalServerErrorBody{
 			Message: err.Error(),
 		})
 	}
 
-	response := operations.NewGetAdministratorProtectedOK().WithPayload(&operations.GetAdministratorProtectedOKBody{
+	salaryStatementRepositoryStruct := infrastructure.NewSalaryStatementRepository(ctx, dbInstance)
+	var salaryStatementRepository salary_statement_repository.SalaryStatementRepository = &salaryStatementRepositoryStruct
+
+	result := salary_statement_application_service.
+
+	response := operations.NewGetEmployeeProtectedOK().WithPayload(&operations.GetEmployeeProtectedOKBody{
 		Message: "This is the protected handler",
 	})
 

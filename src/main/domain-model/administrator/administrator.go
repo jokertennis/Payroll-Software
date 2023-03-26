@@ -1,4 +1,4 @@
-package domainmodel
+package administrator
 
 type Administrator struct {
 	ID          uint32

@@ -1,4 +1,4 @@
-package domainmodel
+package individual_earning_detail
 
 type IndividualEarningDetail struct {
 	ID                    uint32

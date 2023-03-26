@@ -4,21 +4,25 @@ import (
 	"context"
 	"database/sql"
 	"usr/local/go/server/gen/models"
-	domainmodel "usr/local/go/src/main/domain-model"
+	"usr/local/go/src/main/domain-model/employee"
 
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 type EmployeeRepository struct {
+	ctx context.Context
 	db *sql.DB
 }
 
-func NewEmployeeRepository(db *sql.DB) EmployeeRepository {
-	return EmployeeRepository{db: db}
+func NewEmployeeRepository(ctx context.Context, db *sql.DB) EmployeeRepository {
+	return EmployeeRepository{
+		ctx: ctx,
+		db: db,
+	}
 }
 
-func (r *EmployeeRepository) GetEmployeeByMailAddress(ctx context.Context, mailAddress string) (*domainmodel.Employee, error) {
-	employees, err := models.Employees(qm.Where("mail_address=?", mailAddress)).All(ctx, r.db)
+func (r *EmployeeRepository) GetEmployeeByMailAddress(mailAddress string) (*employee.Employee, error) {
+	employees, err := models.Employees(qm.Where("mail_address=?", mailAddress)).All(r.ctx, r.db)
 	if err != nil {
 		return nil, err
 	}

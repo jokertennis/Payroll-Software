@@ -1,12 +1,12 @@
 package basicauth
 
 import (
-	"context"
 	"crypto/sha256"
 	"crypto/subtle"
 	"fmt"
 	"net/http"
-	"usr/local/go/src/main/domain-service/repository"
+	"usr/local/go/src/main/domain-service/repository/administrator_repository"
+	"usr/local/go/src/main/domain-service/repository/employee_repository"
 )
 
 type ExpectedUserInformation struct {
@@ -19,7 +19,7 @@ type Executer struct {
 	Executer string
 }
 
-func BasicAuth(ctx context.Context, employeeRepository repository.EmployeeRepository, administratorRepository repository.AdministratorRepository, executer Executer, httpRequest *http.Request) (statusCode int, errorMessage error) {
+func BasicAuth(employeeRepository employee_repository.EmployeeRepository, administratorRepository administrator_repository.AdministratorRepository, executer Executer, httpRequest *http.Request) (mailAddress string, statusCode int, errorMessage error) {
 	// Extract the mailAddress and password from the request
 	// Authorization header. If no Authentication header is present
 	// or the header value is invalid, then the 'ok' return value
@@ -30,12 +30,12 @@ func BasicAuth(ctx context.Context, employeeRepository repository.EmployeeReposi
 		// Calculate SHA-256 hashes for the provided and expected password.
 		passwordHash := sha256.Sum256([]byte(password))
 
-		expectedUserInformation, err := GetExpectedUserInformation(ctx, employeeRepository, administratorRepository, mailAddress, executer)
+		expectedUserInformation, err := GetExpectedUserInformation(employeeRepository, administratorRepository, mailAddress, executer)
 		if err != nil {
-			return http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
+			return "", http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
 		}
 		if expectedUserInformation == nil {
-			return http.StatusUnauthorized, fmt.Errorf("Unauthorized. Specified mailAddress is not found in registered user datas.")
+			return "", http.StatusUnauthorized, fmt.Errorf("Unauthorized. Specified mailAddress is not found in registered user datas.")
 		}
 
 		expectedPasswordHash := sha256.Sum256([]byte(expectedUserInformation.Password))
@@ -49,9 +49,9 @@ func BasicAuth(ctx context.Context, employeeRepository repository.EmployeeReposi
 
 		// Make sure that the password is correct.
 		if passwordMatch {
-			return 0, nil
+			return mailAddress, 0, nil
 		} else {
-			return http.StatusUnauthorized, fmt.Errorf("Unauthorized. Please check to see if password is correct.")
+			return "", http.StatusUnauthorized, fmt.Errorf("Unauthorized. Please check to see if password is correct.")
 		}
 	}
 
@@ -59,13 +59,13 @@ func BasicAuth(ctx context.Context, employeeRepository repository.EmployeeReposi
 	// then set a WWW-Authenticate header to inform the client
 	// that we expect them to use basic authentication and
 	// send a 401 Unauthorized response.
-	return http.StatusUnauthorized, fmt.Errorf("Unauthorized. Please check to see if Authentication header is not present or invalid.")
+	return "", http.StatusUnauthorized, fmt.Errorf("Unauthorized. Please check to see if Authentication header is not present or invalid.")
 }
 
-func GetExpectedUserInformation(ctx context.Context,  employeeRepository repository.EmployeeRepository, administratorRepository repository.AdministratorRepository, mailAddress string, executer Executer) (*ExpectedUserInformation, error) {
+func GetExpectedUserInformation(employeeRepository employee_repository.EmployeeRepository, administratorRepository administrator_repository.AdministratorRepository, mailAddress string, executer Executer) (*ExpectedUserInformation, error) {
 	switch executer.Executer {
 	case "Employee":
-		employee, err := employeeRepository.GetEmployeeByMailAddress(ctx, mailAddress)
+		employee, err := employeeRepository.GetEmployeeByMailAddress(mailAddress)
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +74,7 @@ func GetExpectedUserInformation(ctx context.Context,  employeeRepository reposit
 		}
 		return &ExpectedUserInformation{employee.MailAddress, employee.Password}, nil
 	case "Administrator":
-		administrator, err := administratorRepository.GetAdministratorByMailAddress(ctx, mailAddress)
+		administrator, err := administratorRepository.GetAdministratorByMailAddress(mailAddress)
 		if err != nil {
 			return nil, err
 		}
