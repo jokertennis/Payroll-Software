@@ -98,6 +98,43 @@ func (o *GetEmployeeSalaryStatementInternalServerErrorBody) UnmarshalBinary(b []
 	return nil
 }
 
+// GetEmployeeSalaryStatementNotFoundBody get employee salary statement not found body
+//
+// swagger:model GetEmployeeSalaryStatementNotFoundBody
+type GetEmployeeSalaryStatementNotFoundBody struct {
+
+	// message
+	Message string `json:"message,omitempty"`
+}
+
+// Validate validates this get employee salary statement not found body
+func (o *GetEmployeeSalaryStatementNotFoundBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this get employee salary statement not found body based on context it is used
+func (o *GetEmployeeSalaryStatementNotFoundBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetEmployeeSalaryStatementNotFoundBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetEmployeeSalaryStatementNotFoundBody) UnmarshalBinary(b []byte) error {
+	var res GetEmployeeSalaryStatementNotFoundBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
 // GetEmployeeSalaryStatementOKBody get employee salary statement o k body
 //
 // swagger:model GetEmployeeSalaryStatementOKBody
@@ -106,8 +143,14 @@ type GetEmployeeSalaryStatementOKBody struct {
 	// 控除の総額
 	AmountOfDeduction int32 `json:"amount_of_deduction,omitempty"`
 
+	// 支給の総額
+	AmountOfEarning int32 `json:"amount_of_earning,omitempty"`
+
 	// deduction details
 	DeductionDetails []*GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0 `json:"deduction_details"`
+
+	// earning details
+	EarningDetails []*GetEmployeeSalaryStatementOKBodyEarningDetailsItems0 `json:"earning_details"`
 
 	// 従業員名
 	NameOfEmployee string `json:"name_of_employee,omitempty"`
@@ -125,6 +168,10 @@ func (o *GetEmployeeSalaryStatementOKBody) Validate(formats strfmt.Registry) err
 	var res []error
 
 	if err := o.validateDeductionDetails(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateEarningDetails(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -164,6 +211,32 @@ func (o *GetEmployeeSalaryStatementOKBody) validateDeductionDetails(formats strf
 	return nil
 }
 
+func (o *GetEmployeeSalaryStatementOKBody) validateEarningDetails(formats strfmt.Registry) error {
+	if swag.IsZero(o.EarningDetails) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(o.EarningDetails); i++ {
+		if swag.IsZero(o.EarningDetails[i]) { // not required
+			continue
+		}
+
+		if o.EarningDetails[i] != nil {
+			if err := o.EarningDetails[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("getEmployeeSalaryStatementOK" + "." + "earning_details" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("getEmployeeSalaryStatementOK" + "." + "earning_details" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (o *GetEmployeeSalaryStatementOKBody) validatePayday(formats strfmt.Registry) error {
 	if swag.IsZero(o.Payday) { // not required
 		return nil
@@ -184,6 +257,10 @@ func (o *GetEmployeeSalaryStatementOKBody) ContextValidate(ctx context.Context, 
 		res = append(res, err)
 	}
 
+	if err := o.contextValidateEarningDetails(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -200,6 +277,26 @@ func (o *GetEmployeeSalaryStatementOKBody) contextValidateDeductionDetails(ctx c
 					return ve.ValidateName("getEmployeeSalaryStatementOK" + "." + "deduction_details" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
 					return ce.ValidateName("getEmployeeSalaryStatementOK" + "." + "deduction_details" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (o *GetEmployeeSalaryStatementOKBody) contextValidateEarningDetails(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(o.EarningDetails); i++ {
+
+		if o.EarningDetails[i] != nil {
+			if err := o.EarningDetails[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("getEmployeeSalaryStatementOK" + "." + "earning_details" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("getEmployeeSalaryStatementOK" + "." + "earning_details" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -236,87 +333,17 @@ type GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0 struct {
 	// 控除詳細の総額
 	AmountOfDeductionDetail int32 `json:"amount_of_deduction_detail,omitempty"`
 
-	// 支給の総額
-	AmountOfEarning int32 `json:"amount_of_earning,omitempty"`
-
-	// earning details
-	EarningDetails []*GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0 `json:"earning_details"`
-
 	// 控除詳細の名目
 	Nominal string `json:"nominal,omitempty"`
 }
 
 // Validate validates this get employee salary statement o k body deduction details items0
 func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := o.validateEarningDetails(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
 	return nil
 }
 
-func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0) validateEarningDetails(formats strfmt.Registry) error {
-	if swag.IsZero(o.EarningDetails) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(o.EarningDetails); i++ {
-		if swag.IsZero(o.EarningDetails[i]) { // not required
-			continue
-		}
-
-		if o.EarningDetails[i] != nil {
-			if err := o.EarningDetails[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("earning_details" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("earning_details" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
-// ContextValidate validate this get employee salary statement o k body deduction details items0 based on the context it is used
+// ContextValidate validates this get employee salary statement o k body deduction details items0 based on context it is used
 func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	var res []error
-
-	if err := o.contextValidateEarningDetails(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0) contextValidateEarningDetails(ctx context.Context, formats strfmt.Registry) error {
-
-	for i := 0; i < len(o.EarningDetails); i++ {
-
-		if o.EarningDetails[i] != nil {
-			if err := o.EarningDetails[i].ContextValidate(ctx, formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("earning_details" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("earning_details" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
 	return nil
 }
 
@@ -338,10 +365,10 @@ func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0) UnmarshalBinary
 	return nil
 }
 
-// GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0 get employee salary statement o k body deduction details items0 earning details items0
+// GetEmployeeSalaryStatementOKBodyEarningDetailsItems0 get employee salary statement o k body earning details items0
 //
-// swagger:model GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0
-type GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0 struct {
+// swagger:model GetEmployeeSalaryStatementOKBodyEarningDetailsItems0
+type GetEmployeeSalaryStatementOKBodyEarningDetailsItems0 struct {
 
 	// 支給詳細の総額
 	AmountOfEarningDetail int32 `json:"amount_of_earning_detail,omitempty"`
@@ -350,18 +377,18 @@ type GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0 
 	Nominal string `json:"nominal,omitempty"`
 }
 
-// Validate validates this get employee salary statement o k body deduction details items0 earning details items0
-func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0) Validate(formats strfmt.Registry) error {
+// Validate validates this get employee salary statement o k body earning details items0
+func (o *GetEmployeeSalaryStatementOKBodyEarningDetailsItems0) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this get employee salary statement o k body deduction details items0 earning details items0 based on context it is used
-func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this get employee salary statement o k body earning details items0 based on context it is used
+func (o *GetEmployeeSalaryStatementOKBodyEarningDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0) MarshalBinary() ([]byte, error) {
+func (o *GetEmployeeSalaryStatementOKBodyEarningDetailsItems0) MarshalBinary() ([]byte, error) {
 	if o == nil {
 		return nil, nil
 	}
@@ -369,8 +396,8 @@ func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsIte
 }
 
 // UnmarshalBinary interface implementation
-func (o *GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0) UnmarshalBinary(b []byte) error {
-	var res GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0EarningDetailsItems0
+func (o *GetEmployeeSalaryStatementOKBodyEarningDetailsItems0) UnmarshalBinary(b []byte) error {
+	var res GetEmployeeSalaryStatementOKBodyEarningDetailsItems0
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

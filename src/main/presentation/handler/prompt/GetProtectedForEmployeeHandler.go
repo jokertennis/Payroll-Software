@@ -35,7 +35,7 @@ func (s *GetEmployeeProtectedHandlerStruct) Handle(params operations.GetEmployee
 	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(ctx, dbInstance)
 	var administratorRepository administrator_repository.AdministratorRepository = &administratorRepositoryStruct
 
-	statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
+	_, statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
 
 	if statusCode == http.StatusUnauthorized {
 		return operations.NewGetEmployeeProtectedUnauthorized().WithPayload(&operations.GetEmployeeProtectedUnauthorizedBody{

@@ -101,6 +101,51 @@ func (o *GetEmployeeSalaryStatementUnauthorized) WriteResponse(rw http.ResponseW
 	}
 }
 
+// GetEmployeeSalaryStatementNotFoundCode is the HTTP code returned for type GetEmployeeSalaryStatementNotFound
+const GetEmployeeSalaryStatementNotFoundCode int = 404
+
+/*
+GetEmployeeSalaryStatementNotFound NotFound
+
+swagger:response getEmployeeSalaryStatementNotFound
+*/
+type GetEmployeeSalaryStatementNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *GetEmployeeSalaryStatementNotFoundBody `json:"body,omitempty"`
+}
+
+// NewGetEmployeeSalaryStatementNotFound creates GetEmployeeSalaryStatementNotFound with default headers values
+func NewGetEmployeeSalaryStatementNotFound() *GetEmployeeSalaryStatementNotFound {
+
+	return &GetEmployeeSalaryStatementNotFound{}
+}
+
+// WithPayload adds the payload to the get employee salary statement not found response
+func (o *GetEmployeeSalaryStatementNotFound) WithPayload(payload *GetEmployeeSalaryStatementNotFoundBody) *GetEmployeeSalaryStatementNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get employee salary statement not found response
+func (o *GetEmployeeSalaryStatementNotFound) SetPayload(payload *GetEmployeeSalaryStatementNotFoundBody) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetEmployeeSalaryStatementNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // GetEmployeeSalaryStatementInternalServerErrorCode is the HTTP code returned for type GetEmployeeSalaryStatementInternalServerError
 const GetEmployeeSalaryStatementInternalServerErrorCode int = 500
 

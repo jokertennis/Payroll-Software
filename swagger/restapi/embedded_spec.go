@@ -153,7 +153,7 @@ func init() {
             "maximum": 3000,
             "minimum": 1500,
             "type": "integer",
-            "format": "int32",
+            "format": "int",
             "description": "欲しい給料明細の年",
             "name": "year",
             "in": "query",
@@ -181,10 +181,21 @@ func init() {
                   "type": "integer",
                   "format": "int32"
                 },
+                "amount_of_earning": {
+                  "description": "支給の総額",
+                  "type": "integer",
+                  "format": "int32"
+                },
                 "deduction_details": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/DeductionDetailsItems0"
+                  }
+                },
+                "earning_details": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EarningDetailsItems0"
                   }
                 },
                 "name_of_employee": {
@@ -205,6 +216,17 @@ func init() {
           },
           "401": {
             "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
             "schema": {
               "type": "object",
               "properties": {
@@ -256,24 +278,13 @@ func init() {
           "type": "integer",
           "format": "int32"
         },
-        "amount_of_earning": {
-          "description": "支給の総額",
-          "type": "integer",
-          "format": "int32"
-        },
-        "earning_details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DeductionDetailsItems0EarningDetailsItems0"
-          }
-        },
         "nominal": {
           "description": "控除詳細の名目",
           "type": "string"
         }
       }
     },
-    "DeductionDetailsItems0EarningDetailsItems0": {
+    "EarningDetailsItems0": {
       "type": "object",
       "properties": {
         "amount_of_earning_detail": {

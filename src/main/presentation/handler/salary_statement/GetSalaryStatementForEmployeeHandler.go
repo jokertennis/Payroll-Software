@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
+	"usr/local/go/src/main/application-service/salary_statement_application_service"
 	"usr/local/go/src/main/domain-service/repository/administrator_repository"
 	"usr/local/go/src/main/domain-service/repository/employee_repository"
 	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
@@ -52,11 +54,51 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 	salaryStatementRepositoryStruct := infrastructure.NewSalaryStatementRepository(ctx, dbInstance)
 	var salaryStatementRepository salary_statement_repository.SalaryStatementRepository = &salaryStatementRepositoryStruct
 
-	result := salary_statement_application_service.
+	result, statusCode, err := salary_statement_application_service.GetSalaryStatementForEmployeeUseCase(employeeRepository, salaryStatementRepository, mailAddress, int(params.Year), time.Month(params.Month))
+	result.EarningDetails
+	if statusCode == http.StatusUnauthorized {
+		return operations.NewGetEmployeeSalaryStatementUnauthorized().WithPayload(&operations.GetEmployeeSalaryStatementUnauthorizedBody{
+			Message: err.Error(),
+		})
+	} else if statusCode == http.StatusNotFound {
+		return operations.NewGetEmployeeSalaryStatementNotFound().WithPayload(&operations.GetEmployeeSalaryStatementNotFoundBody{
+			Message: err.Error(),
+		})
+	} else if statusCode == http.StatusInternalServerError {
+		return operations.NewGetEmployeeSalaryStatementInternalServerError().WithPayload(&operations.GetEmployeeSalaryStatementInternalServerErrorBody{
+			Message: err.Error(),
+		})
+	}
 
-	response := operations.NewGetEmployeeProtectedOK().WithPayload(&operations.GetEmployeeProtectedOKBody{
-		Message: "This is the protected handler",
+	return operations.NewGetEmployeeSalaryStatementOK().WithPayload(&operations.GetEmployeeSalaryStatementOKBody{
+		Payday: result.Payday,
+		TargetPeriod: result.TargetPeriod,
+		AmountOfDeduction: int32(result.AmountOfDeduction),
+		NameOfEmployee: result.NameOfEmployee,
+		AmountOfEarning: int32(result.AmountOfEarning),
+		EarningDetails: MappingEarningDetails(result.EarningDetails),
+		DeductionDetails: MappingDeductionDetails(result.DeductionDetails),
 	})
+}
 
+func MappingEarningDetails(earningDetailsOfResult []salary_statement_application_service.EarningDetail) []*operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0 {
+	var response []*operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0
+	for _, value := range earningDetailsOfResult {
+		response = append(response, &operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0{
+			AmountOfEarningDetail: int32(value.AmountOfEarningDetail),
+			Nominal: value.Nominal,
+		})
+	}
+	return response
+}
+
+func MappingDeductionDetails(deductionDetailsOfResult []salary_statement_application_service.DeductionDetail) []*operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0 {
+	var response []*operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0
+	for _, value := range deductionDetailsOfResult {
+		response = append(response, &operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0{
+			AmountOfDeductionDetail: int32(value.AmountOfDeductionDetail),
+			Nominal: value.Nominal,
+		})
+	}
 	return response
 }

@@ -49,7 +49,7 @@ func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_stat
 		return nil, err
 	}
 
-	salaryStatement, err := salary_statement.NewSalaryStatement(m.ID, *mappingIndividualEarning, *mappingFixedEarning, *mappingIndividualDeduction, *mappingFixedDeduction, m.EmployeeID, m.Nominal, m.Payday, m.TargetPeriod)
+	salaryStatement, err := salary_statement.NewSalaryStatement(m.ID, mappingIndividualEarning, mappingFixedEarning, mappingIndividualDeduction, mappingFixedDeduction, m.EmployeeID, m.Nominal, m.Payday, m.TargetPeriod)
 	if err != nil {
         return nil, err
     }

@@ -16,7 +16,7 @@ import (
 // GetEmployeeSalaryStatementURL generates an URL for the get employee salary statement operation
 type GetEmployeeSalaryStatementURL struct {
 	Month int32
-	Year  int32
+	Year  int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -54,7 +54,7 @@ func (o *GetEmployeeSalaryStatementURL) Build() (*url.URL, error) {
 		qs.Set("month", monthQ)
 	}
 
-	yearQ := swag.FormatInt32(o.Year)
+	yearQ := swag.FormatInt64(o.Year)
 	if yearQ != "" {
 		qs.Set("year", yearQ)
 	}

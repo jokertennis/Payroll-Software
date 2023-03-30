@@ -6,7 +6,7 @@ get:
       description: 欲しい給料明細の年
       required: true
       type: integer
-      format: int32
+      format: int
       minimum: 1500
       maximum: 3000
     - name: month
@@ -37,6 +37,22 @@ get:
           name_of_employee:
             type: string
             description: 従業員名
+          amount_of_earning:
+            type: integer
+            format: int32
+            description: 支給の総額
+          earning_details:
+            type: array
+            items:
+              type: object
+              properties:
+                nominal:
+                  type: string
+                  description: 支給詳細の名目
+                amount_of_earning_detail:
+                  type: integer
+                  format: int32
+                  description: 支給詳細の総額
           deduction_details:
             type: array
             items:
@@ -49,24 +65,15 @@ get:
                   type: integer
                   format: int32
                   description: 控除詳細の総額
-                amount_of_earning:
-                  type: integer
-                  format: int32
-                  description: 支給の総額
-                earning_details:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      nominal:
-                        type: string
-                        description: 支給詳細の名目
-                      amount_of_earning_detail:
-                        type: integer
-                        format: int32
-                        description: 支給詳細の総額
     401:
       description: Unauthorized
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    404:
+      description: NotFound
       schema:
         type: object
         properties:

@@ -1,6 +1,7 @@
 package employee
 
 import (
+	"fmt"
 	"time"
 	"usr/local/go/src/main/domain-model/salary_statement"
 	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
@@ -22,7 +23,10 @@ func NewEmployee(id uint32, companyId uint16, name string, mailAddress string, p
 func (e *Employee) GetSpecificSalaryStatement(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, year int, month time.Month) (_ *salary_statement.SalaryStatement, _ error) {
 	salaryStatement, err := salaryStatementRepository.GetSalaryStatement(e.ID, year, month)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get salary statement.error:%s", err)
+	}
+	if salaryStatement == nil {
+		return nil, nil
 	}
 	return salaryStatement, nil
 }

@@ -46,7 +46,7 @@ type GetEmployeeSalaryStatementParams struct {
 	  Minimum: 1500
 	  In: query
 	*/
-	Year int32
+	Year int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -136,9 +136,9 @@ func (o *GetEmployeeSalaryStatementParams) bindYear(rawData []string, hasKey boo
 		return err
 	}
 
-	value, err := swag.ConvertInt32(raw)
+	value, err := swag.ConvertInt64(raw)
 	if err != nil {
-		return errors.InvalidType("year", "query", "int32", raw)
+		return errors.InvalidType("year", "query", "int64", raw)
 	}
 	o.Year = value
 
@@ -152,11 +152,11 @@ func (o *GetEmployeeSalaryStatementParams) bindYear(rawData []string, hasKey boo
 // validateYear carries on validations for parameter Year
 func (o *GetEmployeeSalaryStatementParams) validateYear(formats strfmt.Registry) error {
 
-	if err := validate.MinimumInt("year", "query", int64(o.Year), 1500, false); err != nil {
+	if err := validate.MinimumInt("year", "query", o.Year, 1500, false); err != nil {
 		return err
 	}
 
-	if err := validate.MaximumInt("year", "query", int64(o.Year), 3000, false); err != nil {
+	if err := validate.MaximumInt("year", "query", o.Year, 3000, false); err != nil {
 		return err
 	}
 
