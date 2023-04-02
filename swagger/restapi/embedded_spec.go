@@ -153,7 +153,7 @@ func init() {
             "maximum": 3000,
             "minimum": 1500,
             "type": "integer",
-            "format": "int",
+            "format": "int32",
             "description": "欲しい給料明細の年",
             "name": "year",
             "in": "query",

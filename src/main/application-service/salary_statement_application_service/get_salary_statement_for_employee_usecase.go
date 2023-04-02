@@ -10,10 +10,12 @@ import (
 	"usr/local/go/src/main/domain-model/individual_earning"
 	"usr/local/go/src/main/domain-service/repository/employee_repository"
 	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+
+	"github.com/go-openapi/strfmt"
 )
 
 type ResultStruct struct {
-	Payday            string
+	Payday            strfmt.DateTime
 	TargetPeriod      string
 	AmountOfDeduction int
 	NameOfEmployee    string
@@ -63,7 +65,7 @@ func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository
 	amountOfDeduction, deductionDetails := MappingAmountOfDeductionAndDeductionDetail(individualDeduction, fixedDeduction)
 	amountOfEarning, earningDetails := MappingAmountOfEarningAndEarningDetail(individualEarning, fixedEarning)
 
-	return MappingResultStruct(salaryStatement.Payday.String(), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
+	return MappingResultStruct(strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
 }
 
 func MappingAmountOfDeductionAndDeductionDetail(individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction) (int, []DeductionDetail) {
@@ -114,7 +116,7 @@ func MappingAmountOfEarningAndEarningDetail(individualEarning *individual_earnin
 	return amountOfEarning, earningDetails
 }
 
-func MappingResultStruct(payday string, targetPeriod string, amountOfDeduction int, nameOfEmployee string, amountOfEarning int, earningDetails []EarningDetail, deductionDetails []DeductionDetail) *ResultStruct {
+func MappingResultStruct(payday strfmt.DateTime, targetPeriod string, amountOfDeduction int, nameOfEmployee string, amountOfEarning int, earningDetails []EarningDetail, deductionDetails []DeductionDetail) *ResultStruct {
 	return &ResultStruct{
 		Payday: payday,
 		TargetPeriod: targetPeriod,

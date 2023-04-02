@@ -55,7 +55,7 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 	var salaryStatementRepository salary_statement_repository.SalaryStatementRepository = &salaryStatementRepositoryStruct
 
 	result, statusCode, err := salary_statement_application_service.GetSalaryStatementForEmployeeUseCase(employeeRepository, salaryStatementRepository, mailAddress, int(params.Year), time.Month(params.Month))
-	result.EarningDetails
+
 	if statusCode == http.StatusUnauthorized {
 		return operations.NewGetEmployeeSalaryStatementUnauthorized().WithPayload(&operations.GetEmployeeSalaryStatementUnauthorizedBody{
 			Message: err.Error(),

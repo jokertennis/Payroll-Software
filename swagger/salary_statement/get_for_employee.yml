@@ -6,7 +6,7 @@ get:
       description: 欲しい給料明細の年
       required: true
       type: integer
-      format: int
+      format: int32
       minimum: 1500
       maximum: 3000
     - name: month
