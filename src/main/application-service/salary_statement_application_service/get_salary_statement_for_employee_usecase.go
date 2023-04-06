@@ -50,7 +50,7 @@ func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository
 	}
 
 	if salaryStatement == nil {
-		return nil, http.StatusNotFound, fmt.Errorf("notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:%s, Year:%d, Month:%d", employee.MailAddress, year, month)
+		return nil, http.StatusNotFound, fmt.Errorf("notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:%s, Year:%d, Month:%d", mailAddress, year, month)
 	}
 
 	individualDeduction, fixedDeduction, err := salaryStatement.GetDeduction()
