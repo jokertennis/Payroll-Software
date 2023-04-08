@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
+	"runtime/debug"
 	"usr/local/go/db"
 	"usr/local/go/src/main/presentation/handler/prompt"
 	"usr/local/go/src/main/presentation/handler/salary_statement"
@@ -16,6 +18,13 @@ import (
 )
 
 func main() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from panic:", r)
+			debug.PrintStack()
+		}
+	}()
+
 	// create context
 	ctx := context.Background()
 
@@ -23,13 +32,13 @@ func main() {
 	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
 	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 	if err != nil {
-		fmt.Printf("failed to create dbInstance. err:%s", err)
+		log.Fatalf("failed to create dbInstance. err:%s", err)
 	}
 
 	// migrate db
 	migrateInstance, errorCreateMigrateInstance := db.CreateMigrateInstance(dbInstance)
 	if errorCreateMigrateInstance != nil {
-		fmt.Printf("failed to create MigrateInstance. err:%s", errorCreateMigrateInstance)
+		log.Fatalf("failed to create MigrateInstance. err:%s", errorCreateMigrateInstance)
 	}
 	if err := migrateInstance.Up(); err != nil {
 		fmt.Printf("failed to up. err:%s", err)
@@ -42,7 +51,7 @@ func main() {
 
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
-		fmt.Printf("failed to create swaggerSpec Object. err:%s", err)
+		log.Fatalf("failed to create swaggerSpec Object. err:%s", err)
 	}
 
 	api := operations.NewSwaggerAPI(swaggerSpec)
@@ -53,7 +62,7 @@ func main() {
 	// defer server.Shutdown()
 
 	if err := server.Serve(); err != nil {
-		fmt.Printf("failed to start server. err:%s", err)
+		log.Fatalf("failed to start server. err:%s", err)
 	}
 }
 

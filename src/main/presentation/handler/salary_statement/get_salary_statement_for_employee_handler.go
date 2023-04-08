@@ -2,8 +2,9 @@ package salary_statement
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 	"time"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
@@ -24,14 +25,24 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 	// create context
 	ctx := context.Background()
 
+	queryParams := params.HTTPRequest.URL.Query()
+	year, err := strconv.Atoi(queryParams.Get("year"))
+	if (err != nil) {
+		log.Fatalf("failed to change type of year.")
+	}
+	month, err := strconv.Atoi(queryParams.Get("month"))
+	if (err != nil) {
+		log.Fatalf("failed to change type of month.")
+	}
+
 	// create dbInstance which is used when accessing db.
 	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
 	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 	if err != nil {
-		fmt.Printf("failed to create dbInstance. err:%s", err)
+		log.Fatalf("failed to create dbInstance. err:%s", err)
 	}
 	
-	administratorExecuter := basicauth.Executer{Executer: "Employee"}
+	employeeExecuter := basicauth.Executer{Executer: "Employee"}
 
 	employeeRepositoryStruct := infrastructure.NewEmployeeRepository(ctx, dbInstance)
 	var employeeRepository employee_repository.EmployeeRepository = &employeeRepositoryStruct
@@ -39,7 +50,7 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(ctx, dbInstance)
 	var administratorRepository administrator_repository.AdministratorRepository = &administratorRepositoryStruct
 
-	mailAddress, statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
+	mailAddress, statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, employeeExecuter, params.HTTPRequest)
 
 	if statusCode == http.StatusUnauthorized {
 		return operations.NewGetEmployeeSalaryStatementUnauthorized().WithPayload(&operations.GetEmployeeSalaryStatementUnauthorizedBody{
@@ -54,7 +65,7 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 	salaryStatementRepositoryStruct := infrastructure.NewSalaryStatementRepository(ctx, dbInstance)
 	var salaryStatementRepository salary_statement_repository.SalaryStatementRepository = &salaryStatementRepositoryStruct
 
-	result, statusCode, err := salary_statement_application_service.GetSalaryStatementForEmployeeUseCase(employeeRepository, salaryStatementRepository, mailAddress, int(params.Year), time.Month(params.Month))
+	result, statusCode, err := salary_statement_application_service.GetSalaryStatementForEmployeeUseCase(employeeRepository, salaryStatementRepository, mailAddress, year, time.Month(month))
 
 	if statusCode == http.StatusUnauthorized {
 		return operations.NewGetEmployeeSalaryStatementUnauthorized().WithPayload(&operations.GetEmployeeSalaryStatementUnauthorizedBody{
@@ -71,6 +82,7 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 	}
 
 	return operations.NewGetEmployeeSalaryStatementOK().WithPayload(&operations.GetEmployeeSalaryStatementOKBody{
+		Nominal: result.Nominal,
 		Payday: result.Payday,
 		TargetPeriod: result.TargetPeriod,
 		AmountOfDeduction: int32(result.AmountOfDeduction),

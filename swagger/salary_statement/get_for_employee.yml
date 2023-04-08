@@ -6,23 +6,20 @@ get:
       description: 欲しい給料明細の年
       required: true
       type: integer
-      format: int32
-      minimum: 1500
-      maximum: 3000
     - name: month
       in: query
       description: 欲しい給料明細の月
       required: true
       type: integer
-      format: int32
-      minimum: 1
-      maximum: 12
   responses:
     200:
       description: OK
       schema:
         type: object
         properties:
+          nominal:
+            type: string
+            description: 給料明細の名目
           payday:
             type: string
             format: date-time

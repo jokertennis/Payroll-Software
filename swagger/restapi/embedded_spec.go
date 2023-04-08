@@ -150,20 +150,14 @@ func init() {
         "description": "特定の年月の給料明細を取得するための従業員向けAPI",
         "parameters": [
           {
-            "maximum": 3000,
-            "minimum": 1500,
             "type": "integer",
-            "format": "int32",
             "description": "欲しい給料明細の年",
             "name": "year",
             "in": "query",
             "required": true
           },
           {
-            "maximum": 12,
-            "minimum": 1,
             "type": "integer",
-            "format": "int32",
             "description": "欲しい給料明細の月",
             "name": "month",
             "in": "query",
@@ -200,6 +194,10 @@ func init() {
                 },
                 "name_of_employee": {
                   "description": "従業員名",
+                  "type": "string"
+                },
+                "nominal": {
+                  "description": "給料明細の名目",
                   "type": "string"
                 },
                 "payday": {

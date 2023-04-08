@@ -35,18 +35,14 @@ type GetEmployeeSalaryStatementParams struct {
 
 	/*欲しい給料明細の月
 	  Required: true
-	  Maximum: 12
-	  Minimum: 1
 	  In: query
 	*/
-	Month int32
+	Month int64
 	/*欲しい給料明細の年
 	  Required: true
-	  Maximum: 3000
-	  Minimum: 1500
 	  In: query
 	*/
-	Year int32
+	Year int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -92,29 +88,11 @@ func (o *GetEmployeeSalaryStatementParams) bindMonth(rawData []string, hasKey bo
 		return err
 	}
 
-	value, err := swag.ConvertInt32(raw)
+	value, err := swag.ConvertInt64(raw)
 	if err != nil {
-		return errors.InvalidType("month", "query", "int32", raw)
+		return errors.InvalidType("month", "query", "int64", raw)
 	}
 	o.Month = value
-
-	if err := o.validateMonth(formats); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// validateMonth carries on validations for parameter Month
-func (o *GetEmployeeSalaryStatementParams) validateMonth(formats strfmt.Registry) error {
-
-	if err := validate.MinimumInt("month", "query", int64(o.Month), 1, false); err != nil {
-		return err
-	}
-
-	if err := validate.MaximumInt("month", "query", int64(o.Month), 12, false); err != nil {
-		return err
-	}
 
 	return nil
 }
@@ -136,29 +114,11 @@ func (o *GetEmployeeSalaryStatementParams) bindYear(rawData []string, hasKey boo
 		return err
 	}
 
-	value, err := swag.ConvertInt32(raw)
+	value, err := swag.ConvertInt64(raw)
 	if err != nil {
-		return errors.InvalidType("year", "query", "int32", raw)
+		return errors.InvalidType("year", "query", "int64", raw)
 	}
 	o.Year = value
-
-	if err := o.validateYear(formats); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// validateYear carries on validations for parameter Year
-func (o *GetEmployeeSalaryStatementParams) validateYear(formats strfmt.Registry) error {
-
-	if err := validate.MinimumInt("year", "query", int64(o.Year), 1500, false); err != nil {
-		return err
-	}
-
-	if err := validate.MaximumInt("year", "query", int64(o.Year), 3000, false); err != nil {
-		return err
-	}
 
 	return nil
 }

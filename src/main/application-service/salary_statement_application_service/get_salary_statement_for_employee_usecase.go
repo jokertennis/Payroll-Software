@@ -15,6 +15,7 @@ import (
 )
 
 type ResultStruct struct {
+	Nominal           string
 	Payday            strfmt.DateTime
 	TargetPeriod      string
 	AmountOfDeduction int
@@ -65,7 +66,7 @@ func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository
 	amountOfDeduction, deductionDetails := MappingAmountOfDeductionAndDeductionDetail(individualDeduction, fixedDeduction)
 	amountOfEarning, earningDetails := MappingAmountOfEarningAndEarningDetail(individualEarning, fixedEarning)
 
-	return MappingResultStruct(strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
+	return MappingResultStruct(salaryStatement.Nominal, strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
 }
 
 func MappingAmountOfDeductionAndDeductionDetail(individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction) (int, []DeductionDetail) {
@@ -116,8 +117,9 @@ func MappingAmountOfEarningAndEarningDetail(individualEarning *individual_earnin
 	return amountOfEarning, earningDetails
 }
 
-func MappingResultStruct(payday strfmt.DateTime, targetPeriod string, amountOfDeduction int, nameOfEmployee string, amountOfEarning int, earningDetails []EarningDetail, deductionDetails []DeductionDetail) *ResultStruct {
+func MappingResultStruct(nominal string, payday strfmt.DateTime, targetPeriod string, amountOfDeduction int, nameOfEmployee string, amountOfEarning int, earningDetails []EarningDetail, deductionDetails []DeductionDetail) *ResultStruct {
 	return &ResultStruct{
+		Nominal: nominal,
 		Payday: payday,
 		TargetPeriod: targetPeriod,
 		AmountOfDeduction: amountOfDeduction,

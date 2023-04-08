@@ -2,7 +2,7 @@ package prompt
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"net/http"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
@@ -24,7 +24,7 @@ func (s *GetAdministratorProtectedHandlerStruct) Handle(params operations.GetAdm
 	dbEnvironment := db.DbEnvironment{Environment: "Develop"}
 	dbInstance, err := db.CreateDbInstance(dbEnvironment)
 	if err != nil {
-		fmt.Printf("failed to create dbInstance. err:%s", err)
+		log.Fatalf("failed to create dbInstance. err:%s", err)
 	}
 	
 	administratorExecuter := basicauth.Executer{Executer: "Administrator"}

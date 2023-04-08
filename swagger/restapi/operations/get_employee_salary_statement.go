@@ -155,6 +155,9 @@ type GetEmployeeSalaryStatementOKBody struct {
 	// 従業員名
 	NameOfEmployee string `json:"name_of_employee,omitempty"`
 
+	// 給料明細の名目
+	Nominal string `json:"nominal,omitempty"`
+
 	// 給料支払い日時
 	// Format: date-time
 	Payday strfmt.DateTime `json:"payday,omitempty"`
