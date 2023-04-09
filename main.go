@@ -18,12 +18,12 @@ import (
 )
 
 func main() {
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Recovered from panic:", r)
-			debug.PrintStack()
-		}
-	}()
+	// defer func() {
+	// 	if r := recover(); r != nil {
+	// 		fmt.Println("Recovered from panic:", r)
+	// 		debug.PrintStack()
+	// 	}
+	// }()
 
 	// create context
 	ctx := context.Background()
