@@ -1,0 +1,85 @@
+get:
+  description: 特定の年月の給料明細を取得するための従業員向けAPI
+  parameters:
+    - name: year
+      in: query
+      description: 欲しい給料明細の年
+      required: true
+      type: integer
+    - name: month
+      in: query
+      description: 欲しい給料明細の月
+      required: true
+      type: integer
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          nominal:
+            type: string
+            description: 給料明細の名目
+          payday:
+            type: string
+            format: date-time
+            description: 給料支払い日時
+          target_period:
+            type: string
+            description: 給料明細の対象期間
+          amount_of_deduction:
+            type: integer
+            format: int32
+            description: 控除の総額
+          name_of_employee:
+            type: string
+            description: 従業員名
+          amount_of_earning:
+            type: integer
+            format: int32
+            description: 支給の総額
+          earning_details:
+            type: array
+            items:
+              type: object
+              properties:
+                nominal:
+                  type: string
+                  description: 支給詳細の名目
+                amount_of_earning_detail:
+                  type: integer
+                  format: int32
+                  description: 支給詳細の総額
+          deduction_details:
+            type: array
+            items:
+              type: object
+              properties:
+                nominal:
+                  type: string
+                  description: 控除詳細の名目
+                amount_of_deduction_detail:
+                  type: integer
+                  format: int32
+                  description: 控除詳細の総額
+    401:
+      description: Unauthorized
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    404:
+      description: NotFound
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    500:
+      description: Internal Server Error
+      schema:
+        type: object
+        properties:
+          message:
+            type: string

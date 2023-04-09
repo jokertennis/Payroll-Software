@@ -1,0 +1,27 @@
+swagger: '2.0'
+info:
+  title: Swagger
+  description: Swagger
+  version: 1.0.0
+schemes:
+  - http
+# consumes: This field indicates the MIME types that the API can accept as input.
+consumes:
+  - application/json
+# produces: This field specifies the MIME types that the API can produce as output.
+produces:
+  - application/json
+paths:
+  /unprotected:
+    $ref: './prompt/unprotected.yml'
+  /employee/protected:
+    $ref: './prompt/protected_for_employee.yml'
+  /employee/salary_statement:
+    $ref: './salary_statement/get_for_employee.yml'
+  /administrator/protected:
+    $ref: './prompt/protected_for_administrator.yml'
+# definitions:
+#   User:
+#     $ref: './users/definitions/user.yml'
+#   Product:
+#     $ref: './products/definitions/product.yml'

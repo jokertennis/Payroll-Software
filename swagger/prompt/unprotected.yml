@@ -1,0 +1,10 @@
+get:
+  description: 誰でも実行できるお試しAPI
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          message:
+            type: string

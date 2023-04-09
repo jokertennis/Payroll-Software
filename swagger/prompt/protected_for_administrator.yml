@@ -1,0 +1,24 @@
+get:
+  description: 登録済みの管理者のみ実行可能なお試しAPI
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    401:
+      description: Unauthorized
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    500:
+      description: Internal Server Error
+      schema:
+        type: object
+        properties:
+          message:
+            type: string

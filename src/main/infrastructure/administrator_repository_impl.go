@@ -4,21 +4,25 @@ import (
 	"context"
 	"database/sql"
 	"usr/local/go/server/gen/models"
-	domainmodel "usr/local/go/src/main/domain-model"
+	"usr/local/go/src/main/domain-model/administrator"
 
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 type AdministratorRepository struct {
+	ctx context.Context
 	db *sql.DB
 }
 
-func NewAdministratorRepository(db *sql.DB) AdministratorRepository {
-	return AdministratorRepository{db: db}
+func NewAdministratorRepository(ctx context.Context, db *sql.DB) AdministratorRepository {
+	return AdministratorRepository{
+		ctx: ctx,
+		db: db,
+	}
 }
 
-func (r *AdministratorRepository) GetAdministratorByMailAddress(ctx context.Context, mailAddress string) (*domainmodel.Administrator, error) {
-	administrators, err := models.Administrators(qm.Where("mail_address=?", mailAddress)).All(ctx, r.db)
+func (r *AdministratorRepository) GetAdministratorByMailAddress(mailAddress string) (*administrator.Administrator, error) {
+	administrators, err := models.Administrators(qm.Where("mail_address=?", mailAddress)).All(r.ctx, r.db)
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +31,4 @@ func (r *AdministratorRepository) GetAdministratorByMailAddress(ctx context.Cont
 	}
 
 	return MappingAdministratorDomainObject(administrators[0])
-}
-
-func MappingAdministratorDomainObject(m *models.Administrator) (*domainmodel.Administrator, error) {
-	administrator, err := domainmodel.NewAdministrator(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
-	if err != nil {
-        return nil, err
-    }
-    return administrator, nil
 }
