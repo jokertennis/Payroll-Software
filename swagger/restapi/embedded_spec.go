@@ -43,6 +43,9 @@ func init() {
     "/employee/salary_statement": {
       "$ref": "./salary_statement/get_for_employee.yml"
     },
+    "/employee/salary_statements": {
+      "$ref": "./salary_statement/get_all_for_employee.yml"
+    },
     "/unprotected": {
       "$ref": "./prompt/unprotected.yml"
     }
@@ -248,6 +251,64 @@ func init() {
         }
       }
     },
+    "/employee/salary_statements": {
+      "get": {
+        "description": "今までもらった給料明細の一覧を取得するための従業員向けAPI",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name_of_employee": {
+                  "description": "従業員名",
+                  "type": "string"
+                },
+                "salary_statements": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/SalaryStatementsItems0"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/unprotected": {
       "get": {
         "description": "誰でも実行できるお試しAPI",
@@ -283,6 +344,74 @@ func init() {
       }
     },
     "EarningDetailsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_earning_detail": {
+          "description": "支給詳細の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "nominal": {
+          "description": "支給詳細の名目",
+          "type": "string"
+        }
+      }
+    },
+    "SalaryStatementsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_deduction": {
+          "description": "控除の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "amount_of_earning": {
+          "description": "支給の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "deduction_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SalaryStatementsItems0DeductionDetailsItems0"
+          }
+        },
+        "earning_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SalaryStatementsItems0EarningDetailsItems0"
+          }
+        },
+        "nominal": {
+          "description": "給料明細の名目",
+          "type": "string"
+        },
+        "payday": {
+          "description": "給料支払い日時",
+          "type": "string",
+          "format": "date-time"
+        },
+        "target_period": {
+          "description": "給料明細の対象期間",
+          "type": "string"
+        }
+      }
+    },
+    "SalaryStatementsItems0DeductionDetailsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_deduction_detail": {
+          "description": "控除詳細の総額",
+          "type": "integer",
+          "format": "int32"
+        },
+        "nominal": {
+          "description": "控除詳細の名目",
+          "type": "string"
+        }
+      }
+    },
+    "SalaryStatementsItems0EarningDetailsItems0": {
       "type": "object",
       "properties": {
         "amount_of_earning_detail": {

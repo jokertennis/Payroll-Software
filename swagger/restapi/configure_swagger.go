@@ -52,6 +52,11 @@ func configureAPI(api *operations.SwaggerAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetEmployeeSalaryStatement has not yet been implemented")
 		})
 	}
+	if api.GetEmployeeSalaryStatementsHandler == nil {
+		api.GetEmployeeSalaryStatementsHandler = operations.GetEmployeeSalaryStatementsHandlerFunc(func(params operations.GetEmployeeSalaryStatementsParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetEmployeeSalaryStatements has not yet been implemented")
+		})
+	}
 	if api.GetUnprotectedHandler == nil {
 		api.GetUnprotectedHandler = operations.GetUnprotectedHandlerFunc(func(params operations.GetUnprotectedParams) middleware.Responder {
 			return middleware.NotImplemented("operation operations.GetUnprotected has not yet been implemented")

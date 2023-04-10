@@ -18,6 +18,8 @@ paths:
     $ref: './prompt/protected_for_employee.yml'
   /employee/salary_statement:
     $ref: './salary_statement/get_for_employee.yml'
+  /employee/salary_statements:
+    $ref: './salary_statement/get_all_for_employee.yml'
   /administrator/protected:
     $ref: './prompt/protected_for_administrator.yml'
 # definitions:
