@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"runtime/debug"
 	"usr/local/go/db"
 	"usr/local/go/src/main/presentation/handler/prompt"
 	"usr/local/go/src/main/presentation/handler/salary_statement"
