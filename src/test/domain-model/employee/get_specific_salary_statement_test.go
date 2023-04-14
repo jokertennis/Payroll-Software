@@ -20,6 +20,10 @@ func (m *salaryStatementRepositoryMock) GetSalaryStatement(employeeId uint32, ye
     return m.FakeGetSalaryStatement(employeeId, yearOfPayday, monthOfPayday)
 }
 
+func (m *salaryStatementRepositoryMock) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement.SalaryStatement, error) {
+	return nil, nil
+}
+
 func TestGetSpecificSalaryStatement(t *testing.T) {
 	type fakesFunctions struct {
         FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error)

@@ -41,6 +41,10 @@ func (m *salaryStatementRepositoryMock) GetSalaryStatement(employeeId uint32, ye
 	return m.FakeGetSalaryStatement(employeeId, yearOfPayday, monthOfPayday)
 }
 
+func (m *salaryStatementRepositoryMock) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement.SalaryStatement, error) {
+	return nil, nil
+}
+
 func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 	type fakesFunctions struct {
 		FakeGetEmployeeByMailAddress   func(mailAddress string) (*employee.Employee, error)
@@ -48,7 +52,7 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 	}
 	cases := map[string]struct {
 		fakesFunctions     fakesFunctions
-		expectedResult     *salary_statement_application_service.ResultStruct
+		expectedResult     *salary_statement_application_service.ResultOfGetSalaryStatementForEmployee
 		expectedStatusCode int
 		expectedError      error
 	}{
@@ -89,18 +93,18 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 					return salaryStatement, nil
 				},
 			},
-			expectedResult: &salary_statement_application_service.ResultStruct{
+			expectedResult: &salary_statement_application_service.ResultOfGetSalaryStatementForEmployee{
 				Nominal:           "2022年2月分給料明細",
 				Payday:            strfmt.DateTime(time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC)),
 				TargetPeriod:      "2022年1月1日~2022年1月31日分",
 				AmountOfDeduction: 15000,
 				NameOfEmployee:    "従業員A",
 				AmountOfEarning:   300000,
-				EarningDetails: []salary_statement_application_service.EarningDetail{
+				EarningDetails: []salary_statement_application_service.EarningDetailOfGetSalaryStatementForEmployee{
 					{Nominal: "スタッフ基本給", AmountOfEarningDetail: 250000},
 					{Nominal: "スタッフ固定残業代", AmountOfEarningDetail: 50000},
 				},
-				DeductionDetails: []salary_statement_application_service.DeductionDetail{
+				DeductionDetails: []salary_statement_application_service.DeductionDetailOfGetSalaryStatementForEmployee{
 					{Nominal: "所得税", AmountOfDeductionDetail: 5000},
 					{Nominal: "住民税", AmountOfDeductionDetail: 10000},
 				},
@@ -145,18 +149,18 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 					return salaryStatement, nil
 				},
 			},
-			expectedResult: &salary_statement_application_service.ResultStruct{
+			expectedResult: &salary_statement_application_service.ResultOfGetSalaryStatementForEmployee{
 				Nominal:           "2022年2月分給料明細",
 				Payday:            strfmt.DateTime(time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC)),
 				TargetPeriod:      "2022年1月1日~2022年1月31日分",
 				AmountOfDeduction: 15000,
 				NameOfEmployee:    "keven",
 				AmountOfEarning:   300000,
-				EarningDetails: []salary_statement_application_service.EarningDetail{
+				EarningDetails: []salary_statement_application_service.EarningDetailOfGetSalaryStatementForEmployee{
 					{Nominal: "基本給", AmountOfEarningDetail: 250000},
 					{Nominal: "固定残業代", AmountOfEarningDetail: 50000},
 				},
-				DeductionDetails: []salary_statement_application_service.DeductionDetail{
+				DeductionDetails: []salary_statement_application_service.DeductionDetailOfGetSalaryStatementForEmployee{
 					{Nominal: "所得税", AmountOfDeductionDetail: 5000},
 					{Nominal: "住民税", AmountOfDeductionDetail: 10000},
 				},
