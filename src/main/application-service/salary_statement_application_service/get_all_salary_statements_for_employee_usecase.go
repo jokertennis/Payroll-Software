@@ -54,7 +54,7 @@ func GetAllSalaryStatementsForEmployeeUseCase(employeeRepository employee_reposi
 	}
 
 	if salaryStatements == nil {
-		return nil, http.StatusNotFound, fmt.Errorf("notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:%s", mailAddress)
+		return nil, http.StatusOK, nil
 	}
 
 	var salaryStatementForEmployeeList []*SalaryStatementForEmployee
