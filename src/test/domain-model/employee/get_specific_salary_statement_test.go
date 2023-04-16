@@ -6,19 +6,10 @@ import (
 	"time"
 	"usr/local/go/src/main/domain-model/employee"
 	"usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	"usr/local/go/src/test/testtool"
 
 	"github.com/stretchr/testify/assert"
 )
-
-type salaryStatementRepositoryMock struct {
-	SalaryStatementRepository salary_statement_repository.SalaryStatementRepository
-	FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error)
-}
-
-func (m *salaryStatementRepositoryMock) GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
-    return m.FakeGetSalaryStatement(employeeId, yearOfPayday, monthOfPayday)
-}
 
 func TestGetSpecificSalaryStatement(t *testing.T) {
 	type fakesFunctions struct {
@@ -70,7 +61,7 @@ func TestGetSpecificSalaryStatement(t *testing.T) {
 	}
 
 	for _, value := range cases {
-		salaryStatementRepository := &salaryStatementRepositoryMock{}
+		salaryStatementRepository := &testtool.SalaryStatementRepositoryMock{}
 		salaryStatementRepository.FakeGetSalaryStatement = value.fakesFunctions.FakeGetSalaryStatement
 		salaryStatement, err := value.employee.GetSpecificSalaryStatement(salaryStatementRepository, 2022, time.May)
 		assert.Equal(t, value.expectedSalaryStatement, salaryStatement)

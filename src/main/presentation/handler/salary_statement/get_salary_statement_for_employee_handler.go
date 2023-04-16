@@ -88,12 +88,12 @@ func (s *GetSalaryStatementForEmployeeHandlerStruct) Handle(params operations.Ge
 		AmountOfDeduction: int32(result.AmountOfDeduction),
 		NameOfEmployee: result.NameOfEmployee,
 		AmountOfEarning: int32(result.AmountOfEarning),
-		EarningDetails: MappingEarningDetails(result.EarningDetails),
-		DeductionDetails: MappingDeductionDetails(result.DeductionDetails),
+		EarningDetails: mappingEarningDetailsOfGetSalaryStatementForEmployee(result.EarningDetails),
+		DeductionDetails: mappingDeductionDetailsOfGetSalaryStatementForEmployee(result.DeductionDetails),
 	})
 }
 
-func MappingEarningDetails(earningDetailsOfResult []salary_statement_application_service.EarningDetail) []*operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0 {
+func mappingEarningDetailsOfGetSalaryStatementForEmployee(earningDetailsOfResult []salary_statement_application_service.EarningDetailOfGetSalaryStatementForEmployee) []*operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0 {
 	var response []*operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0
 	for _, value := range earningDetailsOfResult {
 		response = append(response, &operations.GetEmployeeSalaryStatementOKBodyEarningDetailsItems0{
@@ -104,7 +104,7 @@ func MappingEarningDetails(earningDetailsOfResult []salary_statement_application
 	return response
 }
 
-func MappingDeductionDetails(deductionDetailsOfResult []salary_statement_application_service.DeductionDetail) []*operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0 {
+func mappingDeductionDetailsOfGetSalaryStatementForEmployee(deductionDetailsOfResult []salary_statement_application_service.DeductionDetailOfGetSalaryStatementForEmployee) []*operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0 {
 	var response []*operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0
 	for _, value := range deductionDetailsOfResult {
 		response = append(response, &operations.GetEmployeeSalaryStatementOKBodyDeductionDetailsItems0{

@@ -30,3 +30,14 @@ func (e *Employee) GetSpecificSalaryStatement(salaryStatementRepository salary_s
 	}
 	return salaryStatement, nil
 }
+
+func (e *Employee) GetAllSalaryStatements(salaryStatementRepository salary_statement_repository.SalaryStatementRepository) (_ []*salary_statement.SalaryStatement, _ error) {
+	salaryStatements, err := salaryStatementRepository.GetAllSalaryStatements(e.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get all salary statements.error:%s", err)
+	}
+	if salaryStatements == nil {
+		return nil, nil
+	}
+	return salaryStatements, nil
+}

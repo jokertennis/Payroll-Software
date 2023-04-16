@@ -51,6 +51,9 @@ func NewSwaggerAPI(spec *loads.Document) *SwaggerAPI {
 		GetEmployeeSalaryStatementHandler: GetEmployeeSalaryStatementHandlerFunc(func(params GetEmployeeSalaryStatementParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetEmployeeSalaryStatement has not yet been implemented")
 		}),
+		GetEmployeeSalaryStatementsHandler: GetEmployeeSalaryStatementsHandlerFunc(func(params GetEmployeeSalaryStatementsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetEmployeeSalaryStatements has not yet been implemented")
+		}),
 		GetUnprotectedHandler: GetUnprotectedHandlerFunc(func(params GetUnprotectedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUnprotected has not yet been implemented")
 		}),
@@ -96,6 +99,8 @@ type SwaggerAPI struct {
 	GetEmployeeProtectedHandler GetEmployeeProtectedHandler
 	// GetEmployeeSalaryStatementHandler sets the operation handler for the get employee salary statement operation
 	GetEmployeeSalaryStatementHandler GetEmployeeSalaryStatementHandler
+	// GetEmployeeSalaryStatementsHandler sets the operation handler for the get employee salary statements operation
+	GetEmployeeSalaryStatementsHandler GetEmployeeSalaryStatementsHandler
 	// GetUnprotectedHandler sets the operation handler for the get unprotected operation
 	GetUnprotectedHandler GetUnprotectedHandler
 
@@ -183,6 +188,9 @@ func (o *SwaggerAPI) Validate() error {
 	}
 	if o.GetEmployeeSalaryStatementHandler == nil {
 		unregistered = append(unregistered, "GetEmployeeSalaryStatementHandler")
+	}
+	if o.GetEmployeeSalaryStatementsHandler == nil {
+		unregistered = append(unregistered, "GetEmployeeSalaryStatementsHandler")
 	}
 	if o.GetUnprotectedHandler == nil {
 		unregistered = append(unregistered, "GetUnprotectedHandler")
@@ -287,6 +295,10 @@ func (o *SwaggerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/employee/salary_statement"] = NewGetEmployeeSalaryStatement(o.context, o.GetEmployeeSalaryStatementHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/employee/salary_statements"] = NewGetEmployeeSalaryStatements(o.context, o.GetEmployeeSalaryStatementsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

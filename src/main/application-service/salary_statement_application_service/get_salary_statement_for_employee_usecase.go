@@ -14,28 +14,28 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-type ResultStruct struct {
+type ResultOfGetSalaryStatementForEmployee struct {
 	Nominal           string
 	Payday            strfmt.DateTime
 	TargetPeriod      string
 	AmountOfDeduction int
 	NameOfEmployee    string
 	AmountOfEarning   int
-	EarningDetails    []EarningDetail
-	DeductionDetails  []DeductionDetail
+	EarningDetails    []EarningDetailOfGetSalaryStatementForEmployee
+	DeductionDetails  []DeductionDetailOfGetSalaryStatementForEmployee
 }
 
-type EarningDetail struct {
+type EarningDetailOfGetSalaryStatementForEmployee struct {
 	Nominal                  string
 	AmountOfEarningDetail    int
 }
 
-type DeductionDetail struct {
+type DeductionDetailOfGetSalaryStatementForEmployee struct {
 	Nominal                   string
 	AmountOfDeductionDetail   int
 }
 
-func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository.EmployeeRepository, salaryStatementRepository salary_statement_repository.SalaryStatementRepository, mailAddress string, year int, month time.Month) (result *ResultStruct, statusCode int, errorMessage error){
+func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository.EmployeeRepository, salaryStatementRepository salary_statement_repository.SalaryStatementRepository, mailAddress string, year int, month time.Month) (result *ResultOfGetSalaryStatementForEmployee, statusCode int, errorMessage error) {
 	employee, err := employeeRepository.GetEmployeeByMailAddress(mailAddress)
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
@@ -63,19 +63,19 @@ func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository
 		return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
 	}
 
-	amountOfDeduction, deductionDetails := MappingAmountOfDeductionAndDeductionDetail(individualDeduction, fixedDeduction)
-	amountOfEarning, earningDetails := MappingAmountOfEarningAndEarningDetail(individualEarning, fixedEarning)
+	amountOfDeduction, deductionDetails := mappingAmountOfDeductionAndDeductionDetailOfGetSalaryStatementForEmployee(individualDeduction, fixedDeduction)
+	amountOfEarning, earningDetails := mappingAmountOfEarningAndEarningDetailOfGetSalaryStatementForEmployee(individualEarning, fixedEarning)
 
-	return MappingResultStruct(salaryStatement.Nominal, strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
+	return MappingResultOfGetSalaryStatementForEmployee(salaryStatement.Nominal, strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
 }
 
-func MappingAmountOfDeductionAndDeductionDetail(individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction) (int, []DeductionDetail) {
-	var deductionDetails   []DeductionDetail
+func mappingAmountOfDeductionAndDeductionDetailOfGetSalaryStatementForEmployee(individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction) (int, []DeductionDetailOfGetSalaryStatementForEmployee) {
+	var deductionDetails   []DeductionDetailOfGetSalaryStatementForEmployee
 	var amountOfDeduction  int
 	if individualDeduction != nil {
 		amountOfDeduction = individualDeduction.Amount
 		for _, value := range individualDeduction.IndividualDeductionDetails {
-			deductionDetails = append(deductionDetails, DeductionDetail{
+			deductionDetails = append(deductionDetails, DeductionDetailOfGetSalaryStatementForEmployee{
 				Nominal: value.Nominal,
 				AmountOfDeductionDetail: value.Amount,
 			})
@@ -84,7 +84,7 @@ func MappingAmountOfDeductionAndDeductionDetail(individualDeduction *individual_
 	} else if fixedDeduction != nil {
 		amountOfDeduction = fixedDeduction.Amount
 		for _, value := range fixedDeduction.FixedDeductionDetails {
-			deductionDetails = append(deductionDetails, DeductionDetail{
+			deductionDetails = append(deductionDetails, DeductionDetailOfGetSalaryStatementForEmployee{
 				Nominal: value.Nominal,
 				AmountOfDeductionDetail: value.Amount,
 			})
@@ -93,13 +93,13 @@ func MappingAmountOfDeductionAndDeductionDetail(individualDeduction *individual_
 	return amountOfDeduction, deductionDetails
 }
 
-func MappingAmountOfEarningAndEarningDetail(individualEarning *individual_earning.IndividualEarning, fixedEarning *fixed_earning.FixedEarning) (int, []EarningDetail) {
-	var earningDetails   []EarningDetail
+func mappingAmountOfEarningAndEarningDetailOfGetSalaryStatementForEmployee(individualEarning *individual_earning.IndividualEarning, fixedEarning *fixed_earning.FixedEarning) (int, []EarningDetailOfGetSalaryStatementForEmployee) {
+	var earningDetails   []EarningDetailOfGetSalaryStatementForEmployee
 	var amountOfEarning  int
 	if individualEarning != nil {
 		amountOfEarning = individualEarning.Amount
 		for _, value := range individualEarning.IndividualEarningDetails {
-			earningDetails = append(earningDetails, EarningDetail{
+			earningDetails = append(earningDetails, EarningDetailOfGetSalaryStatementForEmployee{
 				Nominal: value.Nominal,
 				AmountOfEarningDetail: value.Amount,
 			})
@@ -108,7 +108,7 @@ func MappingAmountOfEarningAndEarningDetail(individualEarning *individual_earnin
 	} else if fixedEarning != nil {
 		amountOfEarning = fixedEarning.Amount
 		for _, value := range fixedEarning.FixedEarningDetails {
-			earningDetails = append(earningDetails, EarningDetail{
+			earningDetails = append(earningDetails, EarningDetailOfGetSalaryStatementForEmployee{
 				Nominal: value.Nominal,
 				AmountOfEarningDetail: value.Amount,
 			})
@@ -117,8 +117,8 @@ func MappingAmountOfEarningAndEarningDetail(individualEarning *individual_earnin
 	return amountOfEarning, earningDetails
 }
 
-func MappingResultStruct(nominal string, payday strfmt.DateTime, targetPeriod string, amountOfDeduction int, nameOfEmployee string, amountOfEarning int, earningDetails []EarningDetail, deductionDetails []DeductionDetail) *ResultStruct {
-	return &ResultStruct{
+func MappingResultOfGetSalaryStatementForEmployee(nominal string, payday strfmt.DateTime, targetPeriod string, amountOfDeduction int, nameOfEmployee string, amountOfEarning int, earningDetails []EarningDetailOfGetSalaryStatementForEmployee, deductionDetails []DeductionDetailOfGetSalaryStatementForEmployee) *ResultOfGetSalaryStatementForEmployee {
+	return &ResultOfGetSalaryStatementForEmployee{
 		Nominal: nominal,
 		Payday: payday,
 		TargetPeriod: targetPeriod,
