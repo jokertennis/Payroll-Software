@@ -59,10 +59,6 @@ func (s *GetAllSalaryStatementsForEmployeeHandlerStruct) Handle(params operation
 		return operations.NewGetEmployeeSalaryStatementsUnauthorized().WithPayload(&operations.GetEmployeeSalaryStatementsUnauthorizedBody{
 			Message: err.Error(),
 		})
-	} else if statusCode == http.StatusNotFound {
-		return operations.NewGetEmployeeSalaryStatementsNotFound().WithPayload(&operations.GetEmployeeSalaryStatementsNotFoundBody{
-			Message: err.Error(),
-		})
 	} else if statusCode == http.StatusInternalServerError {
 		return operations.NewGetEmployeeSalaryStatementsInternalServerError().WithPayload(&operations.GetEmployeeSalaryStatementsInternalServerErrorBody{
 			Message: err.Error(),
@@ -76,6 +72,9 @@ func (s *GetAllSalaryStatementsForEmployeeHandlerStruct) Handle(params operation
 }
 
 func mappingSalaryStatementsOfGetAllSalaryStatementsForEmployee(salaryStatementForEmployeeList []*salary_statement_application_service.SalaryStatementForEmployee) []*operations.GetEmployeeSalaryStatementsOKBodySalaryStatementsItems0 {
+	if salaryStatementForEmployeeList == nil {
+		return nil
+	}
 	var response []*operations.GetEmployeeSalaryStatementsOKBodySalaryStatementsItems0
 	for _, value := range salaryStatementForEmployeeList {
 		response = append(response, &operations.GetEmployeeSalaryStatementsOKBodySalaryStatementsItems0{

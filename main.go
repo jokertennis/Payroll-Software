@@ -17,13 +17,6 @@ import (
 )
 
 func main() {
-	// defer func() {
-	// 	if r := recover(); r != nil {
-	// 		fmt.Println("Recovered from panic:", r)
-	// 		debug.PrintStack()
-	// 	}
-	// }()
-
 	// create context
 	ctx := context.Background()
 
@@ -81,4 +74,8 @@ func configureAPI(api *operations.SwaggerAPI, ctx context.Context, dbInstance *s
 	getSalaryStatementForEmployeeHandlerStruct := salary_statement.GetSalaryStatementForEmployeeHandlerStruct{}
 	var getSalaryStatementForEmployeeHandler operations.GetEmployeeSalaryStatementHandler = &getSalaryStatementForEmployeeHandlerStruct
 	api.GetEmployeeSalaryStatementHandler = getSalaryStatementForEmployeeHandler
+
+	getAllSalaryStatementsForEmployeeHandlerStruct := salary_statement.GetAllSalaryStatementsForEmployeeHandlerStruct{}
+	var getAllSalaryStatementsForEmployeeHandler operations.GetEmployeeSalaryStatementsHandler = &getAllSalaryStatementsForEmployeeHandlerStruct
+	api.GetEmployeeSalaryStatementsHandler = getAllSalaryStatementsForEmployeeHandler
 }

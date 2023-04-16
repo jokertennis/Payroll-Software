@@ -284,17 +284,6 @@ func init() {
               }
             }
           },
-          "404": {
-            "description": "NotFound",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error",
             "schema": {

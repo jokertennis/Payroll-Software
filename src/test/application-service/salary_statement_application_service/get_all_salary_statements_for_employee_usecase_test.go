@@ -33,7 +33,7 @@ func TestGetAllSalaryStatementsForEmployeeUseCase(t *testing.T) {
 		expectedStatusCode int
 		expectedError      error
 	}{
-		"Successfully get Result data which has multiple salary statements..Error has not occurred.": {
+		"Successfully get Result data which has multiple salary statements.Error has not occurred.": {
 			fakesFunctions: fakesFunctions{
 				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
 					employee := &employee.Employee{ID: 1, Name: "従業員A"}

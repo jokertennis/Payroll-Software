@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"testing"
 	"time"
 	"usr/local/go/db"
@@ -16,13 +15,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
-func TestMain(m *testing.M) {
-	code := m.Run()
-
-	os.Exit(code)
-}
-
-func createDataForTestOfGetSalaryStatementForEmployeeHandler(ctx context.Context, db boil.ContextExecutor) error {
+func createDataForTestOfGetAllSalaryStatementsForEmployeeHandler(ctx context.Context, db boil.ContextExecutor) error {
 	companies := []models.Company{
 		{ID: 1, Name: "株式会社川田"},
 		{ID: 2, Name: "株式会社kawata"},
@@ -38,9 +31,7 @@ func createDataForTestOfGetSalaryStatementForEmployeeHandler(ctx context.Context
 		{ID: 1, CompanyID: 1, Name: "Potter", MailAddress: "potter@example.com", Password: "testpass"},
 		{ID: 2, CompanyID: 1, Name: "Joves", MailAddress: "joves@example.com", Password: "testpass"},
 		{ID: 3, CompanyID: 1, Name: "Bob", MailAddress: "bob@example.com", Password: "testpass"},
-		{ID: 4, CompanyID: 1, Name: "Yumi", MailAddress: "yumi@example.com", Password: "testpass"},
-		{ID: 5, CompanyID: 1, Name: "Joney", MailAddress: "joney@example.com", Password: "testpass"},
-	}
+		{ID: 4, CompanyID: 1, Name: "Yumi", MailAddress: "yumi@example.com", Password: "testpass"}}
 
 	for _, employee := range employees {
 		if err := employee.Insert(ctx, db, boil.Infer()); err != nil {
@@ -161,14 +152,10 @@ func createDataForTestOfGetSalaryStatementForEmployeeHandler(ctx context.Context
 
 	salary_statements := []models.SalaryStatement{
 		{ID: 1, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
-		{ID: 2, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年11月31日"},
-		{ID: 3, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-		{ID: 4, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-		{ID: 5, EmployeeID: 3, Nominal: "2010年2月 給与明細", Payday: time.Date(2010, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2010年1月1日~2010年1月31日"},
-		{ID: 6, IndividualEarningID: null.Uint32{Uint32: 1, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 2, Nominal: "2022年3月 給与明細", Payday: time.Date(2022, 3, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年2月1日~2022年2月28日"},
-		{ID: 7, IndividualEarningID: null.Uint32{Uint32: 2, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年4月 給与明細", Payday: time.Date(2022, 4, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年3月1日~2022年3月31日"},
-		{ID: 8, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 5, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-		{ID: 9, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 5, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+		{ID: 2, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+		{ID: 3, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+		{ID: 4, EmployeeID: 3, Nominal: "2010年2月 給与明細", Payday: time.Date(2010, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2010年1月1日~2010年1月31日"},
+		{ID: 5, IndividualEarningID: null.Uint32{Uint32: 1, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 2, Nominal: "2022年3月 給与明細", Payday: time.Date(2022, 3, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年2月1日~2022年2月28日"},
 	}
 
 	for _, salary_statement := range salary_statements {
@@ -180,84 +167,40 @@ func createDataForTestOfGetSalaryStatementForEmployeeHandler(ctx context.Context
 	return nil
 }
 
-func TestGetSalaryStatementForEmployeeHandler(t *testing.T) {
+func TestGetAllSalaryStatementsForEmployeeHandler(t *testing.T) {
 	cases := map[string]struct {
 		email              string
 		password           string
-		year               string
-		month              string
 		expectedStatusCode int
 		expectedResponse   string
 	}{
-		"execute by registered employee.salary_statement to be obtained has fixed_earning and fixed_deduction datas.": {
-			email:              "potter@example.com",
+		"registered employee successfully get multiple salary statements.": {
+			email:              "joves@example.com",
 			password:           "testpass",
-			year:               "2022",
-			month:              "2",
 			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "{\"amount_of_deduction\":60000,\"amount_of_earning\":300000,\"deduction_details\":[{\"amount_of_deduction_detail\":12000,\"nominal\":\"健康保険料\"},{\"amount_of_deduction_detail\":20000,\"nominal\":\"厚生年金保険料\"},{\"amount_of_deduction_detail\":300,\"nominal\":\"雇用保険料\"},{\"amount_of_deduction_detail\":5000,\"nominal\":\"所得税\"},{\"amount_of_deduction_detail\":22700,\"nominal\":\"住民税\"}],\"earning_details\":[{\"amount_of_earning_detail\":250000,\"nominal\":\"基本給\"},{\"amount_of_earning_detail\":50000,\"nominal\":\"固定残業代\"}],\"name_of_employee\":\"Potter\",\"nominal\":\"2022年2月 給与明細\",\"payday\":\"2022-02-19T00:00:00.000Z\",\"target_period\":\"2022年1月1日~2022年1月31日\"}\n",
+			expectedResponse:   "{\"name_of_employee\":\"Joves\",\"salary_statements\":[{\"amount_of_deduction\":70000,\"amount_of_earning\":350000,\"deduction_details\":[{\"amount_of_deduction_detail\":13000,\"nominal\":\"健康保険料\"},{\"amount_of_deduction_detail\":21000,\"nominal\":\"厚生年金保険料\"},{\"amount_of_deduction_detail\":500,\"nominal\":\"雇用保険料\"},{\"amount_of_deduction_detail\":6000,\"nominal\":\"所得税\"},{\"amount_of_deduction_detail\":29500,\"nominal\":\"住民税\"}],\"earning_details\":[{\"amount_of_earning_detail\":250000,\"nominal\":\"基本給\"},{\"amount_of_earning_detail\":50000,\"nominal\":\"固定残業代\"},{\"amount_of_earning_detail\":50000,\"nominal\":\"家族手当(1人分)\"}],\"nominal\":\"2022年2月 給与明細\",\"payday\":\"2022-02-19T00:00:00.000Z\",\"target_period\":\"2022年1月1日~2022年1月31日\"},{\"amount_of_deduction\":60000,\"amount_of_earning\":300000,\"deduction_details\":[{\"amount_of_deduction_detail\":12000,\"nominal\":\"健康保険料\"},{\"amount_of_deduction_detail\":20000,\"nominal\":\"厚生年金保険料\"},{\"amount_of_deduction_detail\":300,\"nominal\":\"雇用保険料\"},{\"amount_of_deduction_detail\":5000,\"nominal\":\"所得税\"},{\"amount_of_deduction_detail\":22700,\"nominal\":\"住民税\"}],\"earning_details\":[{\"amount_of_earning_detail\":250000,\"nominal\":\"基本給\"},{\"amount_of_earning_detail\":20000,\"nominal\":\"住宅手当\"},{\"amount_of_earning_detail\":30000,\"nominal\":\"通勤手当/非課税\"}],\"nominal\":\"2022年3月 給与明細\",\"payday\":\"2022-03-19T00:00:00.000Z\",\"target_period\":\"2022年2月1日~2022年2月28日\"}]}\n",
 		},
-		"execute by registered employee.salary_statement to be obtained has individual_earning and individual_deduction datas.": {
-			email:              "joves@example.com",
-			password:           "testpass",
-			year:               "2022",
-			month:              "3",
-			expectedStatusCode: http.StatusOK,
-			expectedResponse:   "{\"amount_of_deduction\":60000,\"amount_of_earning\":300000,\"deduction_details\":[{\"amount_of_deduction_detail\":12000,\"nominal\":\"健康保険料\"},{\"amount_of_deduction_detail\":20000,\"nominal\":\"厚生年金保険料\"},{\"amount_of_deduction_detail\":300,\"nominal\":\"雇用保険料\"},{\"amount_of_deduction_detail\":5000,\"nominal\":\"所得税\"},{\"amount_of_deduction_detail\":22700,\"nominal\":\"住民税\"}],\"earning_details\":[{\"amount_of_earning_detail\":250000,\"nominal\":\"基本給\"},{\"amount_of_earning_detail\":20000,\"nominal\":\"住宅手当\"},{\"amount_of_earning_detail\":30000,\"nominal\":\"通勤手当/非課税\"}],\"name_of_employee\":\"Joves\",\"nominal\":\"2022年3月 給与明細\",\"payday\":\"2022-03-19T00:00:00.000Z\",\"target_period\":\"2022年2月1日~2022年2月28日\"}\n",
-		},
-		"not found salary_statement which has specified year and month.year=1900,month=2": {
-			email:              "joves@example.com",
-			password:           "testpass",
-			year:               "1900",
-			month:              "2",
-			expectedStatusCode: http.StatusNotFound,
-			expectedResponse:   "{\"message\":\"notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:joves@example.com, Year:1900, Month:2\"}\n",
-		},
-		"not found salary_statement which has specified year and month.year=2500,month=2": {
-			email:              "joves@example.com",
-			password:           "testpass",
-			year:               "2500",
-			month:              "2",
-			expectedStatusCode: http.StatusNotFound,
-			expectedResponse:   "{\"message\":\"notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:joves@example.com, Year:2500, Month:2\"}\n",
-		},
-		"execute by registered employee that don't have any salary statement.": {
+		"registered employee that don't have any salary statement.": {
 			email:              "yumi@example.com",
 			password:           "testpass",
-			year:               "2022",
-			month:              "2",
-		 expectedStatusCode: http.StatusNotFound,
-		 expectedResponse:   "{\"message\":\"notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:yumi@example.com, Year:2022, Month:2\"}\n",
-		},
-		"multiple salary statement which are matched specified year and month are found.": {
-			email:              "joney@example.com",
-			password:           "testpass",
-			year:               "2022",
-			month:              "2",
-			expectedStatusCode: http.StatusInternalServerError,
-			expectedResponse:   "{\"message\":\"internalServerError:error:failed to get salary statement.error:multiple salary statement were found.range of payday:2022-02-01 00:00:00 +0000 UTC~2022-03-01 00:00:00 +0000 UTC\"}\n",
+		 expectedStatusCode:    http.StatusOK,
+		 expectedResponse:      "{\"name_of_employee\":\"Yumi\",\"salary_statements\":null}\n",
 		},
 		"internal server error has occurred.": {
 			email:              "bob@example.com",
 			password:           "testpass",
-			year:               "2010",
-			month:              "2",
 			expectedStatusCode: http.StatusInternalServerError,
-			expectedResponse:   "{\"message\":\"internalServerError:error:failed to get salary statement.error:neither IndividualDeduction nor FixedDeduction was not found.SalaryStatementId:5\"}\n",
+			expectedResponse:   "{\"message\":\"internalServerError:error:failed to get all salary statements.error:neither IndividualDeduction nor FixedDeduction was not found.SalaryStatementId:4\"}\n",
 		},
 		"execute by registered administrator": {
 			email:              "test.administrator@example.com",
 			password:           "testpass",
-			year:               "2022",
-			month:              "2",
 			expectedStatusCode: http.StatusUnauthorized,
 			expectedResponse:   "{\"message\":\"Unauthorized. Specified mailAddress is not found in registered user datas.\"}\n",
 		},
 		"Authentication header is not present": {
 			email:              "",
 			password:           "",
-			year:               "2022",
-			month:              "2",
 			expectedStatusCode: http.StatusUnauthorized,
 			expectedResponse:   "{\"message\":\"Unauthorized. Please check to see if Authentication header is not present or invalid.\"}\n",
 		},
@@ -265,8 +208,6 @@ func TestGetSalaryStatementForEmployeeHandler(t *testing.T) {
 			email:              "potter@example.com",
 			password:           "incorrectpassword",
 			expectedStatusCode: http.StatusUnauthorized,
-			year:               "2010",
-			month:              "2",
 			expectedResponse:   "{\"message\":\"Unauthorized. Please check to see if password is correct.\"}\n",
 		},
 	}
@@ -282,7 +223,7 @@ func TestGetSalaryStatementForEmployeeHandler(t *testing.T) {
 	_ = db.ResetDb(ctx, dbInstance)
 
 	// executed creating test data.
-	err := createDataForTestOfGetSalaryStatementForEmployeeHandler(ctx, dbInstance)
+	err := createDataForTestOfGetAllSalaryStatementsForEmployeeHandler(ctx, dbInstance)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -295,13 +236,8 @@ func TestGetSalaryStatementForEmployeeHandler(t *testing.T) {
 
 	for _, value := range cases {
 		
-		req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/employee/salary_statement", nil)
+		req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/employee/salary_statements", nil)
 		assert.Nil(t, err)
-
-		q := req.URL.Query()
-		q.Add("year", value.year)
-		q.Add("month", value.month)
-		req.URL.RawQuery = q.Encode()
 
 		if value.email == "" && value.password == "" {
 			req.Header = http.Header{}

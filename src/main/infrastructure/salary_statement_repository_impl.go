@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
 	"usr/local/go/server/gen/models"
 	"usr/local/go/src/main/domain-model/salary_statement"
@@ -43,6 +44,9 @@ func (r *SalaryStatementRepository) GetSalaryStatement(employeeId uint32, yearOf
 	}
 	if salaryStatements == nil {
 		return nil, nil
+	}
+	if len(salaryStatements) >= 2 {
+		return nil, fmt.Errorf("multiple salary statement were found.range of payday:%s~%s", start, end)
 	}
 	return MappingSalaryStatementDomainObject(salaryStatements[0])
 }

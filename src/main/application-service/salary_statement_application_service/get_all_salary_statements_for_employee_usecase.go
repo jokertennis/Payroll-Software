@@ -54,7 +54,7 @@ func GetAllSalaryStatementsForEmployeeUseCase(employeeRepository employee_reposi
 	}
 
 	if salaryStatements == nil {
-		return nil, http.StatusOK, nil
+		return &ResultOfGetAllSalaryStatementsForEmployee{NameOfEmployee: employee.Name, SalaryStatementForEmployeeList: nil}, http.StatusOK, nil
 	}
 
 	var salaryStatementForEmployeeList []*SalaryStatementForEmployee

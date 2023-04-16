@@ -98,43 +98,6 @@ func (o *GetEmployeeSalaryStatementsInternalServerErrorBody) UnmarshalBinary(b [
 	return nil
 }
 
-// GetEmployeeSalaryStatementsNotFoundBody get employee salary statements not found body
-//
-// swagger:model GetEmployeeSalaryStatementsNotFoundBody
-type GetEmployeeSalaryStatementsNotFoundBody struct {
-
-	// message
-	Message string `json:"message,omitempty"`
-}
-
-// Validate validates this get employee salary statements not found body
-func (o *GetEmployeeSalaryStatementsNotFoundBody) Validate(formats strfmt.Registry) error {
-	return nil
-}
-
-// ContextValidate validates this get employee salary statements not found body based on context it is used
-func (o *GetEmployeeSalaryStatementsNotFoundBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	return nil
-}
-
-// MarshalBinary interface implementation
-func (o *GetEmployeeSalaryStatementsNotFoundBody) MarshalBinary() ([]byte, error) {
-	if o == nil {
-		return nil, nil
-	}
-	return swag.WriteJSON(o)
-}
-
-// UnmarshalBinary interface implementation
-func (o *GetEmployeeSalaryStatementsNotFoundBody) UnmarshalBinary(b []byte) error {
-	var res GetEmployeeSalaryStatementsNotFoundBody
-	if err := swag.ReadJSON(b, &res); err != nil {
-		return err
-	}
-	*o = res
-	return nil
-}
-
 // GetEmployeeSalaryStatementsOKBody get employee salary statements o k body
 //
 // swagger:model GetEmployeeSalaryStatementsOKBody
