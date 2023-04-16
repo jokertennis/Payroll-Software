@@ -189,7 +189,7 @@ func TestGetAllSalaryStatementsForEmployeeUseCase(t *testing.T) {
 					return nil, nil
 				},
 			},
-			expectedResult:     nil,
+			expectedResult:     &salary_statement_application_service.ResultOfGetAllSalaryStatementsForEmployee{NameOfEmployee: "keven", SalaryStatementForEmployeeList: nil},
 			expectedStatusCode: http.StatusOK,
 			expectedError:      nil,
 		},
