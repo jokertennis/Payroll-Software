@@ -57,6 +57,9 @@ func NewSwaggerAPI(spec *loads.Document) *SwaggerAPI {
 		GetUnprotectedHandler: GetUnprotectedHandlerFunc(func(params GetUnprotectedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUnprotected has not yet been implemented")
 		}),
+		PostAdministratorSalaryStatementIndividualHandler: PostAdministratorSalaryStatementIndividualHandlerFunc(func(params PostAdministratorSalaryStatementIndividualParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostAdministratorSalaryStatementIndividual has not yet been implemented")
+		}),
 	}
 }
 
@@ -103,6 +106,8 @@ type SwaggerAPI struct {
 	GetEmployeeSalaryStatementsHandler GetEmployeeSalaryStatementsHandler
 	// GetUnprotectedHandler sets the operation handler for the get unprotected operation
 	GetUnprotectedHandler GetUnprotectedHandler
+	// PostAdministratorSalaryStatementIndividualHandler sets the operation handler for the post administrator salary statement individual operation
+	PostAdministratorSalaryStatementIndividualHandler PostAdministratorSalaryStatementIndividualHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -194,6 +199,9 @@ func (o *SwaggerAPI) Validate() error {
 	}
 	if o.GetUnprotectedHandler == nil {
 		unregistered = append(unregistered, "GetUnprotectedHandler")
+	}
+	if o.PostAdministratorSalaryStatementIndividualHandler == nil {
+		unregistered = append(unregistered, "PostAdministratorSalaryStatementIndividualHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -303,6 +311,10 @@ func (o *SwaggerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/unprotected"] = NewGetUnprotected(o.context, o.GetUnprotectedHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/administrator/salary_statement_individual"] = NewPostAdministratorSalaryStatementIndividual(o.context, o.PostAdministratorSalaryStatementIndividualHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
