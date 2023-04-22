@@ -1,4 +1,4 @@
-package individual_earning_detail
+package individual_earning_detail_domain_model
 
 type IndividualEarningDetail struct {
 	ID                    uint32

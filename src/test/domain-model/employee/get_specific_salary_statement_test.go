@@ -13,33 +13,33 @@ import (
 
 func TestGetSpecificSalaryStatement(t *testing.T) {
 	type fakesFunctions struct {
-        FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error)
+        FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error)
     }
 	cases := map[string]struct {
-		employee                  *employee.Employee
+		employee                  *employee_domain_model.Employee
 		fakesFunctions            fakesFunctions
-		expectedSalaryStatement   *salary_statement.SalaryStatement
+		expectedSalaryStatement   *salary_statement_domain_model.SalaryStatement
 		expectedError             error
 	}{
 		"Successfully get SalaryStatement.Error has not occurred.": {
-			employee: &employee.Employee{
+			employee: &employee_domain_model.Employee{
 				ID: 1,
 			},
 			fakesFunctions: fakesFunctions{
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
-                    salaryStatement := &salary_statement.SalaryStatement{ID: 1}
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
+                    salaryStatement := &salary_statement_domain_model.SalaryStatement{ID: 1}
                     return salaryStatement, nil
                 },
 			},
-			expectedSalaryStatement: &salary_statement.SalaryStatement{ID: 1},
+			expectedSalaryStatement: &salary_statement_domain_model.SalaryStatement{ID: 1},
 			expectedError: nil,
 		},
 		"SalaryStatement that match the search criteria was not found.Error has not occurred.": {
-			employee: &employee.Employee{
+			employee: &employee_domain_model.Employee{
 				ID: 1,
 			},
 			fakesFunctions: fakesFunctions{
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
                     return nil, nil
                 },
 			},
@@ -47,11 +47,11 @@ func TestGetSpecificSalaryStatement(t *testing.T) {
 			expectedError: nil,
 		},
 		"error has occurred.": {
-			employee: &employee.Employee{
+			employee: &employee_domain_model.Employee{
 				ID: 1,
 			},
 			fakesFunctions: fakesFunctions{
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
                     return nil, fmt.Errorf("cannot connect db.")
                 },
 			},

@@ -23,7 +23,7 @@ func NewSalaryStatementRepository(ctx context.Context, db *sql.DB) SalaryStateme
 	}
 }
 
-func (r *SalaryStatementRepository) GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+func (r *SalaryStatementRepository) GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 	start := time.Date(yearOfPayday, monthOfPayday, 1, 0, 0, 0, 0, time.UTC) // 年月の最初の日時
 	end := start.AddDate(0, 1, 0) // 年月の最後の日時
 	salaryStatements, err := models.SalaryStatements(
@@ -51,7 +51,7 @@ func (r *SalaryStatementRepository) GetSalaryStatement(employeeId uint32, yearOf
 	return MappingSalaryStatementDomainObject(salaryStatements[0])
 }
 
-func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement.SalaryStatement, error) {
+func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement_domain_model.SalaryStatement, error) {
 	salaryStatements, err := models.SalaryStatements(
 		qm.Load(models.SalaryStatementRels.IndividualEarning),
 		qm.Load(models.SalaryStatementRels.FixedEarning),
@@ -70,7 +70,7 @@ func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([
 		return nil, nil
 	}
 
-	var salaryStatementDomainObjectList []*salary_statement.SalaryStatement 
+	var salaryStatementDomainObjectList []*salary_statement_domain_model.SalaryStatement 
 	for _, salaryStatement := range salaryStatements {
 		salaryStatementDomainObject, err := MappingSalaryStatementDomainObject(salaryStatement)
 		if err != nil {

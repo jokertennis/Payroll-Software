@@ -24,8 +24,8 @@ import (
 
 func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 	type fakesFunctions struct {
-		FakeGetEmployeeByMailAddress   func(mailAddress string) (*employee.Employee, error)
-		FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error)
+		FakeGetEmployeeByMailAddress   func(mailAddress string) (*employee_domain_model.Employee, error)
+		FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error)
 	}
 	cases := map[string]struct {
 		fakesFunctions     fakesFunctions
@@ -35,28 +35,28 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 	}{
 		"Successfully get Result data when salary statement has individual earning and individual deduction.Error has not occurred.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
-					employee := &employee.Employee{ID: 1, Name: "従業員A"}
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
+					employee := &employee_domain_model.Employee{ID: 1, Name: "従業員A"}
 					return employee, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
-					salaryStatement := &salary_statement.SalaryStatement{
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
+					salaryStatement := &salary_statement_domain_model.SalaryStatement{
 						ID: 1,
-						IndividualEarning: &individual_earning.IndividualEarning{
+						IndividualEarning: &individual_earning_domain_model.IndividualEarning{
 							ID:      1,
 							Amount:  300000,
 							Nominal: "スタッフ支給総額",
-							IndividualEarningDetails: []individual_earning_detail.IndividualEarningDetail{
+							IndividualEarningDetails: []individual_earning_detail_domain_model.IndividualEarningDetail{
 								{ID: 1, IndividualEarningID: 1, Nominal: "スタッフ基本給", Amount: 250000},
 								{ID: 2, IndividualEarningID: 1, Nominal: "スタッフ固定残業代", Amount: 50000},
 							},
 						},
 						FixedEarning: nil,
-						IndividualDeduction: &individual_deduction.IndividualDeduction{
+						IndividualDeduction: &individual_deduction_domain_model.IndividualDeduction{
 							ID:      1,
 							Amount:  15000,
 							Nominal: "スタッフ控除総額",
-							IndividualDeductionDetails: []individual_deduction_detail.IndividualDeductionDetail{
+							IndividualDeductionDetails: []individual_deduction_detail_domain_model.IndividualDeductionDetail{
 								{ID: 1, IndividualDeductionID: 1, Nominal: "所得税", Amount: 5000},
 								{ID: 2, IndividualDeductionID: 1, Nominal: "住民税", Amount: 10000},
 							},
@@ -91,29 +91,29 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Successfully get Result data when salary statement has fixed earning and fixed deduction.Error has not occurred.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
-					employee := &employee.Employee{ID: 1, Name: "keven"}
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
+					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
 					return employee, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
-					salaryStatement := &salary_statement.SalaryStatement{
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
+					salaryStatement := &salary_statement_domain_model.SalaryStatement{
 						ID:                1,
 						IndividualEarning: nil,
-						FixedEarning: &fixed_earning.FixedEarning{
+						FixedEarning: &fixed_earning_domain_model.FixedEarning{
 							ID:      1,
 							Amount:  300000,
 							Nominal: "支給総額",
-							FixedEarningDetails: []fixed_earning_detail.FixedEarningDetail{
+							FixedEarningDetails: []fixed_earning_detail_domain_model.FixedEarningDetail{
 								{ID: 1, FixedEarningID: 1, Nominal: "基本給", Amount: 250000},
 								{ID: 2, FixedEarningID: 1, Nominal: "固定残業代", Amount: 50000},
 							},
 						},
 						IndividualDeduction: nil,
-						FixedDeduction: &fixed_deduction.FixedDeduction{
+						FixedDeduction: &fixed_deduction_domain_model.FixedDeduction{
 							ID:      1,
 							Amount:  15000,
 							Nominal: "控除総額",
-							FixedDeductionDetails: []fixed_deduction_detail.FixedDeductionDetail{
+							FixedDeductionDetails: []fixed_deduction_detail_domain_model.FixedDeductionDetail{
 								{ID: 1, FixedDeductionID: 1, Nominal: "所得税", Amount: 5000},
 								{ID: 2, FixedDeductionID: 1, Nominal: "住民税", Amount: 10000},
 							},
@@ -147,10 +147,10 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Error has occurred when get employee.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
 					return nil, fmt.Errorf("failed to connect db.")
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
 			},
@@ -160,10 +160,10 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Employee is nil when get employee.Error has not occurred.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
 					return nil, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
 			},
@@ -173,11 +173,11 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Error has occurred when get salary statement.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
-					employee := &employee.Employee{ID: 1, Name: "keven"}
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
+					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
 					return employee, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, fmt.Errorf("failed to connect db.")
 				},
 			},
@@ -187,11 +187,11 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Salary Statement is nil when get salary statement.Error has not occurred.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
-					employee := &employee.Employee{ID: 1, Name: "keven"}
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
+					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
 					return employee, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
 			},
@@ -201,19 +201,19 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Error has occurred when get deduction.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
-					employee := &employee.Employee{ID: 1, Name: "keven"}
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
+					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
 					return employee, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
-					salaryStatement := &salary_statement.SalaryStatement{
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
+					salaryStatement := &salary_statement_domain_model.SalaryStatement{
 						ID:                1,
 						IndividualEarning: nil,
-						FixedEarning: &fixed_earning.FixedEarning{
+						FixedEarning: &fixed_earning_domain_model.FixedEarning{
 							ID:      1,
 							Amount:  300000,
 							Nominal: "支給総額",
-							FixedEarningDetails: []fixed_earning_detail.FixedEarningDetail{
+							FixedEarningDetails: []fixed_earning_detail_domain_model.FixedEarningDetail{
 								{ID: 1, FixedEarningID: 1, Nominal: "基本給", Amount: 250000},
 								{ID: 2, FixedEarningID: 1, Nominal: "固定残業代", Amount: 50000},
 							},
@@ -234,21 +234,21 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		},
 		"Error has occurred when get earning.": {
 			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee.Employee, error) {
-					employee := &employee.Employee{ID: 1, Name: "keven"}
+				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
+					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
 					return employee, nil
 				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
-					salaryStatement := &salary_statement.SalaryStatement{
+				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
+					salaryStatement := &salary_statement_domain_model.SalaryStatement{
 						ID:                1,
 						IndividualEarning: nil,
 						FixedEarning: nil,
 						IndividualDeduction: nil,
-						FixedDeduction: &fixed_deduction.FixedDeduction{
+						FixedDeduction: &fixed_deduction_domain_model.FixedDeduction{
 							ID:      1,
 							Amount:  15000,
 							Nominal: "控除総額",
-							FixedDeductionDetails: []fixed_deduction_detail.FixedDeductionDetail{
+							FixedDeductionDetails: []fixed_deduction_detail_domain_model.FixedDeductionDetail{
 								{ID: 1, FixedDeductionID: 1, Nominal: "所得税", Amount: 5000},
 								{ID: 2, FixedDeductionID: 1, Nominal: "住民税", Amount: 10000},
 							},

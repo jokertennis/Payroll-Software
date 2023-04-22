@@ -10,23 +10,23 @@ import (
 
 type EmployeeRepositoryMock struct {
 	EmployeeRepository           employee_repository.EmployeeRepository
-	FakeGetEmployeeByMailAddress func(mailAddress string) (*employee.Employee, error)
+	FakeGetEmployeeByMailAddress func(mailAddress string) (*employee_domain_model.Employee, error)
 }
 
-func (m *EmployeeRepositoryMock) GetEmployeeByMailAddress(mailAddress string) (*employee.Employee, error) {
+func (m *EmployeeRepositoryMock) GetEmployeeByMailAddress(mailAddress string) (*employee_domain_model.Employee, error) {
 	return m.FakeGetEmployeeByMailAddress(mailAddress)
 }
 
 type SalaryStatementRepositoryMock struct {
 	SalaryStatementRepository  salary_statement_repository.SalaryStatementRepository
-	FakeGetSalaryStatement     func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error)
-	FakeGetAllSalaryStatements func(employeeId uint32) ([]*salary_statement.SalaryStatement, error)
+	FakeGetSalaryStatement     func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error)
+	FakeGetAllSalaryStatements func(employeeId uint32) ([]*salary_statement_domain_model.SalaryStatement, error)
 }
 
-func (m *SalaryStatementRepositoryMock) GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error) {
+func (m *SalaryStatementRepositoryMock) GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 	return m.FakeGetSalaryStatement(employeeId, yearOfPayday, monthOfPayday)
 }
 
-func (m *SalaryStatementRepositoryMock) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement.SalaryStatement, error) {
+func (m *SalaryStatementRepositoryMock) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement_domain_model.SalaryStatement, error) {
 	return m.FakeGetAllSalaryStatements(employeeId)
 }
