@@ -507,9 +507,7 @@ func init() {
     "salaryStatementRequest": {
       "type": "object",
       "required": [
-        "year",
-        "month",
-        "mailaddress",
+        "mailaddressOfEmployee",
         "nominal",
         "payday",
         "target_period",
@@ -541,11 +539,8 @@ func init() {
             "$ref": "#/definitions/SalaryStatementRequestIndividualEarningDetailsItems0"
           }
         },
-        "mailaddress": {
+        "mailaddressOfEmployee": {
           "type": "string"
-        },
-        "month": {
-          "type": "integer"
         },
         "nominal": {
           "type": "string"
@@ -562,9 +557,6 @@ func init() {
         },
         "target_period": {
           "type": "string"
-        },
-        "year": {
-          "type": "integer"
         }
       }
     }

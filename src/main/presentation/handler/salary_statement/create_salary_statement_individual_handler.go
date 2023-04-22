@@ -7,9 +7,6 @@ import (
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
 	"usr/local/go/src/main/application-service/salary_statement_application_service"
-	"usr/local/go/src/main/domain-model/individual_earning"
-	"usr/local/go/src/main/domain-model/individual_earning_detail"
-	"usr/local/go/src/main/domain-model/salary_statement"
 	"usr/local/go/src/main/domain-service/repository/administrator_repository"
 	"usr/local/go/src/main/domain-service/repository/employee_repository"
 	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
@@ -42,7 +39,7 @@ func (s *CreateSalaryStatementIndividualHandlerStruct) Handle(params operations.
 	administratorRepositoryStruct := infrastructure.NewAdministratorRepository(ctx, dbInstance)
 	var administratorRepository administrator_repository.AdministratorRepository = &administratorRepositoryStruct
 
-	mailAddress, statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
+	mailAddressOfAdministrator, statusCode, err := basicauth.BasicAuth(employeeRepository, administratorRepository, administratorExecuter, params.HTTPRequest)
 
 	if statusCode == http.StatusUnauthorized {
 		return operations.NewPostAdministratorSalaryStatementIndividualUnauthorized().WithPayload(&operations.PostAdministratorSalaryStatementIndividualUnauthorizedBody{
@@ -57,9 +54,15 @@ func (s *CreateSalaryStatementIndividualHandlerStruct) Handle(params operations.
 	salaryStatementRepositoryStruct := infrastructure.NewSalaryStatementRepository(ctx, dbInstance)
 	var salaryStatementRepository salary_statement_repository.SalaryStatementRepository = &salaryStatementRepositoryStruct
 
-	result, statusCode, err := salary_statement_application_service.GetAllSalaryStatementsForEmployeeUseCase(employeeRepository, salaryStatementRepository, mailAddress)
+	salaryStatementEntry := MappingSalaryStatementEntry(params.SalaryStatementRequest)
 
-	if statusCode == http.StatusUnauthorized {
+	result, statusCode, err := salary_statement_application_service.CreateSalaryStatementIndividualUseCase(administratorRepository, employeeRepository, salaryStatementRepository, mailAddressOfAdministrator, *params.SalaryStatementRequest.MailaddressOfEmployee, salaryStatementEntry)
+
+	if statusCode == http.StatusBadRequest {
+		return operations.NewPostAdministratorSalaryStatementIndividualBadRequest().WithPayload(&operations.PostAdministratorSalaryStatementIndividualBadRequestBody{
+			Message: err.Error(),
+		})
+	} else if statusCode == http.StatusUnauthorized {
 		return operations.NewPostAdministratorSalaryStatementIndividualUnauthorized().WithPayload(&operations.PostAdministratorSalaryStatementIndividualUnauthorizedBody{
 			Message: err.Error(),
 		})
@@ -70,16 +73,41 @@ func (s *CreateSalaryStatementIndividualHandlerStruct) Handle(params operations.
 	}
 
 	return operations.NewPostAdministratorSalaryStatementIndividualCreated().WithPayload(&operations.PostAdministratorSalaryStatementIndividualCreatedBody{
-		IDOfSalaryStatement: result.NameOfEmployee,
+		IDOfSalaryStatement: int64(result.SalaryStatementId),
 	})
 }
 
-func mappingSalaryStatementEntryByUsingIndividualDatas(params models.SalaryStatementRequest) salary_statement.SalaryStatementEntryByUsingIndividualDatas{
-	return &salary_statement.SalaryStatementEntryByUsingIndividualDatas{
-		IndividualEarning: &individual_earning.IndividualEarning{
+func MappingSalaryStatementEntry(params *models.SalaryStatementRequest) salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas {
+	return salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas{
+		IndividualEarningEntry: &salary_statement_repository.IndividualEarningEntry{
 			Amount: int(*params.AmountOfEarning),
 			Nominal: *params.NominalOfEarning,
-			IndividualEarningDetails: &individual_earning_detail.IndividualEarningDetail,
+			IndividualEarningDetailsEntry: []salary_statement_repository.IndividualEarningDetailEntry{
+			},
 		},
 	}
+}
+
+func MappingIndividualEarningDetailsEntry(params []*models.SalaryStatementRequestIndividualEarningDetailsItems0) []salary_statement_repository.IndividualEarningDetailEntry {
+	var individualEarningDetailsEntry []salary_statement_repository.IndividualEarningDetailEntry
+	for _, value := range params {
+		individualEarningDetailEntry := salary_statement_repository.IndividualEarningDetailEntry{
+			Amount: int(value.AmountOfEarningDetail),
+			Nominal: value.Nominal,
+		}
+		individualEarningDetailsEntry = append(individualEarningDetailsEntry, individualEarningDetailEntry)
+	}
+	return individualEarningDetailsEntry
+}
+
+func MappingIndividualDeductionDetailsEntry(params []*models.SalaryStatementRequestIndividualDeductionDetailsItems0) []salary_statement_repository.IndividualDeductionDetailEntry {
+	var individualDeductionDetailsEntry []salary_statement_repository.IndividualDeductionDetailEntry
+	for _, value := range params {
+		individualDeductionDetailEntry := salary_statement_repository.IndividualDeductionDetailEntry{
+			Amount: int(value.AmountOfDeductionDetail),
+			Nominal: value.Nominal,
+		}
+		individualDeductionDetailsEntry = append(individualDeductionDetailsEntry, individualDeductionDetailEntry)
+	}
+	return individualDeductionDetailsEntry
 }

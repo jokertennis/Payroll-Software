@@ -7,7 +7,7 @@ import (
 	"time"
 	"usr/local/go/server/gen/models"
 	"usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/main/repository/salary_statement"
+	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
 
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -84,14 +84,14 @@ func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([
 	return salaryStatementDomainObjectList, nil
 }
 
-func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry salary_statement.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
 	tx, err := r.db.BeginTx(r.ctx, nil)
 	if err != nil {
 		return 0, fmt.Errorf("failed to create tx object.error:%s", err)
 	}
 	newIndividualEarning := &models.IndividualEarning{
-		Nominal: salaryStatementEntry.IndividualEarning.Nominal,
-		Amount: salaryStatementEntry.IndividualEarning.Amount,
+		Nominal: salaryStatementEntry.IndividualEarningEntry.Nominal,
+		Amount: salaryStatementEntry.IndividualEarningEntry.Amount,
 	}
 	err = newIndividualEarning.Insert(r.ctx, tx, boil.Infer())
 	if err != nil {
@@ -99,7 +99,7 @@ func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry s
 		return 0, fmt.Errorf("failed to create individualEarning.error:%s", err)
 	}
 
-	for _, value := range salaryStatementEntry.IndividualEarning.IndividualEarningDetails {
+	for _, value := range salaryStatementEntry.IndividualEarningEntry.IndividualEarningDetailsEntry {
 		newIndividualEarningDetail := &models.IndividualEarningDetail{
 			IndividualEarningID: newIndividualEarning.ID,
 			Nominal: value.Nominal,
@@ -113,8 +113,8 @@ func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry s
 	}
 
 	newIndividualDeduction := &models.IndividualDeduction{
-		Nominal: salaryStatementEntry.IndividualDeduction.Nominal,
-		Amount: salaryStatementEntry.IndividualDeduction.Amount,
+		Nominal: salaryStatementEntry.IndividualDeductionEntry.Nominal,
+		Amount: salaryStatementEntry.IndividualDeductionEntry.Amount,
 	}
 	err = newIndividualDeduction.Insert(r.ctx, tx, boil.Infer())
 	if err != nil {
@@ -122,7 +122,7 @@ func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry s
 		return 0, fmt.Errorf("failed to create individualDeduction.error:%s", err)
 	}
 
-	for _, value := range salaryStatementEntry.IndividualDeduction.IndividualDeductionDetails {
+	for _, value := range salaryStatementEntry.IndividualDeductionEntry.IndividualDeductionDetailsEntry {
 		newIndividualDeductionDetail := &models.IndividualDeductionDetail{
 			IndividualDeductionID: newIndividualDeduction.ID,
 			Nominal: value.Nominal,

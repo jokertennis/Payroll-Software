@@ -42,11 +42,7 @@ definitions:
   SalaryStatementRequest:
     type: object
     properties:
-      year:
-        type: integer
-      month:
-        type: integer
-      mailaddress:
+      mailaddressOfEmployee:
         type: string
       nominal:
         type: string
@@ -86,9 +82,7 @@ definitions:
               type: integer
               format: int32
     required:
-      - year
-      - month
-      - mailaddress
+      - mailaddressOfEmployee
       - nominal
       - payday
       - target_period

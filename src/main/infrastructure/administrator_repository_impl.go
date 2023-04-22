@@ -21,7 +21,7 @@ func NewAdministratorRepository(ctx context.Context, db *sql.DB) AdministratorRe
 	}
 }
 
-func (r *AdministratorRepository) GetAdministratorByMailAddress(mailAddress string) (*administrator.Administrator, error) {
+func (r *AdministratorRepository) GetAdministratorByMailAddress(mailAddress string) (*administrator_domain_model.Administrator, error) {
 	administrators, err := models.Administrators(qm.Where("mail_address=?", mailAddress)).All(r.ctx, r.db)
 	if err != nil {
 		return nil, err

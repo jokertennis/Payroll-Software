@@ -26,11 +26,11 @@ func MappingEmployeeDomainObject(m *models.Employee) (*employee_domain_model.Emp
     return employee, nil
 }
 
-func MappingAdministratorDomainObject(m *models.Administrator) (*administrator.Administrator, error) {
+func MappingAdministratorDomainObject(m *models.Administrator) (*administrator_domain_model.Administrator, error) {
 	if m == nil {
 		return nil, nil
 	}
-	administrator, err := administrator.NewAdministrator(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
+	administrator, err := administrator_domain_model.NewAdministrator(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
 	if err != nil {
         return nil, err
     }

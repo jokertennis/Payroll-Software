@@ -36,13 +36,9 @@ type SalaryStatementRequest struct {
 	// Required: true
 	IndividualEarningDetails []*SalaryStatementRequestIndividualEarningDetailsItems0 `json:"individual_earning_details"`
 
-	// mailaddress
+	// mailaddress of employee
 	// Required: true
-	Mailaddress *string `json:"mailaddress"`
-
-	// month
-	// Required: true
-	Month *int64 `json:"month"`
+	MailaddressOfEmployee *string `json:"mailaddressOfEmployee"`
 
 	// nominal
 	// Required: true
@@ -64,10 +60,6 @@ type SalaryStatementRequest struct {
 	// target period
 	// Required: true
 	TargetPeriod *string `json:"target_period"`
-
-	// year
-	// Required: true
-	Year *int64 `json:"year"`
 }
 
 // Validate validates this salary statement request
@@ -90,11 +82,7 @@ func (m *SalaryStatementRequest) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateMailaddress(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateMonth(formats); err != nil {
+	if err := m.validateMailaddressOfEmployee(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -115,10 +103,6 @@ func (m *SalaryStatementRequest) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateTargetPeriod(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateYear(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -200,18 +184,9 @@ func (m *SalaryStatementRequest) validateIndividualEarningDetails(formats strfmt
 	return nil
 }
 
-func (m *SalaryStatementRequest) validateMailaddress(formats strfmt.Registry) error {
+func (m *SalaryStatementRequest) validateMailaddressOfEmployee(formats strfmt.Registry) error {
 
-	if err := validate.Required("mailaddress", "body", m.Mailaddress); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *SalaryStatementRequest) validateMonth(formats strfmt.Registry) error {
-
-	if err := validate.Required("month", "body", m.Month); err != nil {
+	if err := validate.Required("mailaddressOfEmployee", "body", m.MailaddressOfEmployee); err != nil {
 		return err
 	}
 
@@ -261,15 +236,6 @@ func (m *SalaryStatementRequest) validatePayday(formats strfmt.Registry) error {
 func (m *SalaryStatementRequest) validateTargetPeriod(formats strfmt.Registry) error {
 
 	if err := validate.Required("target_period", "body", m.TargetPeriod); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *SalaryStatementRequest) validateYear(formats strfmt.Registry) error {
-
-	if err := validate.Required("year", "body", m.Year); err != nil {
 		return err
 	}
 

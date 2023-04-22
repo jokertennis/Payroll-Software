@@ -62,6 +62,11 @@ func configureAPI(api *operations.SwaggerAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetUnprotected has not yet been implemented")
 		})
 	}
+	if api.PostAdministratorSalaryStatementIndividualHandler == nil {
+		api.PostAdministratorSalaryStatementIndividualHandler = operations.PostAdministratorSalaryStatementIndividualHandlerFunc(func(params operations.PostAdministratorSalaryStatementIndividualParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.PostAdministratorSalaryStatementIndividual has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 
