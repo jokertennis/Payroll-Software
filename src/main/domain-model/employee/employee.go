@@ -20,7 +20,7 @@ func NewEmployee(id uint32, companyId uint16, name string, mailAddress string, p
 	return &Employee{id, companyId, name, mailAddress, password}, nil
 }
 
-func (e *Employee) GetSpecificSalaryStatement(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, year int, month time.Month) (_ *salary_statement.SalaryStatement, _ error) {
+func (e *Employee) GetSpecificSalaryStatement(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, year int, month time.Month) (_ *salary_statement_domain_model.SalaryStatement, _ error) {
 	salaryStatement, err := salaryStatementRepository.GetSalaryStatement(e.ID, year, month)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get salary statement.error:%s", err)
@@ -31,7 +31,7 @@ func (e *Employee) GetSpecificSalaryStatement(salaryStatementRepository salary_s
 	return salaryStatement, nil
 }
 
-func (e *Employee) GetAllSalaryStatements(salaryStatementRepository salary_statement_repository.SalaryStatementRepository) (_ []*salary_statement.SalaryStatement, _ error) {
+func (e *Employee) GetAllSalaryStatements(salaryStatementRepository salary_statement_repository.SalaryStatementRepository) (_ []*salary_statement_domain_model.SalaryStatement, _ error) {
 	salaryStatements, err := salaryStatementRepository.GetAllSalaryStatements(e.ID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get all salary statements.error:%s", err)

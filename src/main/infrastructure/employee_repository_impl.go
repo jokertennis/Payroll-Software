@@ -21,7 +21,7 @@ func NewEmployeeRepository(ctx context.Context, db *sql.DB) EmployeeRepository {
 	}
 }
 
-func (r *EmployeeRepository) GetEmployeeByMailAddress(mailAddress string) (*employee.Employee, error) {
+func (r *EmployeeRepository) GetEmployeeByMailAddress(mailAddress string) (*employee_domain_model.Employee, error) {
 	employees, err := models.Employees(qm.Where("mail_address=?", mailAddress)).All(r.ctx, r.db)
 	if err != nil {
 		return nil, err

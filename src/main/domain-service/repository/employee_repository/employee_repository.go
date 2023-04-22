@@ -5,5 +5,5 @@ import (
 )
 
 type EmployeeRepository interface {
-	GetEmployeeByMailAddress(mailAddress string) (*employee.Employee, error)
+	GetEmployeeByMailAddress(mailAddress string) (*employee_domain_model.Employee, error)
 }

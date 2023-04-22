@@ -15,11 +15,11 @@ import (
 	"usr/local/go/src/main/domain-model/salary_statement"
 )
 
-func MappingEmployeeDomainObject(m *models.Employee) (*employee.Employee, error) {
+func MappingEmployeeDomainObject(m *models.Employee) (*employee_domain_model.Employee, error) {
 	if m == nil {
 		return nil, nil
 	}
-	employee, err := employee.NewEmployee(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
+	employee, err := employee_domain_model.NewEmployee(m.ID, m.CompanyID, m.Name, m.MailAddress, m.Password)
 	if err != nil {
         return nil, err
     }
@@ -37,12 +37,12 @@ func MappingAdministratorDomainObject(m *models.Administrator) (*administrator.A
     return administrator, nil
 }
 
-func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_statement.SalaryStatement, error) {
+func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_statement_domain_model.SalaryStatement, error) {
 	if m == nil {
 		return nil, nil
 	}
 	var err error
-	var mappingIndividualEarning *individual_earning.IndividualEarning
+	var mappingIndividualEarning *individual_earning_domain_model.IndividualEarning
 	if m.IndividualEarningID.Valid{
 		mappingIndividualEarning, err = MappingIndividualEarning(m.R.IndividualEarning)
 		if err != nil {
@@ -52,7 +52,7 @@ func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_stat
 		mappingIndividualEarning = nil
 	}
 
-	var mappingFixedEarning *fixed_earning.FixedEarning
+	var mappingFixedEarning *fixed_earning_domain_model.FixedEarning
 	if m.FixedEarningID.Valid {
 		mappingFixedEarning, err = MappingFixedEarning(m.R.FixedEarning)
 		if err != nil {
@@ -62,7 +62,7 @@ func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_stat
 		mappingFixedEarning = nil
 	}
 
-	var mappingIndividualDeduction *individual_deduction.IndividualDeduction
+	var mappingIndividualDeduction *individual_deduction_domain_model.IndividualDeduction
 	if m.IndividualDeductionID.Valid {
 		mappingIndividualDeduction, err = MappingIndividualDeduction(m.R.IndividualDeduction)
 		if err != nil {
@@ -72,7 +72,7 @@ func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_stat
 		mappingIndividualDeduction = nil
 	}
 
-	var mappingFixedDeduction *fixed_deduction.FixedDeduction
+	var mappingFixedDeduction *fixed_deduction_domain_model.FixedDeduction
 	if m.FixedDeductionID.Valid {
 		mappingFixedDeduction, err = MappingFixedDeduction(m.R.FixedDeduction)
 		if err != nil {
@@ -82,18 +82,18 @@ func MappingSalaryStatementDomainObject(m *models.SalaryStatement) (*salary_stat
 		mappingFixedDeduction = nil
 	}
 
-	salaryStatement, err := salary_statement.NewSalaryStatement(m.ID, mappingIndividualEarning, mappingFixedEarning, mappingIndividualDeduction, mappingFixedDeduction, m.EmployeeID, m.Nominal, m.Payday, m.TargetPeriod)
+	salaryStatement, err := salary_statement_domain_model.NewSalaryStatement(m.ID, mappingIndividualEarning, mappingFixedEarning, mappingIndividualDeduction, mappingFixedDeduction, m.EmployeeID, m.Nominal, m.Payday, m.TargetPeriod)
 	if err != nil {
         return nil, err
     }
     return salaryStatement, nil
 }
 
-func MappingIndividualEarning(m *models.IndividualEarning) (*individual_earning.IndividualEarning, error) {
+func MappingIndividualEarning(m *models.IndividualEarning) (*individual_earning_domain_model.IndividualEarning, error) {
 	if m == nil {
 		return nil, nil
 	}
-	var individualEarningDetailsList []individual_earning_detail.IndividualEarningDetail
+	var individualEarningDetailsList []individual_earning_detail_domain_model.IndividualEarningDetail
 	for _, indiindividualEarningDetail := range m.R.IndividualEarningDetails {
 		mappingIndiindividualEarningDetail, err := MappingIndividualEarningDetail(indiindividualEarningDetail)
 		if err != nil {
@@ -101,29 +101,29 @@ func MappingIndividualEarning(m *models.IndividualEarning) (*individual_earning.
 		}
 		individualEarningDetailsList = append(individualEarningDetailsList, *mappingIndiindividualEarningDetail)
 	}
-	individualEarning, err := individual_earning.NewIndividualEarning(m.ID, m.Amount, m.Nominal, individualEarningDetailsList)
+	individualEarning, err := individual_earning_domain_model.NewIndividualEarning(m.ID, m.Amount, m.Nominal, individualEarningDetailsList)
 	if err != nil {
 		return nil, err
 	}
 	return individualEarning, nil
 }
 
-func MappingIndividualEarningDetail(m *models.IndividualEarningDetail) (*individual_earning_detail.IndividualEarningDetail, error) {
+func MappingIndividualEarningDetail(m *models.IndividualEarningDetail) (*individual_earning_detail_domain_model.IndividualEarningDetail, error) {
 	if m == nil {
 		return nil, nil
 	}
-	individualEarningDetail, err := individual_earning_detail.NewIndividualEarningDetail(m.ID, m.IndividualEarningID, m.Nominal, m.Amount)
+	individualEarningDetail, err := individual_earning_detail_domain_model.NewIndividualEarningDetail(m.ID, m.IndividualEarningID, m.Nominal, m.Amount)
 	if err != nil {
 		return nil, err
 	}
 	return individualEarningDetail, nil
 }
 
-func MappingFixedEarning(m *models.FixedEarning) (*fixed_earning.FixedEarning, error) {
+func MappingFixedEarning(m *models.FixedEarning) (*fixed_earning_domain_model.FixedEarning, error) {
 	if m == nil {
 		return nil, nil
 	}
-	var fixedEarningDetailsList []fixed_earning_detail.FixedEarningDetail
+	var fixedEarningDetailsList []fixed_earning_detail_domain_model.FixedEarningDetail
 	for _, fixedEarningDetail := range m.R.FixedEarningDetails {
 		mappingFixedEarningDetail, err := MappingFixedEarningDetail(fixedEarningDetail)
 		if err != nil {
@@ -131,29 +131,29 @@ func MappingFixedEarning(m *models.FixedEarning) (*fixed_earning.FixedEarning, e
 		}
 		fixedEarningDetailsList = append(fixedEarningDetailsList, *mappingFixedEarningDetail)
 	}
-	fixedEarning, err := fixed_earning.NewFixedEarning(m.ID, m.Amount, m.Nominal, fixedEarningDetailsList)
+	fixedEarning, err := fixed_earning_domain_model.NewFixedEarning(m.ID, m.Amount, m.Nominal, fixedEarningDetailsList)
 	if err != nil {
 		return nil, err
 	}
 	return fixedEarning, nil
 }
 
-func MappingFixedEarningDetail(m *models.FixedEarningDetail) (*fixed_earning_detail.FixedEarningDetail, error) {
+func MappingFixedEarningDetail(m *models.FixedEarningDetail) (*fixed_earning_detail_domain_model.FixedEarningDetail, error) {
 	if m == nil {
 		return nil, nil
 	}
-	fixedEarningDetail, err := fixed_earning_detail.NewFixedEarningDetail(m.ID, m.FixedEarningID, m.Nominal, m.Amount)
+	fixedEarningDetail, err := fixed_earning_detail_domain_model.NewFixedEarningDetail(m.ID, m.FixedEarningID, m.Nominal, m.Amount)
 	if err != nil {
 		return nil, err
 	}
 	return fixedEarningDetail, nil
 }
 
-func MappingIndividualDeduction(m *models.IndividualDeduction) (*individual_deduction.IndividualDeduction, error) {
+func MappingIndividualDeduction(m *models.IndividualDeduction) (*individual_deduction_domain_model.IndividualDeduction, error) {
 	if m == nil {
 		return nil, nil
 	}
-	var individualDeductionDetailsList []individual_deduction_detail.IndividualDeductionDetail
+	var individualDeductionDetailsList []individual_deduction_detail_domain_model.IndividualDeductionDetail
 	for _, indiindividualDeductionDetail := range m.R.IndividualDeductionDetails {
 		mappingIndiindividualDeductionDetail, err := MappingIndividualDeductionDetail(indiindividualDeductionDetail)
 		if err != nil {
@@ -161,29 +161,29 @@ func MappingIndividualDeduction(m *models.IndividualDeduction) (*individual_dedu
 		}
 		individualDeductionDetailsList = append(individualDeductionDetailsList, *mappingIndiindividualDeductionDetail)
 	}
-	individualDeduction, err := individual_deduction.NewIndividualDeduction(m.ID, m.Amount, m.Nominal, individualDeductionDetailsList)
+	individualDeduction, err := individual_deduction_domain_model.NewIndividualDeduction(m.ID, m.Amount, m.Nominal, individualDeductionDetailsList)
 	if err != nil {
 		return nil, err
 	}
 	return individualDeduction, nil
 }
 
-func MappingIndividualDeductionDetail(m *models.IndividualDeductionDetail) (*individual_deduction_detail.IndividualDeductionDetail, error) {
+func MappingIndividualDeductionDetail(m *models.IndividualDeductionDetail) (*individual_deduction_detail_domain_model.IndividualDeductionDetail, error) {
 	if m == nil {
 		return nil, nil
 	}
-	individualDeductionDetail, err := individual_deduction_detail.NewIndividualDeductionDetail(m.ID, m.IndividualDeductionID, m.Nominal, m.Amount)
+	individualDeductionDetail, err := individual_deduction_detail_domain_model.NewIndividualDeductionDetail(m.ID, m.IndividualDeductionID, m.Nominal, m.Amount)
 	if err != nil {
 		return nil, err
 	}
 	return individualDeductionDetail, nil
 }
 
-func MappingFixedDeduction(m *models.FixedDeduction) (*fixed_deduction.FixedDeduction, error) {
+func MappingFixedDeduction(m *models.FixedDeduction) (*fixed_deduction_domain_model.FixedDeduction, error) {
 	if m == nil {
 		return nil, nil
 	}
-	var fixedDeductionDetailsList []fixed_deduction_detail.FixedDeductionDetail
+	var fixedDeductionDetailsList []fixed_deduction_detail_domain_model.FixedDeductionDetail
 	for _, fixedDeductionDetail := range m.R.FixedDeductionDetails {
 		mappingFixedDeductionDetail, err := MappingFixedDeductionDetail(fixedDeductionDetail)
 		if err != nil {
@@ -191,18 +191,18 @@ func MappingFixedDeduction(m *models.FixedDeduction) (*fixed_deduction.FixedDedu
 		}
 		fixedDeductionDetailsList = append(fixedDeductionDetailsList, *mappingFixedDeductionDetail)
 	}
-	fixedDeduction, err := fixed_deduction.NewFixedDeduction(m.ID, m.Amount, m.Nominal, fixedDeductionDetailsList)
+	fixedDeduction, err := fixed_deduction_domain_model.NewFixedDeduction(m.ID, m.Amount, m.Nominal, fixedDeductionDetailsList)
 	if err != nil {
 		return nil, err
 	}
 	return fixedDeduction, nil
 }
 
-func MappingFixedDeductionDetail(m *models.FixedDeductionDetail) (*fixed_deduction_detail.FixedDeductionDetail, error) {
+func MappingFixedDeductionDetail(m *models.FixedDeductionDetail) (*fixed_deduction_detail_domain_model.FixedDeductionDetail, error) {
 	if m == nil {
 		return nil, nil
 	}
-	fixedDeductionDetail, err := fixed_deduction_detail.NewFixedDeductionDetail(m.ID, m.FixedDeductionID, m.Nominal, m.Amount)
+	fixedDeductionDetail, err := fixed_deduction_detail_domain_model.NewFixedDeductionDetail(m.ID, m.FixedDeductionID, m.Nominal, m.Amount)
 	if err != nil {
 		return nil, err
 	}

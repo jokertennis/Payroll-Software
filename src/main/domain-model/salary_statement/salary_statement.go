@@ -1,4 +1,4 @@
-package salary_statement
+package salary_statement_domain_model
 
 import (
 	"fmt"
@@ -11,10 +11,10 @@ import (
 
 type SalaryStatement struct {
 	ID                    uint32
-	IndividualEarning     *individual_earning.IndividualEarning
-	FixedEarning          *fixed_earning.FixedEarning
-	IndividualDeduction   *individual_deduction.IndividualDeduction
-	FixedDeduction        *fixed_deduction.FixedDeduction
+	IndividualEarning     *individual_earning_domain_model.IndividualEarning
+	FixedEarning          *fixed_earning_domain_model.FixedEarning
+	IndividualDeduction   *individual_deduction_domain_model.IndividualDeduction
+	FixedDeduction        *fixed_deduction_domain_model.FixedDeduction
 	EmployeeId            uint32
 	Nominal               string
 	Payday                time.Time
@@ -22,7 +22,7 @@ type SalaryStatement struct {
 }
 
 // Not yet created value object for each attribute.
-func NewSalaryStatement(id uint32, individualEarning *individual_earning.IndividualEarning, fixedEarning *fixed_earning.FixedEarning, individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction, employeeId uint32, nominal string, payday time.Time, targetPeriod string) (*SalaryStatement, error) {
+func NewSalaryStatement(id uint32, individualEarning *individual_earning_domain_model.IndividualEarning, fixedEarning *fixed_earning_domain_model.FixedEarning, individualDeduction *individual_deduction_domain_model.IndividualDeduction, fixedDeduction *fixed_deduction_domain_model.FixedDeduction, employeeId uint32, nominal string, payday time.Time, targetPeriod string) (*SalaryStatement, error) {
 	salaryStatement := &SalaryStatement{id, individualEarning, fixedEarning, individualDeduction, fixedDeduction, employeeId, nominal, payday, targetPeriod}
 	err := salaryStatement.CheckDeductionAndEarning()
 	if err != nil {
@@ -33,7 +33,7 @@ func NewSalaryStatement(id uint32, individualEarning *individual_earning.Individ
 
 // Either IndividualDeduction or FixedDeduction must be nil.
 // Either IndividualDeduction or FixedDeduction must be non-nil.
-func (s *SalaryStatement) GetDeduction() (*individual_deduction.IndividualDeduction, *fixed_deduction.FixedDeduction, error) {
+func (s *SalaryStatement) GetDeduction() (*individual_deduction_domain_model.IndividualDeduction, *fixed_deduction_domain_model.FixedDeduction, error) {
 	err := s.CheckDeductionAndEarning()
 	if err != nil {
 		return nil, nil, err
@@ -47,7 +47,7 @@ func (s *SalaryStatement) GetDeduction() (*individual_deduction.IndividualDeduct
 
 // Either IndividualEarning or FixedEarning must be nil.
 // Either IndividualEarning or FixedEarning must be non-nil.
-func (s *SalaryStatement) GetEarning() (*individual_earning.IndividualEarning, *fixed_earning.FixedEarning, error) {
+func (s *SalaryStatement) GetEarning() (*individual_earning_domain_model.IndividualEarning, *fixed_earning_domain_model.FixedEarning, error) {
 	err := s.CheckDeductionAndEarning()
 	if err != nil {
 		return nil, nil, err

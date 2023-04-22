@@ -16,32 +16,32 @@ import (
 func TestNewSalaryStatement(t *testing.T) {
 	cases := map[string]struct {
 		ID                    uint32
-	    IndividualEarning     *individual_earning.IndividualEarning
-	    FixedEarning          *fixed_earning.FixedEarning
-	    IndividualDeduction   *individual_deduction.IndividualDeduction
-	    FixedDeduction        *fixed_deduction.FixedDeduction
+	    IndividualEarning     *individual_earning_domain_model.IndividualEarning
+	    FixedEarning          *fixed_earning_domain_model.FixedEarning
+	    IndividualDeduction   *individual_deduction_domain_model.IndividualDeduction
+	    FixedDeduction        *fixed_deduction_domain_model.FixedDeduction
 	    EmployeeId            uint32
 	    Nominal               string
 	    Payday                time.Time
 	    TargetPeriod          string
-		salaryStatement       *salary_statement.SalaryStatement
+		salaryStatement       *salary_statement_domain_model.SalaryStatement
 		expectedError         error
 	}{
 		"error has not occurred.": {
 			ID: 1,
-			IndividualEarning: &individual_earning.IndividualEarning{ID: 1},
+			IndividualEarning: &individual_earning_domain_model.IndividualEarning{ID: 1},
 			FixedEarning: nil,
-			IndividualDeduction: &individual_deduction.IndividualDeduction{ID: 1},
+			IndividualDeduction: &individual_deduction_domain_model.IndividualDeduction{ID: 1},
 			FixedDeduction: nil,
 			EmployeeId: 1,
 			Nominal: "",
 			Payday: time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC),
 			TargetPeriod: "2022年1月1日~2022年1月31日分",
-			salaryStatement: &salary_statement.SalaryStatement{
+			salaryStatement: &salary_statement_domain_model.SalaryStatement{
 				ID: 1,
-				IndividualEarning: &individual_earning.IndividualEarning{ID: 1},
+				IndividualEarning: &individual_earning_domain_model.IndividualEarning{ID: 1},
 				FixedEarning: nil,
-				IndividualDeduction: &individual_deduction.IndividualDeduction{ID: 1},
+				IndividualDeduction: &individual_deduction_domain_model.IndividualDeduction{ID: 1},
 				FixedDeduction: nil,
 				EmployeeId: 1,
 				Nominal: "",
@@ -52,10 +52,10 @@ func TestNewSalaryStatement(t *testing.T) {
 		},
 		"error has occurred.": {
 			ID: 1,
-			IndividualEarning: &individual_earning.IndividualEarning{ID: 1},
+			IndividualEarning: &individual_earning_domain_model.IndividualEarning{ID: 1},
 			FixedEarning: nil,
 			IndividualDeduction: nil,
-			FixedDeduction: &fixed_deduction.FixedDeduction{ID: 1},
+			FixedDeduction: &fixed_deduction_domain_model.FixedDeduction{ID: 1},
 			EmployeeId: 1,
 			Nominal: "",
 			Payday: time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC),
@@ -66,7 +66,7 @@ func TestNewSalaryStatement(t *testing.T) {
 	}
 
 	for _, value := range cases {
-		salaryStatement, err := salary_statement.NewSalaryStatement(
+		salaryStatement, err := salary_statement_domain_model.NewSalaryStatement(
 			value.ID, 
 			value.IndividualEarning, 
 			value.FixedEarning, 

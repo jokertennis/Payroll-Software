@@ -37,7 +37,7 @@ type IndividualDeductionDetailEntry struct {
 }
 
 type SalaryStatementRepository interface {
-	GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement.SalaryStatement, error)
-	GetAllSalaryStatements(employeeId uint32) ([]*salary_statement.SalaryStatement, error)
+	GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error)
+	GetAllSalaryStatements(employeeId uint32) ([]*salary_statement_domain_model.SalaryStatement, error)
 	CreateSalaryStatement(salaryStatementEntry SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error)
 }

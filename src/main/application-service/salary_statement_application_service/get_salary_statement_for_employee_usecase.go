@@ -69,7 +69,7 @@ func GetSalaryStatementForEmployeeUseCase(employeeRepository employee_repository
 	return MappingResultOfGetSalaryStatementForEmployee(salaryStatement.Nominal, strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, employee.Name, amountOfEarning, earningDetails, deductionDetails), http.StatusOK, nil
 }
 
-func mappingAmountOfDeductionAndDeductionDetailOfGetSalaryStatementForEmployee(individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction) (int, []DeductionDetailOfGetSalaryStatementForEmployee) {
+func mappingAmountOfDeductionAndDeductionDetailOfGetSalaryStatementForEmployee(individualDeduction *individual_deduction_domain_model.IndividualDeduction, fixedDeduction *fixed_deduction_domain_model.FixedDeduction) (int, []DeductionDetailOfGetSalaryStatementForEmployee) {
 	var deductionDetails   []DeductionDetailOfGetSalaryStatementForEmployee
 	var amountOfDeduction  int
 	if individualDeduction != nil {
@@ -93,7 +93,7 @@ func mappingAmountOfDeductionAndDeductionDetailOfGetSalaryStatementForEmployee(i
 	return amountOfDeduction, deductionDetails
 }
 
-func mappingAmountOfEarningAndEarningDetailOfGetSalaryStatementForEmployee(individualEarning *individual_earning.IndividualEarning, fixedEarning *fixed_earning.FixedEarning) (int, []EarningDetailOfGetSalaryStatementForEmployee) {
+func mappingAmountOfEarningAndEarningDetailOfGetSalaryStatementForEmployee(individualEarning *individual_earning_domain_model.IndividualEarning, fixedEarning *fixed_earning_domain_model.FixedEarning) (int, []EarningDetailOfGetSalaryStatementForEmployee) {
 	var earningDetails   []EarningDetailOfGetSalaryStatementForEmployee
 	var amountOfEarning  int
 	if individualEarning != nil {
