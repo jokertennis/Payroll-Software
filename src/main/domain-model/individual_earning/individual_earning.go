@@ -1,4 +1,4 @@
-package individual_earning
+package individual_earning_domain_model
 
 import "usr/local/go/src/main/domain-model/individual_earning_detail"
 

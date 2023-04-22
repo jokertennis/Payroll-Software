@@ -1,4 +1,4 @@
-package fixed_earning_detail
+package fixed_earning_detail_domain_model
 
 type FixedEarningDetail struct {
 	ID             uint32

@@ -7,6 +7,7 @@ import (
 	"time"
 	"usr/local/go/server/gen/models"
 	"usr/local/go/src/main/domain-model/salary_statement"
+	"usr/local/go/src/main/repository/salary_statement"
 
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"

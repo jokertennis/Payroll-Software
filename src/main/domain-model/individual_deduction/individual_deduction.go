@@ -1,4 +1,4 @@
-package individual_deduction
+package individual_deduction_domain_model
 
 import "usr/local/go/src/main/domain-model/individual_deduction_detail"
 

@@ -21,15 +21,6 @@ type SalaryStatement struct {
 	TargetPeriod          string
 }
 
-type SalaryStatementEntryByUsingIndividualDatas struct {
-	IndividualEarning     *individual_earning.IndividualEarning
-	IndividualDeduction   *individual_deduction.IndividualDeduction
-	EmployeeId            uint32
-	Nominal               string
-	Payday                time.Time
-	TargetPeriod          string
-}
-
 // Not yet created value object for each attribute.
 func NewSalaryStatement(id uint32, individualEarning *individual_earning.IndividualEarning, fixedEarning *fixed_earning.FixedEarning, individualDeduction *individual_deduction.IndividualDeduction, fixedDeduction *fixed_deduction.FixedDeduction, employeeId uint32, nominal string, payday time.Time, targetPeriod string) (*SalaryStatement, error) {
 	salaryStatement := &SalaryStatement{id, individualEarning, fixedEarning, individualDeduction, fixedDeduction, employeeId, nominal, payday, targetPeriod}

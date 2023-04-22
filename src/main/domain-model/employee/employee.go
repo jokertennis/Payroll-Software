@@ -1,4 +1,4 @@
-package employee
+package employee_domain_model
 
 import (
 	"fmt"

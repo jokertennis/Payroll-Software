@@ -1,4 +1,4 @@
-package fixed_deduction
+package fixed_deduction_domain_model
 
 import (
 	"usr/local/go/src/main/domain-model/fixed_deduction_detail"

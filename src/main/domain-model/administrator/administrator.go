@@ -1,4 +1,4 @@
-package administrator
+package administrator_domain_model
 
 import (
 	"fmt"

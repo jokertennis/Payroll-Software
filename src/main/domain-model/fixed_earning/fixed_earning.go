@@ -1,4 +1,4 @@
-package fixed_earning
+package fixed_earning_domain_model
 
 import "usr/local/go/src/main/domain-model/fixed_earning_detail"
 
