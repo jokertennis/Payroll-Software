@@ -43,7 +43,7 @@ func CreateSalaryStatementIndividualUseCase(administratorRepository administrato
 		return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
 	}
 	if salaryStatementExists {
-		return nil, http.StatusBadRequest, fmt.Errorf("badrequest. SalaryStatement which has payday that match year and month of specified payday was already existed.")
+		return nil, http.StatusBadRequest, fmt.Errorf("badrequest. SalaryStatement which has payday that match year and month of specified payday was already existed")
 	}
 
 	salaryStatementId, err := administrator.CreateSalaryStatementByUsingIndividualData(salaryStatementRepository, *employee, salaryStatementEntry)

@@ -2,11 +2,22 @@ package testtool
 
 import (
 	"time"
+	"usr/local/go/src/main/domain-model/administrator"
 	"usr/local/go/src/main/domain-model/employee"
 	"usr/local/go/src/main/domain-model/salary_statement"
+	"usr/local/go/src/main/domain-service/repository/administrator_repository"
 	"usr/local/go/src/main/domain-service/repository/employee_repository"
 	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
 )
+
+type AdministratorRepositoryMock struct {
+	AdministratorRepository           administrator_repository.AdministratorRepository
+	FakeGetAdministratorByMailAddress func(mailAddress string) (*administrator_domain_model.Administrator, error)
+}
+
+func (m *AdministratorRepositoryMock) GetAdministratorByMailAddress(mailAddress string) (*administrator_domain_model.Administrator, error) {
+	return m.FakeGetAdministratorByMailAddress(mailAddress)
+}
 
 type EmployeeRepositoryMock struct {
 	EmployeeRepository           employee_repository.EmployeeRepository
