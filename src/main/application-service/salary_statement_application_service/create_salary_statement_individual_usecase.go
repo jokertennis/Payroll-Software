@@ -38,7 +38,7 @@ func CreateSalaryStatementIndividualUseCase(administratorRepository administrato
 		return nil, http.StatusBadRequest, errors.New("operations related to employee who belongs to a company different from your own are not possible")
 	}
 
-	salaryStatementExists, err := administrator.SalaryStatementExists(salaryStatementRepository, employee, salaryStatementEntry.Payday.Year(), salaryStatementEntry.Payday.Month())
+	salaryStatementExists, err := administrator.SalaryStatementExists(salaryStatementRepository, *employee, salaryStatementEntry.Payday.Year(), salaryStatementEntry.Payday.Month())
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
 	}
@@ -46,7 +46,7 @@ func CreateSalaryStatementIndividualUseCase(administratorRepository administrato
 		return nil, http.StatusBadRequest, fmt.Errorf("badrequest. SalaryStatement which has payday that match year and month of specified payday was already existed.")
 	}
 
-	salaryStatementId, err := administrator.CreateSalaryStatementByUsingIndividualData(salaryStatementRepository, employee, salaryStatementEntry)
+	salaryStatementId, err := administrator.CreateSalaryStatementByUsingIndividualData(salaryStatementRepository, *employee, salaryStatementEntry)
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("internalServerError:error:%s", err)
 	}

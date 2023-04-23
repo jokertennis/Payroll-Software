@@ -33,5 +33,5 @@ func (m *SalaryStatementRepositoryMock) GetAllSalaryStatements(employeeId uint32
 }
 
 func (m *SalaryStatementRepositoryMock) CreateSalaryStatement(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
-	return 
+	return m.FakeCreateSalaryStatement(salaryStatementEntry)
 }

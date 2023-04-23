@@ -21,8 +21,8 @@ func NewAdministrator(id uint32, companyId uint16, name string, mailAddress stri
 	return &Administrator{id, companyId, name, mailAddress, password}, nil
 }
 
-func (a *Administrator) SalaryStatementExists(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, employee *employee_domain_model.Employee, year int, month time.Month) (bool, error) {
-	err := a.CheckEmployee(*employee)
+func (a *Administrator) SalaryStatementExists(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, employee employee_domain_model.Employee, year int, month time.Month) (bool, error) {
+	err := a.CheckEmployee(employee)
 	if err != nil {
 		return false, err
 	}
@@ -36,8 +36,8 @@ func (a *Administrator) SalaryStatementExists(salaryStatementRepository salary_s
 	return true, nil
 }
 
-func (a *Administrator) CreateSalaryStatementByUsingIndividualData(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, employee *employee_domain_model.Employee, salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
-	err = a.CheckEmployee(*employee)
+func (a *Administrator) CreateSalaryStatementByUsingIndividualData(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, employee employee_domain_model.Employee, salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+	err = a.CheckEmployee(employee)
 	if err != nil {
 		return 0, err
 	}
@@ -50,7 +50,7 @@ func (a *Administrator) CreateSalaryStatementByUsingIndividualData(salaryStateme
 
 func (a *Administrator) CheckEmployee(employee employee_domain_model.Employee) error {
 	if a.CompanyId != employee.CompanyId {
-		errors.New("operations related to employee who belongs to a company different from your own are not possible")
+		return errors.New("operations related to employee who belongs to a company different from your own are not possible")
 	}
 	return nil
 }
