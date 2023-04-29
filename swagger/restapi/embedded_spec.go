@@ -37,6 +37,9 @@ func init() {
     "/administrator/protected": {
       "$ref": "./prompt/protected_for_administrator.yml"
     },
+    "/administrator/salary_statement_individual": {
+      "$ref": "./salary_statement/create_salary_statement_by_using_individual_data.yml"
+    },
     "/employee/protected": {
       "$ref": "./prompt/protected_for_employee.yml"
     },
@@ -74,6 +77,69 @@ func init() {
         "responses": {
           "200": {
             "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/administrator/salary_statement_individual": {
+      "post": {
+        "description": "特定の年と月の給料明細を個別支給・個別控除を利用して作成するための管理者向けAPI",
+        "parameters": [
+          {
+            "description": "給料明細のリクエストデータ",
+            "name": "salary_statement_request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/salaryStatementRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_of_salary_statement": {
+                  "description": "給料明細id",
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
             "schema": {
               "type": "object",
               "properties": {
@@ -346,6 +412,30 @@ func init() {
         }
       }
     },
+    "SalaryStatementRequestIndividualDeductionDetailsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_deduction_detail": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nominal": {
+          "type": "string"
+        }
+      }
+    },
+    "SalaryStatementRequestIndividualEarningDetailsItems0": {
+      "type": "object",
+      "properties": {
+        "amount_of_earning_detail": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nominal": {
+          "type": "string"
+        }
+      }
+    },
     "SalaryStatementsItems0": {
       "type": "object",
       "properties": {
@@ -410,6 +500,62 @@ func init() {
         },
         "nominal": {
           "description": "支給詳細の名目",
+          "type": "string"
+        }
+      }
+    },
+    "salaryStatementRequest": {
+      "type": "object",
+      "required": [
+        "mailaddressOfEmployee",
+        "nominal",
+        "payday",
+        "target_period",
+        "nominal_of_earning",
+        "amount_of_earning",
+        "individual_earning_details",
+        "nominal_of_deduction",
+        "amount_of_deduction",
+        "individual_deduction_details"
+      ],
+      "properties": {
+        "amount_of_deduction": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "amount_of_earning": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "individual_deduction_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SalaryStatementRequestIndividualDeductionDetailsItems0"
+          }
+        },
+        "individual_earning_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SalaryStatementRequestIndividualEarningDetailsItems0"
+          }
+        },
+        "mailaddressOfEmployee": {
+          "type": "string"
+        },
+        "nominal": {
+          "type": "string"
+        },
+        "nominal_of_deduction": {
+          "type": "string"
+        },
+        "nominal_of_earning": {
+          "type": "string"
+        },
+        "payday": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "target_period": {
           "type": "string"
         }
       }

@@ -78,4 +78,8 @@ func configureAPI(api *operations.SwaggerAPI, ctx context.Context, dbInstance *s
 	getAllSalaryStatementsForEmployeeHandlerStruct := salary_statement.GetAllSalaryStatementsForEmployeeHandlerStruct{}
 	var getAllSalaryStatementsForEmployeeHandler operations.GetEmployeeSalaryStatementsHandler = &getAllSalaryStatementsForEmployeeHandlerStruct
 	api.GetEmployeeSalaryStatementsHandler = getAllSalaryStatementsForEmployeeHandler
+
+	createSalaryStatementIndividualHandlerStruct := salary_statement.CreateSalaryStatementIndividualHandlerStruct{}
+	var createSalaryStatementIndividualHandler operations.PostAdministratorSalaryStatementIndividualHandler = &createSalaryStatementIndividualHandlerStruct
+	api.PostAdministratorSalaryStatementIndividualHandler = createSalaryStatementIndividualHandler
 }

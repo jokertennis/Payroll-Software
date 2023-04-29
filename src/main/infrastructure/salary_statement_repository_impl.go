@@ -7,7 +7,10 @@ import (
 	"time"
 	"usr/local/go/server/gen/models"
 	"usr/local/go/src/main/domain-model/salary_statement"
+	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
 
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
@@ -79,4 +82,78 @@ func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([
 		salaryStatementDomainObjectList = append(salaryStatementDomainObjectList, salaryStatementDomainObject)
 	}
 	return salaryStatementDomainObjectList, nil
+}
+
+func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+	tx, err := r.db.BeginTx(r.ctx, nil)
+	if err != nil {
+		return 0, fmt.Errorf("failed to create tx object.error:%s", err)
+	}
+	newIndividualEarning := &models.IndividualEarning{
+		Nominal: salaryStatementEntry.IndividualEarningEntry.Nominal,
+		Amount: salaryStatementEntry.IndividualEarningEntry.Amount,
+	}
+	err = newIndividualEarning.Insert(r.ctx, tx, boil.Infer())
+	if err != nil {
+		tx.Rollback()
+		return 0, fmt.Errorf("failed to create individualEarning.error:%s", err)
+	}
+
+	for _, value := range salaryStatementEntry.IndividualEarningEntry.IndividualEarningDetailsEntry {
+		newIndividualEarningDetail := &models.IndividualEarningDetail{
+			IndividualEarningID: newIndividualEarning.ID,
+			Nominal: value.Nominal,
+			Amount: value.Amount,
+		}
+		err = newIndividualEarningDetail.Insert(r.ctx, tx, boil.Infer())
+		if err != nil {
+			tx.Rollback()
+			return 0, fmt.Errorf("failed to create individualEarningDetail.error:%s", err)
+		}
+	}
+
+	newIndividualDeduction := &models.IndividualDeduction{
+		Nominal: salaryStatementEntry.IndividualDeductionEntry.Nominal,
+		Amount: salaryStatementEntry.IndividualDeductionEntry.Amount,
+	}
+	err = newIndividualDeduction.Insert(r.ctx, tx, boil.Infer())
+	if err != nil {
+		tx.Rollback()
+		return 0, fmt.Errorf("failed to create individualDeduction.error:%s", err)
+	}
+
+	for _, value := range salaryStatementEntry.IndividualDeductionEntry.IndividualDeductionDetailsEntry {
+		newIndividualDeductionDetail := &models.IndividualDeductionDetail{
+			IndividualDeductionID: newIndividualDeduction.ID,
+			Nominal: value.Nominal,
+			Amount: value.Amount,
+		}
+		err = newIndividualDeductionDetail.Insert(r.ctx, tx, boil.Infer())
+		if err != nil {
+			tx.Rollback()
+			return 0, fmt.Errorf("failed to create individualDeductionDetail.error:%s", err)
+		}
+	}
+
+	newSalaryStatement := &models.SalaryStatement{
+		IndividualEarningID: null.Uint32From(newIndividualEarning.ID),
+		IndividualDeductionID: null.Uint32From(newIndividualDeduction.ID),
+		EmployeeID: salaryStatementEntry.EmployeeId,
+		Nominal: salaryStatementEntry.Nominal,
+		Payday: salaryStatementEntry.Payday,
+		TargetPeriod: salaryStatementEntry.TargetPeriod,
+	}
+	err = newSalaryStatement.Insert(r.ctx, tx, boil.Infer())
+	if err != nil {
+		tx.Rollback()
+		return 0, fmt.Errorf("failed to create salaryStatement.error:%s", err)
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return 0, fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return newSalaryStatement.ID, nil
 }

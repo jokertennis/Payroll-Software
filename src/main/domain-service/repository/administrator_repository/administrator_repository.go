@@ -5,5 +5,5 @@ import (
 )
 
 type AdministratorRepository interface {
-	GetAdministratorByMailAddress(mailAddress string) (*administrator.Administrator, error)
+	GetAdministratorByMailAddress(mailAddress string) (*administrator_domain_model.Administrator, error)
 }
