@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 	"usr/local/go/basicauth"
 	"usr/local/go/db"
 	"usr/local/go/src/main/application-service/salary_statement_application_service"
@@ -82,9 +83,18 @@ func MappingSalaryStatementEntry(params *models.SalaryStatementRequest) salary_s
 		IndividualEarningEntry: &salary_statement_repository.IndividualEarningEntry{
 			Amount: int(*params.AmountOfEarning),
 			Nominal: *params.NominalOfEarning,
-			IndividualEarningDetailsEntry: []salary_statement_repository.IndividualEarningDetailEntry{
-			},
+			IndividualEarningDetailsEntry: MappingIndividualEarningDetailsEntry(params.IndividualEarningDetails),
 		},
+		IndividualDeductionEntry: &salary_statement_repository.IndividualDeductionEntry{
+			Amount: int(*params.AmountOfDeduction),
+			Nominal: *params.NominalOfDeduction,
+			IndividualDeductionDetailsEntry: MappingIndividualDeductionDetailsEntry(params.IndividualDeductionDetails),
+		},
+		// params don't have employee id, then set to 0 temporarily
+		EmployeeId: 0,
+		Nominal: *params.Nominal,
+		Payday: time.Time(*params.Payday),
+		TargetPeriod: *params.TargetPeriod,
 	}
 }
 
