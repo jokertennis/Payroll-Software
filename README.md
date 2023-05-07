@@ -21,9 +21,9 @@ source ~/.bashrc
 ~/.bashrc の代わりに ~/.zshrc や ~/.bash_profile などの設定ファイルを使っている場合は、適切なファイル名に変更する必要がある。windowsの場合はコントロールパネルを開き、システム > システムの詳細設定 > 環境変数でgolangのインストールされたディレクトリのbinフォルダのパスを追加する必要がある。
 
 ## マイグレーションの実行・アプリケーションの実行方法
-1. リポジトリをcloneする。(clone済みならこのステップは必要なし)
+1. リポジトリをcloneする。(clone済みならこのステップは必要なし)  
 `git clone https://github.com/jokertennis/Payroll-Software.git`
-2. Payroll-Softwareディレクトリ直下で以下のコマンドを実行。
+2. Payroll-Softwareディレクトリ直下で以下のコマンドを実行。  
 `docker compose up db phpmyadmin`  
 以下の状態になれば良い。dbコンテナのstatusがhealthyになっていないといけない。(health: starting)だと待つ必要がある。
 ```
@@ -32,14 +32,14 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS 
 976ba39ddb8b   phpmyadmin:5.2   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             0.0.0.0:7890->80/tcp                phpmyadmin_container
 db6024452d73   mysql:8.0        "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp   db_container
 ```
-3. 続いてPayroll-Softwareディレクトリ直下でgo run main.goを実行する。(golangのライブラリをローカル環境にインストールする必要がある。[golangのインストール方法](#golangのインストール方法))
+3. 続いてPayroll-Softwareディレクトリ直下でgo run main.goを実行する。(事前にgolangのライブラリをローカル環境にインストールする必要がある。[golangのインストール方法](#golangのインストール方法))
 ```
 kenjikawata@KenjinoMacBook-Air Payroll-Software % go run main.go
 2023/05/07 11:58:22 Serving swagger at http://[::]:8080
 ```
 4. phpmyadminを開く。[http://localhost:7890](http://localhost:7890)からアクセス可能である。問題なく以下のようにdevelop_dbが作成されていて、データが入っていれば問題ない。
 <img width="1440" alt="スクリーンショット 2023-05-07 12 04 16" src="https://user-images.githubusercontent.com/48274379/236655478-251c2f7c-48c6-49a6-a47b-56dbf88f97ea.png">
-作成したAPIもcurlで実行可能な状態である。employee向けのapi(employeeがpathの中にあるapi)を実行したいときはemployeeテーブルに登録されているデータのメールアドレスとパスワードを認証ヘッダーに渡して実行する必要がある。administrator向けのapi(administratorがpathの中にあるapi)を実行したいときはadministratorテーブルに登録されているデータのメールアドレスとパスワードを認証ヘッダーに渡して実行する必要がある。
+作成したAPIもcurlで実行可能な状態である。employee向けのapi(employeeがpathの中にあるapi)を実行したいときはemployeesテーブルに登録されているデータのメールアドレスとパスワードを認証ヘッダーに渡して実行する必要がある。administrator向けのapi(administratorがpathの中にあるapi)を実行したいときはadministratorsテーブルに登録されているデータのメールアドレスとパスワードを認証ヘッダーに渡して実行する必要がある。
 
 ## ローカル環境でテストを実行する方法
 テストを実行する前に[マイグレーションの実行・アプリケーションの実行方法](#マイグレーションの実行・アプリケーションの実行方法)をする必要がある。VSCodeでプロジェクトを開き、以下のようなメッセージが右下に表示されたらall installを選択する。
