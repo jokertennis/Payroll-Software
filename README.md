@@ -7,18 +7,18 @@ Payroll-Softwareは給与管理システムで利用されるAPIを開発する�
 - 管理者が自身の所属する企業の従業員の給料明細を個別データを利用して作成する。
 
 ## ソースコードをビルド・実行・テストするために必要な技術
-- docker
-- dockercompose
-- golang : version1.20.4以上
+- Docker
+- Docker Compose
+- Golang : version1.20.4以上
 - VSCode
 
-## golangのインストール方法
-[golangのinstallドキュメント](https://go.dev/doc/install)からgolangをローカルにインストールする。インストールはmacの場合/usr/local/goにされるため、pathを通す必要がある。ターミナルを開いて以下のコマンドを実行する。
+## Golangのインストール方法
+[Golangのinstallドキュメント](https://go.dev/doc/install)からGolangをローカルにインストールする。インストールはmacの場合/usr/local/goにされるため、pathを通す必要がある。ターミナルを開いて以下のコマンドを実行する。
 ```
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
 source ~/.bashrc
 ```
-~/.bashrc の代わりに ~/.zshrc や ~/.bash_profile などの設定ファイルを使っている場合は、適切なファイル名に変更する必要がある。windowsの場合はコントロールパネルを開き、システム > システムの詳細設定 > 環境変数でgolangのインストールされたディレクトリのbinフォルダのパスを追加する必要がある。
+~/.bashrc の代わりに ~/.zshrc や ~/.bash_profile などの設定ファイルを使っている場合は、適切なファイル名に変更する必要がある。windowsの場合はコントロールパネルを開き、システム > システムの詳細設定 > 環境変数でGolangのインストールされたディレクトリのbinフォルダのパスを追加する必要がある。
 
 ## マイグレーションの実行・アプリケーションの実行方法
 1. リポジトリをcloneする。(clone済みならこのステップは必要なし)  
@@ -32,7 +32,7 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS 
 976ba39ddb8b   phpmyadmin:5.2   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             0.0.0.0:7890->80/tcp                phpmyadmin_container
 db6024452d73   mysql:8.0        "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp   db_container
 ```
-3. 続いてPayroll-Softwareディレクトリ直下でgo run main.goを実行する。(事前にgolangのライブラリをローカル環境にインストールする必要がある。[golangのインストール方法](#golangのインストール方法))
+3. 続いてPayroll-Softwareディレクトリ直下でgo run main.goを実行する。(事前にGolangのライブラリをローカル環境にインストールする必要がある。[Golangのインストール方法](#Golangのインストール方法))
 ```
 kenjikawata@KenjinoMacBook-Air Payroll-Software % go run main.go
 2023/05/07 11:58:22 Serving swagger at http://[::]:8080
