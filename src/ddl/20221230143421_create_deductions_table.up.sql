@@ -1,7 +1,8 @@
-CREATE TABLE `individual_earnings` (
+CREATE TABLE `deductions` (
     `id` mediumint unsigned AUTO_INCREMENT,
-    `nominal` varchar(255) NOT NULL,
     `amount` int NOT NULL,
+    `nominal` varchar(255) NOT NULL,
+    `deduction_type` varchar(255) NOT NULL,
     `created_at` timestamp NOT NULL,
     `updated_at` timestamp NOT NULL,
     PRIMARY KEY (`id`)
