@@ -1,4 +1,4 @@
-package individual_deduction_detail_domain_model
+package deduction_detail_domain_model
 
 type IndividualDeductionDetail struct {
 	ID                    uint32

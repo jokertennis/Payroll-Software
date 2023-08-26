@@ -1,10 +1,10 @@
-package individual_earning_detail_domain_model
+package earning_detail_domain_model
 
 type IndividualEarningDetail struct {
-	ID                    uint32
-	IndividualEarningID   uint32
-	Nominal               string
-	Amount                int
+	ID                  uint32
+	IndividualEarningID uint32
+	Nominal             string
+	Amount              int
 }
 
 // Not yet created value object for each attribute.
