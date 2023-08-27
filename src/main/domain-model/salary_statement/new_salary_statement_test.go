@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 	"time"
-	deduction_domain_model "usr/local/go/src/main/domain-model/deduction"
-	earning_domain_model "usr/local/go/src/main/domain-model/earning"
-	salary_statement_domain_model "usr/local/go/src/main/domain-model/salary_statement"
+	deduction_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/deduction"
+	earning_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/earning"
+	salary_statement_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
 
 	"github.com/stretchr/testify/assert"
 )

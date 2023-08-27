@@ -3,8 +3,8 @@ package employee_domain_model
 import (
 	"fmt"
 	"time"
-	"usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 )
 
 type Employee struct {

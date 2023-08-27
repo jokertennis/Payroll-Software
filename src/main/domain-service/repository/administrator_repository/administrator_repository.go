@@ -1,7 +1,7 @@
 package administrator_repository
 
 import (
-	"usr/local/go/src/main/domain-model/administrator"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/administrator"
 )
 
 type AdministratorRepository interface {

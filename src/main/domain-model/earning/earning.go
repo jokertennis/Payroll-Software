@@ -1,7 +1,7 @@
 package earning_domain_model
 
 import (
-	earning_detail_domain_model "usr/local/go/src/main/domain-model/earning_detail"
+	earning_detail_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/earning_detail"
 )
 
 type EarningType string

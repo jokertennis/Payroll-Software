@@ -3,8 +3,8 @@ package salary_statement_domain_model
 import (
 	"fmt"
 	"time"
-	deduction_domain_model "usr/local/go/src/main/domain-model/deduction"
-	earning_domain_model "usr/local/go/src/main/domain-model/earning"
+	deduction_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/deduction"
+	earning_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/earning"
 )
 
 type SalaryStatement struct {

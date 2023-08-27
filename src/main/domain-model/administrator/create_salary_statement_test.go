@@ -3,17 +3,17 @@ package administrator_domain_model_test
 import (
 	"errors"
 	"testing"
-	"usr/local/go/src/main/domain-model/administrator"
-	"usr/local/go/src/main/domain-model/employee"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
-	"usr/local/go/src/testtool"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/administrator"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
+	"github.com/jokertennis/Payroll-Software/src/testtool"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateSalaryStatementByUsingIndividualData(t *testing.T) {
+func TestCreateSalaryStatement(t *testing.T) {
 	type fakesFunctions struct {
-        FakeCreateSalaryStatement func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error)
+        FakeCreateSalaryStatement func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error)
     }
 	cases := map[string]struct {
 		administrator               administrator_domain_model.Administrator
@@ -32,7 +32,7 @@ func TestCreateSalaryStatementByUsingIndividualData(t *testing.T) {
 				CompanyId: 1,
 			},
 			fakesFunctions: fakesFunctions{
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 10, nil
 				},
 			},
@@ -49,7 +49,7 @@ func TestCreateSalaryStatementByUsingIndividualData(t *testing.T) {
 				CompanyId: 10,
 			},
 			fakesFunctions: fakesFunctions{
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -66,7 +66,7 @@ func TestCreateSalaryStatementByUsingIndividualData(t *testing.T) {
 				CompanyId: 1,
 			},
 			fakesFunctions: fakesFunctions{
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, errors.New("cannnot connect db")
 				},
 			},
@@ -78,7 +78,7 @@ func TestCreateSalaryStatementByUsingIndividualData(t *testing.T) {
 	for _, value := range cases {
 		salaryStatementRepository := &testtool.SalaryStatementRepositoryMock{}
 		salaryStatementRepository.FakeCreateSalaryStatement = value.fakesFunctions.FakeCreateSalaryStatement
-		salaryStatementId, err := value.administrator.CreateSalaryStatementByUsingIndividualData(salaryStatementRepository, value.employee, salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas{})
+		salaryStatementId, err := value.administrator.CreateSalaryStatement(salaryStatementRepository, value.employee, salary_statement_repository.SalaryStatementEntry{})
 		assert.Equal(t, value.expectedSalaryStatementId, salaryStatementId)
 		assert.Equal(t, value.expectedError, err)
 	}

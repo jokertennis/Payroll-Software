@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"context"
 	"database/sql"
-	"usr/local/go/server/gen/models"
-	"usr/local/go/src/main/domain-model/employee"
+	"github.com/jokertennis/Payroll-Software/server/gen/models"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
 
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )

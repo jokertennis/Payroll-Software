@@ -11,15 +11,15 @@ import (
 	golangswaggerpaths "path"
 )
 
-// PostAdministratorSalaryStatementIndividualURL generates an URL for the post administrator salary statement individual operation
-type PostAdministratorSalaryStatementIndividualURL struct {
+// PostAdministratorSalaryStatementURL generates an URL for the post administrator salary statement operation
+type PostAdministratorSalaryStatementURL struct {
 	_basePath string
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostAdministratorSalaryStatementIndividualURL) WithBasePath(bp string) *PostAdministratorSalaryStatementIndividualURL {
+func (o *PostAdministratorSalaryStatementURL) WithBasePath(bp string) *PostAdministratorSalaryStatementURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -27,15 +27,15 @@ func (o *PostAdministratorSalaryStatementIndividualURL) WithBasePath(bp string) 
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostAdministratorSalaryStatementIndividualURL) SetBasePath(bp string) {
+func (o *PostAdministratorSalaryStatementURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *PostAdministratorSalaryStatementIndividualURL) Build() (*url.URL, error) {
+func (o *PostAdministratorSalaryStatementURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/administrator/salary_statement_individual"
+	var _path = "/administrator/salary_statement"
 
 	_basePath := o._basePath
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
@@ -44,7 +44,7 @@ func (o *PostAdministratorSalaryStatementIndividualURL) Build() (*url.URL, error
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *PostAdministratorSalaryStatementIndividualURL) Must(u *url.URL, err error) *url.URL {
+func (o *PostAdministratorSalaryStatementURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -55,17 +55,17 @@ func (o *PostAdministratorSalaryStatementIndividualURL) Must(u *url.URL, err err
 }
 
 // String returns the string representation of the path with query string
-func (o *PostAdministratorSalaryStatementIndividualURL) String() string {
+func (o *PostAdministratorSalaryStatementURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *PostAdministratorSalaryStatementIndividualURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *PostAdministratorSalaryStatementURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on PostAdministratorSalaryStatementIndividualURL")
+		return nil, errors.New("scheme is required for a full url on PostAdministratorSalaryStatementURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on PostAdministratorSalaryStatementIndividualURL")
+		return nil, errors.New("host is required for a full url on PostAdministratorSalaryStatementURL")
 	}
 
 	base, err := o.Build()
@@ -79,6 +79,6 @@ func (o *PostAdministratorSalaryStatementIndividualURL) BuildFull(scheme, host s
 }
 
 // StringFull returns the string representation of a complete url
-func (o *PostAdministratorSalaryStatementIndividualURL) StringFull(scheme, host string) string {
+func (o *PostAdministratorSalaryStatementURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

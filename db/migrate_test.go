@@ -3,7 +3,7 @@ package db_test
 import (
 	"fmt"
 	"testing"
-	"usr/local/go/db"
+	"github.com/jokertennis/Payroll-Software/db"
 
 	"github.com/stretchr/testify/assert"
 )

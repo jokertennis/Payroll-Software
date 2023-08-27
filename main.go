@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"usr/local/go/db"
-	"usr/local/go/src/main/presentation/handler/prompt"
-	"usr/local/go/src/main/presentation/handler/salary_statement"
-	"usr/local/go/swagger/restapi"
-	"usr/local/go/swagger/restapi/operations"
+	"github.com/jokertennis/Payroll-Software/db"
+	"github.com/jokertennis/Payroll-Software/src/main/presentation/handler/prompt"
+	"github.com/jokertennis/Payroll-Software/src/main/presentation/handler/salary_statement"
+	"github.com/jokertennis/Payroll-Software/swagger/restapi"
+	"github.com/jokertennis/Payroll-Software/swagger/restapi/operations"
 
 	"github.com/go-openapi/loads"
 	_ "github.com/go-sql-driver/mysql"
@@ -79,7 +79,7 @@ func configureAPI(api *operations.SwaggerAPI, ctx context.Context, dbInstance *s
 	var getAllSalaryStatementsForEmployeeHandler operations.GetEmployeeSalaryStatementsHandler = &getAllSalaryStatementsForEmployeeHandlerStruct
 	api.GetEmployeeSalaryStatementsHandler = getAllSalaryStatementsForEmployeeHandler
 
-	createSalaryStatementIndividualHandlerStruct := salary_statement.CreateSalaryStatementIndividualHandlerStruct{}
-	var createSalaryStatementIndividualHandler operations.PostAdministratorSalaryStatementIndividualHandler = &createSalaryStatementIndividualHandlerStruct
-	api.PostAdministratorSalaryStatementIndividualHandler = createSalaryStatementIndividualHandler
+	createSalaryStatementHandlerStruct := salary_statement.CreateSalaryStatementHandlerStruct{}
+	var createSalaryStatementHandler operations.PostAdministratorSalaryStatementHandler = &createSalaryStatementHandlerStruct
+	api.PostAdministratorSalaryStatementHandler = createSalaryStatementHandler
 }

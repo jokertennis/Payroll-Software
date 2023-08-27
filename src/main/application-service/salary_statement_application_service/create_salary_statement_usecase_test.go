@@ -6,26 +6,26 @@ import (
 	"net/http"
 	"testing"
 	"time"
-	"usr/local/go/src/main/application-service/salary_statement_application_service"
-	"usr/local/go/src/main/domain-model/administrator"
-	"usr/local/go/src/main/domain-model/employee"
-	"usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
-	"usr/local/go/src/testtool"
+	"github.com/jokertennis/Payroll-Software/src/main/application-service/salary_statement_application_service"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/administrator"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
+	"github.com/jokertennis/Payroll-Software/src/testtool"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
+func TestCreateSalaryStatementUseCase(t *testing.T) {
 	type fakesFunctions struct {
 		FakeGetAdministratorByMailAddress func(mailAddress string) (*administrator_domain_model.Administrator, error)
 		FakeGetEmployeeByMailAddress   func(mailAddress string) (*employee_domain_model.Employee, error)
 		FakeGetSalaryStatement func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error)
-		FakeCreateSalaryStatement func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error)
+		FakeCreateSalaryStatement func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error)
 	}
 	cases := map[string]struct {
 		fakesFunctions     fakesFunctions
-		expectedResult     *salary_statement_application_service.ResultOfCreateSalaryStatementIndividual
+		expectedResult     *salary_statement_application_service.ResultOfCreateSalaryStatement
 		expectedStatusCode int
 		expectedError      error
 	}{
@@ -42,11 +42,11 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 1, nil
 				},
 			},
-			expectedResult: &salary_statement_application_service.ResultOfCreateSalaryStatementIndividual{SalaryStatementId: 1},
+			expectedResult: &salary_statement_application_service.ResultOfCreateSalaryStatement{SalaryStatementId: 1},
 			expectedStatusCode: http.StatusCreated,
 			expectedError:      nil,
 		},
@@ -61,7 +61,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -80,7 +80,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -100,7 +100,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -120,7 +120,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -141,7 +141,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -162,7 +162,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, errors.New("cannnot connect db.")
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -183,7 +183,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return &salary_statement_domain_model.SalaryStatement{ID: 1}, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, nil
 				},
 			},
@@ -191,7 +191,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 			expectedStatusCode: http.StatusBadRequest,
 			expectedError:      errors.New("badrequest. SalaryStatement which has payday that match year and month of specified payday was already existed"),
 		},
-		"Error has occurred when executed CreateSalaryStatementByUsingIndividualData()": {
+		"Error has occurred when executed CreateSalaryStatementByUsingData()": {
 			fakesFunctions: fakesFunctions{
 				FakeGetAdministratorByMailAddress: func(mailAddress string) (*administrator_domain_model.Administrator, error) {
 					administrator := &administrator_domain_model.Administrator{ID: 1, Name: "管理者A", CompanyId: 1}
@@ -204,7 +204,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					return nil, nil
 				},
-				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+				FakeCreateSalaryStatement: func(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 					return 0, errors.New("cannnot connect db.")
 				},
 			},
@@ -222,7 +222,7 @@ func TestCreateSalaryStatementIndividualUseCase(t *testing.T) {
 		salaryStatementRepository := &testtool.SalaryStatementRepositoryMock{}
 		salaryStatementRepository.FakeGetSalaryStatement = value.fakesFunctions.FakeGetSalaryStatement
 		salaryStatementRepository.FakeCreateSalaryStatement = value.fakesFunctions.FakeCreateSalaryStatement
-		result, statusCode, err := salary_statement_application_service.CreateSalaryStatementIndividualUseCase(administratorRepository, employeeRepository, salaryStatementRepository, "administrator@example.com", "bob@example.com", salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas{})
+		result, statusCode, err := salary_statement_application_service.CreateSalaryStatementUseCase(administratorRepository, employeeRepository, salaryStatementRepository, "administrator@example.com", "bob@example.com", salary_statement_repository.SalaryStatementEntry{})
 		assert.Equal(t, value.expectedResult, result)
 		assert.Equal(t, value.expectedStatusCode, statusCode)
 		assert.Equal(t, value.expectedError, err)

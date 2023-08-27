@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-	"usr/local/go/server/gen/models"
-	"usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	"github.com/jokertennis/Payroll-Software/server/gen/models"
+	salary_statement_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -16,28 +16,24 @@ import (
 
 type SalaryStatementRepository struct {
 	ctx context.Context
-	db *sql.DB
+	db  *sql.DB
 }
 
 func NewSalaryStatementRepository(ctx context.Context, db *sql.DB) SalaryStatementRepository {
 	return SalaryStatementRepository{
 		ctx: ctx,
-		db: db,
+		db:  db,
 	}
 }
 
 func (r *SalaryStatementRepository) GetSalaryStatement(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 	start := time.Date(yearOfPayday, monthOfPayday, 1, 0, 0, 0, 0, time.UTC) // 年月の最初の日時
-	end := start.AddDate(0, 1, 0) // 年月の最後の日時
+	end := start.AddDate(0, 1, 0)                                            // 年月の最後の日時
 	salaryStatements, err := models.SalaryStatements(
-		qm.Load(models.SalaryStatementRels.IndividualEarning),
-		qm.Load(models.SalaryStatementRels.FixedEarning),
-		qm.Load(models.SalaryStatementRels.IndividualDeduction),
-		qm.Load(models.SalaryStatementRels.FixedDeduction),
-		qm.Load(models.SalaryStatementRels.IndividualEarning+"."+models.IndividualEarningRels.IndividualEarningDetails),
-		qm.Load(models.SalaryStatementRels.FixedEarning+"."+models.FixedEarningRels.FixedEarningDetails),
-		qm.Load(models.SalaryStatementRels.IndividualDeduction+"."+models.IndividualDeductionRels.IndividualDeductionDetails),
-		qm.Load(models.SalaryStatementRels.FixedDeduction+"."+models.FixedDeductionRels.FixedDeductionDetails),
+		qm.Load(models.SalaryStatementRels.Earning),
+		qm.Load(models.SalaryStatementRels.Deduction),
+		qm.Load(models.SalaryStatementRels.Earning+"."+models.EarningRels.EarningDetails),
+		qm.Load(models.SalaryStatementRels.Deduction+"."+models.DeductionRels.DeductionDetails),
 		qm.Where("salary_statements.employee_id=?", employeeId),
 		qm.And("salary_statements.payday >= ?", start),
 		qm.And("salary_statements.payday < ?", end),
@@ -56,14 +52,10 @@ func (r *SalaryStatementRepository) GetSalaryStatement(employeeId uint32, yearOf
 
 func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([]*salary_statement_domain_model.SalaryStatement, error) {
 	salaryStatements, err := models.SalaryStatements(
-		qm.Load(models.SalaryStatementRels.IndividualEarning),
-		qm.Load(models.SalaryStatementRels.FixedEarning),
-		qm.Load(models.SalaryStatementRels.IndividualDeduction),
-		qm.Load(models.SalaryStatementRels.FixedDeduction),
-		qm.Load(models.SalaryStatementRels.IndividualEarning+"."+models.IndividualEarningRels.IndividualEarningDetails),
-		qm.Load(models.SalaryStatementRels.FixedEarning+"."+models.FixedEarningRels.FixedEarningDetails),
-		qm.Load(models.SalaryStatementRels.IndividualDeduction+"."+models.IndividualDeductionRels.IndividualDeductionDetails),
-		qm.Load(models.SalaryStatementRels.FixedDeduction+"."+models.FixedDeductionRels.FixedDeductionDetails),
+		qm.Load(models.SalaryStatementRels.Earning),
+		qm.Load(models.SalaryStatementRels.Deduction),
+		qm.Load(models.SalaryStatementRels.Earning+"."+models.EarningRels.EarningDetails),
+		qm.Load(models.SalaryStatementRels.Deduction+"."+models.DeductionRels.DeductionDetails),
 		qm.Where("salary_statements.employee_id=?", employeeId),
 	).All(r.ctx, r.db)
 	if err != nil {
@@ -73,7 +65,7 @@ func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([
 		return nil, nil
 	}
 
-	var salaryStatementDomainObjectList []*salary_statement_domain_model.SalaryStatement 
+	var salaryStatementDomainObjectList []*salary_statement_domain_model.SalaryStatement
 	for _, salaryStatement := range salaryStatements {
 		salaryStatementDomainObject, err := MappingSalaryStatementDomainObject(salaryStatement)
 		if err != nil {
@@ -84,63 +76,65 @@ func (r *SalaryStatementRepository) GetAllSalaryStatements(employeeId uint32) ([
 	return salaryStatementDomainObjectList, nil
 }
 
-func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 	tx, err := r.db.BeginTx(r.ctx, nil)
 	if err != nil {
 		return 0, fmt.Errorf("failed to create tx object.error:%s", err)
 	}
-	newIndividualEarning := &models.IndividualEarning{
-		Nominal: salaryStatementEntry.IndividualEarningEntry.Nominal,
-		Amount: salaryStatementEntry.IndividualEarningEntry.Amount,
+	newEarning := &models.Earning{
+		Nominal:     salaryStatementEntry.EarningEntry.Nominal,
+		Amount:      salaryStatementEntry.EarningEntry.Amount,
+		EarningType: string(salaryStatementEntry.EarningEntry.EarningType),
 	}
-	err = newIndividualEarning.Insert(r.ctx, tx, boil.Infer())
+	err = newEarning.Insert(r.ctx, tx, boil.Infer())
 	if err != nil {
 		tx.Rollback()
-		return 0, fmt.Errorf("failed to create individualEarning.error:%s", err)
+		return 0, fmt.Errorf("failed to create earning.error:%s", err)
 	}
 
-	for _, value := range salaryStatementEntry.IndividualEarningEntry.IndividualEarningDetailsEntry {
-		newIndividualEarningDetail := &models.IndividualEarningDetail{
-			IndividualEarningID: newIndividualEarning.ID,
-			Nominal: value.Nominal,
-			Amount: value.Amount,
+	for _, value := range salaryStatementEntry.EarningEntry.EarningDetailsEntry {
+		newEarningDetail := &models.EarningDetail{
+			EarningID: newEarning.ID,
+			Nominal:   value.Nominal,
+			Amount:    value.Amount,
 		}
-		err = newIndividualEarningDetail.Insert(r.ctx, tx, boil.Infer())
+		err = newEarningDetail.Insert(r.ctx, tx, boil.Infer())
 		if err != nil {
 			tx.Rollback()
-			return 0, fmt.Errorf("failed to create individualEarningDetail.error:%s", err)
+			return 0, fmt.Errorf("failed to create earningDetail.error:%s", err)
 		}
 	}
 
-	newIndividualDeduction := &models.IndividualDeduction{
-		Nominal: salaryStatementEntry.IndividualDeductionEntry.Nominal,
-		Amount: salaryStatementEntry.IndividualDeductionEntry.Amount,
+	newDeduction := &models.Deduction{
+		Nominal:       salaryStatementEntry.DeductionEntry.Nominal,
+		Amount:        salaryStatementEntry.DeductionEntry.Amount,
+		DeductionType: string(salaryStatementEntry.DeductionEntry.DeductionType),
 	}
-	err = newIndividualDeduction.Insert(r.ctx, tx, boil.Infer())
+	err = newDeduction.Insert(r.ctx, tx, boil.Infer())
 	if err != nil {
 		tx.Rollback()
-		return 0, fmt.Errorf("failed to create individualDeduction.error:%s", err)
+		return 0, fmt.Errorf("failed to create deduction.error:%s", err)
 	}
 
-	for _, value := range salaryStatementEntry.IndividualDeductionEntry.IndividualDeductionDetailsEntry {
-		newIndividualDeductionDetail := &models.IndividualDeductionDetail{
-			IndividualDeductionID: newIndividualDeduction.ID,
-			Nominal: value.Nominal,
-			Amount: value.Amount,
+	for _, value := range salaryStatementEntry.DeductionEntry.DeductionDetailsEntry {
+		newDeductionDetail := &models.DeductionDetail{
+			DeductionID: newDeduction.ID,
+			Nominal:     value.Nominal,
+			Amount:      value.Amount,
 		}
-		err = newIndividualDeductionDetail.Insert(r.ctx, tx, boil.Infer())
+		err = newDeductionDetail.Insert(r.ctx, tx, boil.Infer())
 		if err != nil {
 			tx.Rollback()
-			return 0, fmt.Errorf("failed to create individualDeductionDetail.error:%s", err)
+			return 0, fmt.Errorf("failed to create deductionDetail.error:%s", err)
 		}
 	}
 
 	newSalaryStatement := &models.SalaryStatement{
-		IndividualEarningID: null.Uint32From(newIndividualEarning.ID),
-		IndividualDeductionID: null.Uint32From(newIndividualDeduction.ID),
-		EmployeeID: salaryStatementEntry.EmployeeId,
-		Nominal: salaryStatementEntry.Nominal,
-		Payday: salaryStatementEntry.Payday,
+		EarningID:    null.Uint32From(newEarning.ID),
+		DeductionID:  null.Uint32From(newDeduction.ID),
+		EmployeeID:   salaryStatementEntry.EmployeeId,
+		Nominal:      salaryStatementEntry.Nominal,
+		Payday:       salaryStatementEntry.Payday,
 		TargetPeriod: salaryStatementEntry.TargetPeriod,
 	}
 	err = newSalaryStatement.Insert(r.ctx, tx, boil.Infer())

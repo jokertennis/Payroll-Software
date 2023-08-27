@@ -3,8 +3,8 @@ package db_test
 import (
 	"context"
 	"testing"
-	"usr/local/go/db"
-	"usr/local/go/server/gen/models"
+	"github.com/jokertennis/Payroll-Software/db"
+	"github.com/jokertennis/Payroll-Software/server/gen/models"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -39,37 +39,21 @@ func TestCreateDataAndResetDb(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, boolAdministratorExist)
 
-	boolEarningExist, err := models.IndividualEarningExists(ctx, dbInstance, 1)
+	boolEarningExist, err := models.EarningExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.True(t, boolEarningExist)
 
-	boolEarningDetailExist, err := models.IndividualEarningDetailExists(ctx, dbInstance, 1)
+	boolEarningDetailExist, err := models.EarningDetailExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.True(t, boolEarningDetailExist)
 
-	boolFixedEarningExist, err := models.FixedEarningExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.True(t, boolFixedEarningExist)
-
-	boolFixedEarningDetailExist, err := models.FixedEarningDetailExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.True(t, boolFixedEarningDetailExist)
-
-	boolDeductionExist, err := models.IndividualDeductionExists(ctx, dbInstance, 1)
+	boolDeductionExist, err := models.DeductionExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.True(t, boolDeductionExist)
 
-	boolDeductionDetailExist, err := models.IndividualDeductionDetailExists(ctx, dbInstance, 1)
+	boolDeductionDetailExist, err := models.DeductionDetailExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.True(t, boolDeductionDetailExist)
-
-	boolFixedDeductionExist, err := models.FixedDeductionExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.True(t, boolFixedDeductionExist)
-
-	boolFixedDeductionDetailExist, err := models.FixedDeductionDetailExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.True(t, boolFixedDeductionDetailExist)
 
 	boolSalaryStatementExist, err := models.SalaryStatementExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
@@ -92,37 +76,21 @@ func TestCreateDataAndResetDb(t *testing.T) {
 	assert.Nil(t, err)
 	assert.False(t, boolAdministratorExist)
 
-	boolEarningExist, err = models.IndividualEarningExists(ctx, dbInstance, 1)
+	boolEarningExist, err = models.EarningExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.False(t, boolEarningExist)
 
-	boolEarningDetailExist, err = models.IndividualEarningDetailExists(ctx, dbInstance, 1)
+	boolEarningDetailExist, err = models.EarningDetailExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.False(t, boolEarningDetailExist)
 
-	boolFixedEarningExist, err = models.FixedEarningExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.False(t, boolFixedEarningExist)
-
-	boolFixedEarningDetailExist, err = models.FixedEarningDetailExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.False(t, boolFixedEarningDetailExist)
-
-	boolDeductionExist, err = models.IndividualDeductionExists(ctx, dbInstance, 1)
+	boolDeductionExist, err = models.DeductionExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.False(t, boolDeductionExist)
 
-	boolDeductionDetailExist, err = models.IndividualDeductionDetailExists(ctx, dbInstance, 1)
+	boolDeductionDetailExist, err = models.DeductionDetailExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)
 	assert.False(t, boolDeductionDetailExist)
-
-	boolFixedDeductionExist, err = models.FixedDeductionExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.False(t, boolFixedDeductionExist)
-
-	boolFixedDeductionDetailExist, err = models.FixedDeductionDetailExists(ctx, dbInstance, 1)
-	assert.Nil(t, err)
-	assert.False(t, boolFixedDeductionDetailExist)
 
 	boolSalaryStatementExist, err = models.SalaryStatementExists(ctx, dbInstance, 1)
 	assert.Nil(t, err)

@@ -1,7 +1,7 @@
 package deduction_domain_model
 
 import (
-	deduction_detail_domain_model "usr/local/go/src/main/domain-model/deduction_detail"
+	deduction_detail_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/deduction_detail"
 )
 
 type DeductionType string

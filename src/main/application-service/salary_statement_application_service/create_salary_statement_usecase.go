@@ -4,16 +4,16 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"usr/local/go/src/main/domain-service/repository/administrator_repository"
-	"usr/local/go/src/main/domain-service/repository/employee_repository"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/administrator_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/employee_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 )
 
-type ResultOfCreateSalaryStatementIndividual struct {
+type ResultOfCreateSalaryStatement struct {
 	SalaryStatementId int
 }
 
-func CreateSalaryStatementIndividualUseCase(administratorRepository administrator_repository.AdministratorRepository, employeeRepository employee_repository.EmployeeRepository, salaryStatementRepository salary_statement_repository.SalaryStatementRepository, mailAddressOfAdministrator string, mailAddressOfEmployee string, salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (result *ResultOfCreateSalaryStatementIndividual, statusCode int, errorMessage error) {
+func CreateSalaryStatementUseCase(administratorRepository administrator_repository.AdministratorRepository, employeeRepository employee_repository.EmployeeRepository, salaryStatementRepository salary_statement_repository.SalaryStatementRepository, mailAddressOfAdministrator string, mailAddressOfEmployee string, salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (result *ResultOfCreateSalaryStatement, statusCode int, errorMessage error) {
 	administrator, err := administratorRepository.GetAdministratorByMailAddress(mailAddressOfAdministrator)
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
@@ -46,10 +46,10 @@ func CreateSalaryStatementIndividualUseCase(administratorRepository administrato
 		return nil, http.StatusBadRequest, fmt.Errorf("badrequest. SalaryStatement which has payday that match year and month of specified payday was already existed")
 	}
 
-	salaryStatementId, err := administrator.CreateSalaryStatementByUsingIndividualData(salaryStatementRepository, *employee, salaryStatementEntry)
+	salaryStatementId, err := administrator.CreateSalaryStatement(salaryStatementRepository, *employee, salaryStatementEntry)
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("internalServerError:error:%s", err)
 	}
 
-	return &ResultOfCreateSalaryStatementIndividual{SalaryStatementId: int(salaryStatementId)}, http.StatusCreated, nil
+	return &ResultOfCreateSalaryStatement{SalaryStatementId: int(salaryStatementId)}, http.StatusCreated, nil
 }

@@ -56,7 +56,9 @@ definitions:
       amount_of_earning:
         type: integer
         format: int32
-      individual_earning_details:
+      earning_and_deduction_type:
+        type: string
+      earning_details:
         type: array
         items:
           type: object
@@ -71,7 +73,7 @@ definitions:
       amount_of_deduction:
         type: integer
         format: int32
-      individual_deduction_details:
+      deduction_details:
         type: array
         items:
           type: object
@@ -88,7 +90,8 @@ definitions:
       - target_period
       - nominal_of_earning
       - amount_of_earning
-      - individual_earning_details
+      - earning_and_deduction_type
+      - earning_details
       - nominal_of_deduction
       - amount_of_deduction
-      - individual_deduction_details
+      - deduction_details

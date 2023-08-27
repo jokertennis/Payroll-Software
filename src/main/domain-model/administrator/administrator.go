@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	"usr/local/go/src/main/domain-model/employee"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	employee_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 )
 
 type Administrator struct {
@@ -36,7 +36,7 @@ func (a *Administrator) SalaryStatementExists(salaryStatementRepository salary_s
 	return true, nil
 }
 
-func (a *Administrator) CreateSalaryStatementByUsingIndividualData(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, employee employee_domain_model.Employee, salaryStatementEntry salary_statement_repository.SalaryStatementEntryByUsingIndividualDatas) (salaryStatementId uint32, err error) {
+func (a *Administrator) CreateSalaryStatement(salaryStatementRepository salary_statement_repository.SalaryStatementRepository, employee employee_domain_model.Employee, salaryStatementEntry salary_statement_repository.SalaryStatementEntry) (salaryStatementId uint32, err error) {
 	err = a.CheckEmployee(employee)
 	if err != nil {
 		return 0, err

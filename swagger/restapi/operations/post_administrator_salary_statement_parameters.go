@@ -14,22 +14,22 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"usr/local/go/swagger/models"
+	"github.com/jokertennis/Payroll-Software/swagger/models"
 )
 
-// NewPostAdministratorSalaryStatementIndividualParams creates a new PostAdministratorSalaryStatementIndividualParams object
+// NewPostAdministratorSalaryStatementParams creates a new PostAdministratorSalaryStatementParams object
 //
 // There are no default values defined in the spec.
-func NewPostAdministratorSalaryStatementIndividualParams() PostAdministratorSalaryStatementIndividualParams {
+func NewPostAdministratorSalaryStatementParams() PostAdministratorSalaryStatementParams {
 
-	return PostAdministratorSalaryStatementIndividualParams{}
+	return PostAdministratorSalaryStatementParams{}
 }
 
-// PostAdministratorSalaryStatementIndividualParams contains all the bound params for the post administrator salary statement individual operation
+// PostAdministratorSalaryStatementParams contains all the bound params for the post administrator salary statement operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostAdministratorSalaryStatementIndividual
-type PostAdministratorSalaryStatementIndividualParams struct {
+// swagger:parameters PostAdministratorSalaryStatement
+type PostAdministratorSalaryStatementParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -44,8 +44,8 @@ type PostAdministratorSalaryStatementIndividualParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostAdministratorSalaryStatementIndividualParams() beforehand.
-func (o *PostAdministratorSalaryStatementIndividualParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewPostAdministratorSalaryStatementParams() beforehand.
+func (o *PostAdministratorSalaryStatementParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r

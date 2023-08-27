@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"testing"
 	"time"
-	"usr/local/go/src/main/application-service/salary_statement_application_service"
-	deduction_domain_model "usr/local/go/src/main/domain-model/deduction"
-	deduction_detail_domain_model "usr/local/go/src/main/domain-model/deduction_detail"
-	earning_domain_model "usr/local/go/src/main/domain-model/earning"
-	earning_detail_domain_model "usr/local/go/src/main/domain-model/earning_detail"
-	employee_domain_model "usr/local/go/src/main/domain-model/employee"
-	salary_statement_domain_model "usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/testtool"
+	"github.com/jokertennis/Payroll-Software/src/main/application-service/salary_statement_application_service"
+	deduction_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/deduction"
+	deduction_detail_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/deduction_detail"
+	earning_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/earning"
+	earning_detail_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/earning_detail"
+	employee_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
+	salary_statement_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
+	"github.com/jokertennis/Payroll-Software/src/testtool"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/stretchr/testify/assert"
@@ -29,63 +29,7 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 		expectedStatusCode int
 		expectedError      error
 	}{
-		"Successfully get Result data when salary statement has individual earning and individual deduction.Error has not occurred.": {
-			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
-					employee := &employee_domain_model.Employee{ID: 1, Name: "従業員A"}
-					return employee, nil
-				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
-					salaryStatement := &salary_statement_domain_model.SalaryStatement{
-						ID: 1,
-						IndividualEarning: &earning_domain_model.IndividualEarning{
-							ID:      1,
-							Amount:  300000,
-							Nominal: "スタッフ支給総額",
-							IndividualEarningDetails: []earning_detail_domain_model.IndividualEarningDetail{
-								{ID: 1, IndividualEarningID: 1, Nominal: "スタッフ基本給", Amount: 250000},
-								{ID: 2, IndividualEarningID: 1, Nominal: "スタッフ固定残業代", Amount: 50000},
-							},
-						},
-						FixedEarning: nil,
-						IndividualDeduction: &deduction_domain_model.IndividualDeduction{
-							ID:      1,
-							Amount:  15000,
-							Nominal: "スタッフ控除総額",
-							IndividualDeductionDetails: []deduction_detail_domain_model.IndividualDeductionDetail{
-								{ID: 1, IndividualDeductionID: 1, Nominal: "所得税", Amount: 5000},
-								{ID: 2, IndividualDeductionID: 1, Nominal: "住民税", Amount: 10000},
-							},
-						},
-						FixedDeduction: nil,
-						EmployeeId:     1,
-						Nominal:        "2022年2月分給料明細",
-						Payday:         time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC),
-						TargetPeriod:   "2022年1月1日~2022年1月31日分",
-					}
-					return salaryStatement, nil
-				},
-			},
-			expectedResult: &salary_statement_application_service.ResultOfGetSalaryStatementForEmployee{
-				Nominal:           "2022年2月分給料明細",
-				Payday:            strfmt.DateTime(time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC)),
-				TargetPeriod:      "2022年1月1日~2022年1月31日分",
-				AmountOfDeduction: 15000,
-				NameOfEmployee:    "従業員A",
-				AmountOfEarning:   300000,
-				EarningDetails: []salary_statement_application_service.EarningDetailOfGetSalaryStatementForEmployee{
-					{Nominal: "スタッフ基本給", AmountOfEarningDetail: 250000},
-					{Nominal: "スタッフ固定残業代", AmountOfEarningDetail: 50000},
-				},
-				DeductionDetails: []salary_statement_application_service.DeductionDetailOfGetSalaryStatementForEmployee{
-					{Nominal: "所得税", AmountOfDeductionDetail: 5000},
-					{Nominal: "住民税", AmountOfDeductionDetail: 10000},
-				},
-			},
-			expectedStatusCode: http.StatusOK,
-			expectedError:      nil,
-		},
-		"Successfully get Result data when salary statement has fixed earning and fixed deduction.Error has not occurred.": {
+		"Successfully get Result data.Error has not occurred.": {
 			fakesFunctions: fakesFunctions{
 				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
 					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
@@ -94,24 +38,24 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
 					salaryStatement := &salary_statement_domain_model.SalaryStatement{
 						ID:                1,
-						IndividualEarning: nil,
-						FixedEarning: &earning_domain_model.FixedEarning{
+						Earning: earning_domain_model.Earning{
 							ID:      1,
 							Amount:  300000,
 							Nominal: "支給総額",
-							FixedEarningDetails: []earning_detail_domain_model.FixedEarningDetail{
-								{ID: 1, FixedEarningID: 1, Nominal: "基本給", Amount: 250000},
-								{ID: 2, FixedEarningID: 1, Nominal: "固定残業代", Amount: 50000},
+							EarningType: earning_domain_model.IndividualEarning,
+							EarningDetails: []earning_detail_domain_model.EarningDetail{
+								{ID: 1, EarningID: 1, Nominal: "基本給", Amount: 250000},
+								{ID: 2, EarningID: 1, Nominal: "固定残業代", Amount: 50000},
 							},
 						},
-						IndividualDeduction: nil,
-						FixedDeduction: &deduction_domain_model.FixedDeduction{
+						Deduction: deduction_domain_model.Deduction{
 							ID:      1,
 							Amount:  15000,
 							Nominal: "控除総額",
-							FixedDeductionDetails: []deduction_detail_domain_model.FixedDeductionDetail{
-								{ID: 1, FixedDeductionID: 1, Nominal: "所得税", Amount: 5000},
-								{ID: 2, FixedDeductionID: 1, Nominal: "住民税", Amount: 10000},
+							DeductionType: deduction_domain_model.IndividualDeduction,
+							DeductionDetails: []deduction_detail_domain_model.DeductionDetail{
+								{ID: 1, DeductionID: 1, Nominal: "所得税", Amount: 5000},
+								{ID: 2, DeductionID: 1, Nominal: "住民税", Amount: 10000},
 							},
 						},
 						EmployeeId:   1,
@@ -194,72 +138,6 @@ func TestGetSalaryStatementForEmployeeUseCase(t *testing.T) {
 			expectedResult:     nil,
 			expectedStatusCode: http.StatusNotFound,
 			expectedError:      fmt.Errorf("notFound. SalaryStatement with specified year and month was not found in registered salary statement datas.UserMailAddress:employee@example.com, Year:2022, Month:2"),
-		},
-		"Error has occurred when get deduction.": {
-			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
-					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
-					return employee, nil
-				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
-					salaryStatement := &salary_statement_domain_model.SalaryStatement{
-						ID:                1,
-						IndividualEarning: nil,
-						FixedEarning: &earning_domain_model.FixedEarning{
-							ID:      1,
-							Amount:  300000,
-							Nominal: "支給総額",
-							FixedEarningDetails: []earning_detail_domain_model.FixedEarningDetail{
-								{ID: 1, FixedEarningID: 1, Nominal: "基本給", Amount: 250000},
-								{ID: 2, FixedEarningID: 1, Nominal: "固定残業代", Amount: 50000},
-							},
-						},
-						IndividualDeduction: nil,
-						FixedDeduction:      nil,
-						EmployeeId:          1,
-						Nominal:             "2022年2月分給料明細",
-						Payday:              time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC),
-						TargetPeriod:        "2022年1月1日~2022年1月31日分",
-					}
-					return salaryStatement, nil
-				},
-			},
-			expectedResult:     nil,
-			expectedStatusCode: http.StatusInternalServerError,
-			expectedError:      fmt.Errorf("InternalServerError:error:neither IndividualDeduction nor FixedDeduction was not found.SalaryStatementId:1"),
-		},
-		"Error has occurred when get earning.": {
-			fakesFunctions: fakesFunctions{
-				FakeGetEmployeeByMailAddress: func(mailAddress string) (*employee_domain_model.Employee, error) {
-					employee := &employee_domain_model.Employee{ID: 1, Name: "keven"}
-					return employee, nil
-				},
-				FakeGetSalaryStatement: func(employeeId uint32, yearOfPayday int, monthOfPayday time.Month) (*salary_statement_domain_model.SalaryStatement, error) {
-					salaryStatement := &salary_statement_domain_model.SalaryStatement{
-						ID:                  1,
-						IndividualEarning:   nil,
-						FixedEarning:        nil,
-						IndividualDeduction: nil,
-						FixedDeduction: &deduction_domain_model.FixedDeduction{
-							ID:      1,
-							Amount:  15000,
-							Nominal: "控除総額",
-							FixedDeductionDetails: []deduction_detail_domain_model.FixedDeductionDetail{
-								{ID: 1, FixedDeductionID: 1, Nominal: "所得税", Amount: 5000},
-								{ID: 2, FixedDeductionID: 1, Nominal: "住民税", Amount: 10000},
-							},
-						},
-						EmployeeId:   1,
-						Nominal:      "2022年2月分給料明細",
-						Payday:       time.Date(2022, time.February, 25, 12, 00, 00, 0, time.UTC),
-						TargetPeriod: "2022年1月1日~2022年1月31日分",
-					}
-					return salaryStatement, nil
-				},
-			},
-			expectedResult:     nil,
-			expectedStatusCode: http.StatusInternalServerError,
-			expectedError:      fmt.Errorf("InternalServerError:error:neither IndividualEarning nor FixedEarning was not found.SalaryStatementId:1"),
 		},
 	}
 

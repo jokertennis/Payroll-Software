@@ -7,12 +7,10 @@ import (
 	"net/http"
 	"os"
 	"testing"
-	"time"
-	"usr/local/go/db"
-	"usr/local/go/server/gen/models"
+	"github.com/jokertennis/Payroll-Software/db"
+	"github.com/jokertennis/Payroll-Software/server/gen/models"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
@@ -57,125 +55,125 @@ func createDataForTestOfGetSalaryStatementForEmployeeHandler(ctx context.Context
 		}
 	}
 
-	individual_earnings := []models.IndividualEarning{
-		{ID: 1, Nominal: "支給", Amount: 300000},
-		{ID: 2, Nominal: "支給", Amount: 350000}}
+	// individual_earnings := []models.IndividualEarning{
+	// 	{ID: 1, Nominal: "支給", Amount: 300000},
+	// 	{ID: 2, Nominal: "支給", Amount: 350000}}
 	
-	for _, individual_earning := range individual_earnings {
-		if err := individual_earning.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of individual_earning. err:%s", err)
-		}
-	}
+	// for _, individual_earning := range individual_earnings {
+	// 	if err := individual_earning.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of individual_earning. err:%s", err)
+	// 	}
+	// }
 
-	individual_earning_details := []models.IndividualEarningDetail{
-		{ID: 1, IndividualEarningID: 1, Nominal: "基本給", Amount: 250000},
-		{ID: 2, IndividualEarningID: 1, Nominal: "住宅手当", Amount: 20000},
-		{ID: 3, IndividualEarningID: 1, Nominal: "通勤手当/非課税", Amount: 30000},
-		{ID: 4, IndividualEarningID: 2, Nominal: "基本給", Amount: 300000},
-		{ID: 5, IndividualEarningID: 2, Nominal: "残業手当", Amount: 50000}}
+	// individual_earning_details := []models.IndividualEarningDetail{
+	// 	{ID: 1, IndividualEarningID: 1, Nominal: "基本給", Amount: 250000},
+	// 	{ID: 2, IndividualEarningID: 1, Nominal: "住宅手当", Amount: 20000},
+	// 	{ID: 3, IndividualEarningID: 1, Nominal: "通勤手当/非課税", Amount: 30000},
+	// 	{ID: 4, IndividualEarningID: 2, Nominal: "基本給", Amount: 300000},
+	// 	{ID: 5, IndividualEarningID: 2, Nominal: "残業手当", Amount: 50000}}
 
-	for _, individual_earning_detail := range individual_earning_details {
-		if err := individual_earning_detail.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of individual_earning_detail. err:%s", err)
-		}
-	}
+	// for _, individual_earning_detail := range individual_earning_details {
+	// 	if err := individual_earning_detail.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of individual_earning_detail. err:%s", err)
+	// 	}
+	// }
 
-	fixed_earnings := []models.FixedEarning{
-		{ID: 1, Nominal: "エンジニアLv1家族手当0人", Amount: 300000},
-		{ID: 2, Nominal: "エンジニアLv1家族手当1人", Amount: 350000}}
+	// fixed_earnings := []models.FixedEarning{
+	// 	{ID: 1, Nominal: "エンジニアLv1家族手当0人", Amount: 300000},
+	// 	{ID: 2, Nominal: "エンジニアLv1家族手当1人", Amount: 350000}}
 
-	for _, fixed_earning := range fixed_earnings {
-		if err := fixed_earning.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of fixed_earning. err:%s", err)
-		}
-	}
+	// for _, fixed_earning := range fixed_earnings {
+	// 	if err := fixed_earning.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of fixed_earning. err:%s", err)
+	// 	}
+	// }
 
-	fixed_earning_details := []models.FixedEarningDetail{
-		{ID: 1, FixedEarningID: 1, Nominal: "基本給", Amount: 250000},
-		{ID: 2, FixedEarningID: 1, Nominal: "固定残業代", Amount: 50000},
-		{ID: 3, FixedEarningID: 2, Nominal: "基本給", Amount: 250000},
-		{ID: 4, FixedEarningID: 2, Nominal: "固定残業代", Amount: 50000},
-		{ID: 5, FixedEarningID: 2, Nominal: "家族手当(1人分)", Amount: 50000}}
+	// fixed_earning_details := []models.FixedEarningDetail{
+	// 	{ID: 1, FixedEarningID: 1, Nominal: "基本給", Amount: 250000},
+	// 	{ID: 2, FixedEarningID: 1, Nominal: "固定残業代", Amount: 50000},
+	// 	{ID: 3, FixedEarningID: 2, Nominal: "基本給", Amount: 250000},
+	// 	{ID: 4, FixedEarningID: 2, Nominal: "固定残業代", Amount: 50000},
+	// 	{ID: 5, FixedEarningID: 2, Nominal: "家族手当(1人分)", Amount: 50000}}
 
-	for _, fixed_earning_detail := range fixed_earning_details {
-		if err := fixed_earning_detail.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of fixed_earning_detail. err:%s", err)
-		}
-	}
+	// for _, fixed_earning_detail := range fixed_earning_details {
+	// 	if err := fixed_earning_detail.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of fixed_earning_detail. err:%s", err)
+	// 	}
+	// }
 
-	individual_deductions := []models.IndividualDeduction{
-		{ID: 1, Amount: 60000, Nominal: "控除"},
-		{ID: 2, Amount: 70000, Nominal: "控除"}}
+	// individual_deductions := []models.IndividualDeduction{
+	// 	{ID: 1, Amount: 60000, Nominal: "控除"},
+	// 	{ID: 2, Amount: 70000, Nominal: "控除"}}
 	
-	for _, individual_deduction := range individual_deductions {
-		if err := individual_deduction.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of individual_deduction. err:%s", err)
-		}
-	}
+	// for _, individual_deduction := range individual_deductions {
+	// 	if err := individual_deduction.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of individual_deduction. err:%s", err)
+	// 	}
+	// }
 
-	individual_deduction_details := []models.IndividualDeductionDetail{
-		{ID: 1, IndividualDeductionID: 1, Nominal: "健康保険料", Amount: 12000},
-		{ID: 2, IndividualDeductionID: 1, Nominal: "厚生年金保険料", Amount: 20000},
-		{ID: 3, IndividualDeductionID: 1, Nominal: "雇用保険料", Amount: 300},
-		{ID: 4, IndividualDeductionID: 1, Nominal: "所得税", Amount: 5000},
-		{ID: 5, IndividualDeductionID: 1, Nominal: "住民税", Amount: 22700},
-		{ID: 6, IndividualDeductionID: 2, Nominal: "健康保険料", Amount: 13000},
-		{ID: 7, IndividualDeductionID: 2, Nominal: "厚生年金保険料", Amount: 21000},
-		{ID: 8, IndividualDeductionID: 2, Nominal: "雇用保険料", Amount: 500},
-		{ID: 9, IndividualDeductionID: 2, Nominal: "所得税", Amount: 6000},
-		{ID: 10, IndividualDeductionID: 2, Nominal: "住民税", Amount: 29500}}
+	// individual_deduction_details := []models.IndividualDeductionDetail{
+	// 	{ID: 1, IndividualDeductionID: 1, Nominal: "健康保険料", Amount: 12000},
+	// 	{ID: 2, IndividualDeductionID: 1, Nominal: "厚生年金保険料", Amount: 20000},
+	// 	{ID: 3, IndividualDeductionID: 1, Nominal: "雇用保険料", Amount: 300},
+	// 	{ID: 4, IndividualDeductionID: 1, Nominal: "所得税", Amount: 5000},
+	// 	{ID: 5, IndividualDeductionID: 1, Nominal: "住民税", Amount: 22700},
+	// 	{ID: 6, IndividualDeductionID: 2, Nominal: "健康保険料", Amount: 13000},
+	// 	{ID: 7, IndividualDeductionID: 2, Nominal: "厚生年金保険料", Amount: 21000},
+	// 	{ID: 8, IndividualDeductionID: 2, Nominal: "雇用保険料", Amount: 500},
+	// 	{ID: 9, IndividualDeductionID: 2, Nominal: "所得税", Amount: 6000},
+	// 	{ID: 10, IndividualDeductionID: 2, Nominal: "住民税", Amount: 29500}}
 
-	for _, individual_deduction_detail := range individual_deduction_details {
-		if err := individual_deduction_detail.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of individual_deduction_detail. err:%s", err)
-		}
-	}
+	// for _, individual_deduction_detail := range individual_deduction_details {
+	// 	if err := individual_deduction_detail.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of individual_deduction_detail. err:%s", err)
+	// 	}
+	// }
 
-	fixed_deductions := []models.FixedDeduction{
-		{ID: 1, Nominal: "エンジニアLv1家族手当0人控除", Amount: 60000},
-		{ID: 2, Nominal: "エンジニアLv1家族手当1人控除", Amount: 70000}}
+	// fixed_deductions := []models.FixedDeduction{
+	// 	{ID: 1, Nominal: "エンジニアLv1家族手当0人控除", Amount: 60000},
+	// 	{ID: 2, Nominal: "エンジニアLv1家族手当1人控除", Amount: 70000}}
 
-	for _, fixed_deduction := range fixed_deductions {
-		if err := fixed_deduction.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of fixed_deduction. err:%s", err)
-		}
-	}
+	// for _, fixed_deduction := range fixed_deductions {
+	// 	if err := fixed_deduction.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of fixed_deduction. err:%s", err)
+	// 	}
+	// }
 
-	fixed_deduction_details := []models.FixedDeductionDetail{
-		{ID: 1, FixedDeductionID: 1, Nominal: "健康保険料", Amount: 12000},
-		{ID: 2, FixedDeductionID: 1, Nominal: "厚生年金保険料", Amount: 20000},
-		{ID: 3, FixedDeductionID: 1, Nominal: "雇用保険料", Amount: 300},
-		{ID: 4, FixedDeductionID: 1, Nominal: "所得税", Amount: 5000},
-		{ID: 5, FixedDeductionID: 1, Nominal: "住民税", Amount: 22700},
-		{ID: 6, FixedDeductionID: 2, Nominal: "健康保険料", Amount: 13000},
-		{ID: 7, FixedDeductionID: 2, Nominal: "厚生年金保険料", Amount: 21000},
-		{ID: 8, FixedDeductionID: 2, Nominal: "雇用保険料", Amount: 500},
-		{ID: 9, FixedDeductionID: 2, Nominal: "所得税", Amount: 6000},
-		{ID: 10, FixedDeductionID: 2, Nominal: "住民税", Amount: 29500}}
+	// fixed_deduction_details := []models.FixedDeductionDetail{
+	// 	{ID: 1, FixedDeductionID: 1, Nominal: "健康保険料", Amount: 12000},
+	// 	{ID: 2, FixedDeductionID: 1, Nominal: "厚生年金保険料", Amount: 20000},
+	// 	{ID: 3, FixedDeductionID: 1, Nominal: "雇用保険料", Amount: 300},
+	// 	{ID: 4, FixedDeductionID: 1, Nominal: "所得税", Amount: 5000},
+	// 	{ID: 5, FixedDeductionID: 1, Nominal: "住民税", Amount: 22700},
+	// 	{ID: 6, FixedDeductionID: 2, Nominal: "健康保険料", Amount: 13000},
+	// 	{ID: 7, FixedDeductionID: 2, Nominal: "厚生年金保険料", Amount: 21000},
+	// 	{ID: 8, FixedDeductionID: 2, Nominal: "雇用保険料", Amount: 500},
+	// 	{ID: 9, FixedDeductionID: 2, Nominal: "所得税", Amount: 6000},
+	// 	{ID: 10, FixedDeductionID: 2, Nominal: "住民税", Amount: 29500}}
 
-	for _, fixed_deduction_detail := range fixed_deduction_details {
-		if err := fixed_deduction_detail.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of fixed_deduction_detail. err:%s", err)
-		}
-	}
+	// for _, fixed_deduction_detail := range fixed_deduction_details {
+	// 	if err := fixed_deduction_detail.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of fixed_deduction_detail. err:%s", err)
+	// 	}
+	// }
 
-	salary_statements := []models.SalaryStatement{
-		{ID: 1, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
-		{ID: 2, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年11月31日"},
-		{ID: 3, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-		{ID: 4, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-		{ID: 5, EmployeeID: 3, Nominal: "2010年2月 給与明細", Payday: time.Date(2010, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2010年1月1日~2010年1月31日"},
-		{ID: 6, IndividualEarningID: null.Uint32{Uint32: 1, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 2, Nominal: "2022年3月 給与明細", Payday: time.Date(2022, 3, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年2月1日~2022年2月28日"},
-		{ID: 7, IndividualEarningID: null.Uint32{Uint32: 2, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年4月 給与明細", Payday: time.Date(2022, 4, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年3月1日~2022年3月31日"},
-		{ID: 8, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 5, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-		{ID: 9, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 5, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
-	}
+	// salary_statements := []models.SalaryStatement{
+	// 	{ID: 1, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
+	// 	{ID: 2, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年11月31日"},
+	// 	{ID: 3, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+	// 	{ID: 4, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+	// 	{ID: 5, EmployeeID: 3, Nominal: "2010年2月 給与明細", Payday: time.Date(2010, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2010年1月1日~2010年1月31日"},
+	// 	{ID: 6, IndividualEarningID: null.Uint32{Uint32: 1, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 2, Nominal: "2022年3月 給与明細", Payday: time.Date(2022, 3, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年2月1日~2022年2月28日"},
+	// 	{ID: 7, IndividualEarningID: null.Uint32{Uint32: 2, Valid: true}, IndividualDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 2, Nominal: "2022年4月 給与明細", Payday: time.Date(2022, 4, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年3月1日~2022年3月31日"},
+	// 	{ID: 8, FixedEarningID: null.Uint32{Uint32: 1, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 5, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+	// 	{ID: 9, FixedEarningID: null.Uint32{Uint32: 2, Valid: true}, FixedDeductionID: null.Uint32{Uint32: 2, Valid: true}, EmployeeID: 5, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+	// }
 
-	for _, salary_statement := range salary_statements {
-		if err := salary_statement.Insert(ctx, db, boil.Infer()); err != nil {
-			return fmt.Errorf("failed to create datas of salary_statement. err:%s", err)
-		}
-	}
+	// for _, salary_statement := range salary_statements {
+	// 	if err := salary_statement.Insert(ctx, db, boil.Infer()); err != nil {
+	// 		return fmt.Errorf("failed to create datas of salary_statement. err:%s", err)
+	// 	}
+	// }
 
 	return nil
 }
