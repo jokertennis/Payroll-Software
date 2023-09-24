@@ -37,8 +37,8 @@ func init() {
     "/administrator/protected": {
       "$ref": "./prompt/protected_for_administrator.yml"
     },
-    "/administrator/salary_statement_individual": {
-      "$ref": "./salary_statement/create_salary_statement_by_using_individual_data.yml"
+    "/administrator/salary_statement": {
+      "$ref": "./salary_statement/create_salary_statement.yml"
     },
     "/employee/protected": {
       "$ref": "./prompt/protected_for_employee.yml"
@@ -111,7 +111,7 @@ func init() {
         }
       }
     },
-    "/administrator/salary_statement_individual": {
+    "/administrator/salary_statement": {
       "post": {
         "description": "特定の年と月の給料明細を個別支給・個別控除を利用して作成するための管理者向けAPI",
         "parameters": [
@@ -412,7 +412,7 @@ func init() {
         }
       }
     },
-    "SalaryStatementRequestIndividualDeductionDetailsItems0": {
+    "SalaryStatementRequestDeductionDetailsItems0": {
       "type": "object",
       "properties": {
         "amount_of_deduction_detail": {
@@ -424,7 +424,7 @@ func init() {
         }
       }
     },
-    "SalaryStatementRequestIndividualEarningDetailsItems0": {
+    "SalaryStatementRequestEarningDetailsItems0": {
       "type": "object",
       "properties": {
         "amount_of_earning_detail": {
@@ -513,10 +513,11 @@ func init() {
         "target_period",
         "nominal_of_earning",
         "amount_of_earning",
-        "individual_earning_details",
+        "earning_and_deduction_type",
+        "earning_details",
         "nominal_of_deduction",
         "amount_of_deduction",
-        "individual_deduction_details"
+        "deduction_details"
       ],
       "properties": {
         "amount_of_deduction": {
@@ -527,16 +528,19 @@ func init() {
           "type": "integer",
           "format": "int32"
         },
-        "individual_deduction_details": {
+        "deduction_details": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/SalaryStatementRequestIndividualDeductionDetailsItems0"
+            "$ref": "#/definitions/SalaryStatementRequestDeductionDetailsItems0"
           }
         },
-        "individual_earning_details": {
+        "earning_and_deduction_type": {
+          "type": "string"
+        },
+        "earning_details": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/SalaryStatementRequestIndividualEarningDetailsItems0"
+            "$ref": "#/definitions/SalaryStatementRequestEarningDetailsItems0"
           }
         },
         "mailaddressOfEmployee": {

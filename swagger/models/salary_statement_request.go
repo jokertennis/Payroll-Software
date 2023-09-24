@@ -28,13 +28,17 @@ type SalaryStatementRequest struct {
 	// Required: true
 	AmountOfEarning *int32 `json:"amount_of_earning"`
 
-	// individual deduction details
+	// deduction details
 	// Required: true
-	IndividualDeductionDetails []*SalaryStatementRequestIndividualDeductionDetailsItems0 `json:"individual_deduction_details"`
+	DeductionDetails []*SalaryStatementRequestDeductionDetailsItems0 `json:"deduction_details"`
 
-	// individual earning details
+	// earning and deduction type
 	// Required: true
-	IndividualEarningDetails []*SalaryStatementRequestIndividualEarningDetailsItems0 `json:"individual_earning_details"`
+	EarningAndDeductionType *string `json:"earning_and_deduction_type"`
+
+	// earning details
+	// Required: true
+	EarningDetails []*SalaryStatementRequestEarningDetailsItems0 `json:"earning_details"`
 
 	// mailaddress of employee
 	// Required: true
@@ -74,11 +78,15 @@ func (m *SalaryStatementRequest) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateIndividualDeductionDetails(formats); err != nil {
+	if err := m.validateDeductionDetails(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateIndividualEarningDetails(formats); err != nil {
+	if err := m.validateEarningAndDeductionType(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateEarningDetails(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -130,23 +138,23 @@ func (m *SalaryStatementRequest) validateAmountOfEarning(formats strfmt.Registry
 	return nil
 }
 
-func (m *SalaryStatementRequest) validateIndividualDeductionDetails(formats strfmt.Registry) error {
+func (m *SalaryStatementRequest) validateDeductionDetails(formats strfmt.Registry) error {
 
-	if err := validate.Required("individual_deduction_details", "body", m.IndividualDeductionDetails); err != nil {
+	if err := validate.Required("deduction_details", "body", m.DeductionDetails); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(m.IndividualDeductionDetails); i++ {
-		if swag.IsZero(m.IndividualDeductionDetails[i]) { // not required
+	for i := 0; i < len(m.DeductionDetails); i++ {
+		if swag.IsZero(m.DeductionDetails[i]) { // not required
 			continue
 		}
 
-		if m.IndividualDeductionDetails[i] != nil {
-			if err := m.IndividualDeductionDetails[i].Validate(formats); err != nil {
+		if m.DeductionDetails[i] != nil {
+			if err := m.DeductionDetails[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("individual_deduction_details" + "." + strconv.Itoa(i))
+					return ve.ValidateName("deduction_details" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("individual_deduction_details" + "." + strconv.Itoa(i))
+					return ce.ValidateName("deduction_details" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -157,23 +165,32 @@ func (m *SalaryStatementRequest) validateIndividualDeductionDetails(formats strf
 	return nil
 }
 
-func (m *SalaryStatementRequest) validateIndividualEarningDetails(formats strfmt.Registry) error {
+func (m *SalaryStatementRequest) validateEarningAndDeductionType(formats strfmt.Registry) error {
 
-	if err := validate.Required("individual_earning_details", "body", m.IndividualEarningDetails); err != nil {
+	if err := validate.Required("earning_and_deduction_type", "body", m.EarningAndDeductionType); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(m.IndividualEarningDetails); i++ {
-		if swag.IsZero(m.IndividualEarningDetails[i]) { // not required
+	return nil
+}
+
+func (m *SalaryStatementRequest) validateEarningDetails(formats strfmt.Registry) error {
+
+	if err := validate.Required("earning_details", "body", m.EarningDetails); err != nil {
+		return err
+	}
+
+	for i := 0; i < len(m.EarningDetails); i++ {
+		if swag.IsZero(m.EarningDetails[i]) { // not required
 			continue
 		}
 
-		if m.IndividualEarningDetails[i] != nil {
-			if err := m.IndividualEarningDetails[i].Validate(formats); err != nil {
+		if m.EarningDetails[i] != nil {
+			if err := m.EarningDetails[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("individual_earning_details" + "." + strconv.Itoa(i))
+					return ve.ValidateName("earning_details" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("individual_earning_details" + "." + strconv.Itoa(i))
+					return ce.ValidateName("earning_details" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -246,11 +263,11 @@ func (m *SalaryStatementRequest) validateTargetPeriod(formats strfmt.Registry) e
 func (m *SalaryStatementRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.contextValidateIndividualDeductionDetails(ctx, formats); err != nil {
+	if err := m.contextValidateDeductionDetails(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.contextValidateIndividualEarningDetails(ctx, formats); err != nil {
+	if err := m.contextValidateEarningDetails(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -260,16 +277,21 @@ func (m *SalaryStatementRequest) ContextValidate(ctx context.Context, formats st
 	return nil
 }
 
-func (m *SalaryStatementRequest) contextValidateIndividualDeductionDetails(ctx context.Context, formats strfmt.Registry) error {
+func (m *SalaryStatementRequest) contextValidateDeductionDetails(ctx context.Context, formats strfmt.Registry) error {
 
-	for i := 0; i < len(m.IndividualDeductionDetails); i++ {
+	for i := 0; i < len(m.DeductionDetails); i++ {
 
-		if m.IndividualDeductionDetails[i] != nil {
-			if err := m.IndividualDeductionDetails[i].ContextValidate(ctx, formats); err != nil {
+		if m.DeductionDetails[i] != nil {
+
+			if swag.IsZero(m.DeductionDetails[i]) { // not required
+				return nil
+			}
+
+			if err := m.DeductionDetails[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("individual_deduction_details" + "." + strconv.Itoa(i))
+					return ve.ValidateName("deduction_details" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("individual_deduction_details" + "." + strconv.Itoa(i))
+					return ce.ValidateName("deduction_details" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -280,16 +302,21 @@ func (m *SalaryStatementRequest) contextValidateIndividualDeductionDetails(ctx c
 	return nil
 }
 
-func (m *SalaryStatementRequest) contextValidateIndividualEarningDetails(ctx context.Context, formats strfmt.Registry) error {
+func (m *SalaryStatementRequest) contextValidateEarningDetails(ctx context.Context, formats strfmt.Registry) error {
 
-	for i := 0; i < len(m.IndividualEarningDetails); i++ {
+	for i := 0; i < len(m.EarningDetails); i++ {
 
-		if m.IndividualEarningDetails[i] != nil {
-			if err := m.IndividualEarningDetails[i].ContextValidate(ctx, formats); err != nil {
+		if m.EarningDetails[i] != nil {
+
+			if swag.IsZero(m.EarningDetails[i]) { // not required
+				return nil
+			}
+
+			if err := m.EarningDetails[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("individual_earning_details" + "." + strconv.Itoa(i))
+					return ve.ValidateName("earning_details" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("individual_earning_details" + "." + strconv.Itoa(i))
+					return ce.ValidateName("earning_details" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -318,10 +345,10 @@ func (m *SalaryStatementRequest) UnmarshalBinary(b []byte) error {
 	return nil
 }
 
-// SalaryStatementRequestIndividualDeductionDetailsItems0 salary statement request individual deduction details items0
+// SalaryStatementRequestDeductionDetailsItems0 salary statement request deduction details items0
 //
-// swagger:model SalaryStatementRequestIndividualDeductionDetailsItems0
-type SalaryStatementRequestIndividualDeductionDetailsItems0 struct {
+// swagger:model SalaryStatementRequestDeductionDetailsItems0
+type SalaryStatementRequestDeductionDetailsItems0 struct {
 
 	// amount of deduction detail
 	AmountOfDeductionDetail int32 `json:"amount_of_deduction_detail,omitempty"`
@@ -330,18 +357,18 @@ type SalaryStatementRequestIndividualDeductionDetailsItems0 struct {
 	Nominal string `json:"nominal,omitempty"`
 }
 
-// Validate validates this salary statement request individual deduction details items0
-func (m *SalaryStatementRequestIndividualDeductionDetailsItems0) Validate(formats strfmt.Registry) error {
+// Validate validates this salary statement request deduction details items0
+func (m *SalaryStatementRequestDeductionDetailsItems0) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this salary statement request individual deduction details items0 based on context it is used
-func (m *SalaryStatementRequestIndividualDeductionDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this salary statement request deduction details items0 based on context it is used
+func (m *SalaryStatementRequestDeductionDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *SalaryStatementRequestIndividualDeductionDetailsItems0) MarshalBinary() ([]byte, error) {
+func (m *SalaryStatementRequestDeductionDetailsItems0) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -349,8 +376,8 @@ func (m *SalaryStatementRequestIndividualDeductionDetailsItems0) MarshalBinary()
 }
 
 // UnmarshalBinary interface implementation
-func (m *SalaryStatementRequestIndividualDeductionDetailsItems0) UnmarshalBinary(b []byte) error {
-	var res SalaryStatementRequestIndividualDeductionDetailsItems0
+func (m *SalaryStatementRequestDeductionDetailsItems0) UnmarshalBinary(b []byte) error {
+	var res SalaryStatementRequestDeductionDetailsItems0
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}
@@ -358,10 +385,10 @@ func (m *SalaryStatementRequestIndividualDeductionDetailsItems0) UnmarshalBinary
 	return nil
 }
 
-// SalaryStatementRequestIndividualEarningDetailsItems0 salary statement request individual earning details items0
+// SalaryStatementRequestEarningDetailsItems0 salary statement request earning details items0
 //
-// swagger:model SalaryStatementRequestIndividualEarningDetailsItems0
-type SalaryStatementRequestIndividualEarningDetailsItems0 struct {
+// swagger:model SalaryStatementRequestEarningDetailsItems0
+type SalaryStatementRequestEarningDetailsItems0 struct {
 
 	// amount of earning detail
 	AmountOfEarningDetail int32 `json:"amount_of_earning_detail,omitempty"`
@@ -370,18 +397,18 @@ type SalaryStatementRequestIndividualEarningDetailsItems0 struct {
 	Nominal string `json:"nominal,omitempty"`
 }
 
-// Validate validates this salary statement request individual earning details items0
-func (m *SalaryStatementRequestIndividualEarningDetailsItems0) Validate(formats strfmt.Registry) error {
+// Validate validates this salary statement request earning details items0
+func (m *SalaryStatementRequestEarningDetailsItems0) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this salary statement request individual earning details items0 based on context it is used
-func (m *SalaryStatementRequestIndividualEarningDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this salary statement request earning details items0 based on context it is used
+func (m *SalaryStatementRequestEarningDetailsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *SalaryStatementRequestIndividualEarningDetailsItems0) MarshalBinary() ([]byte, error) {
+func (m *SalaryStatementRequestEarningDetailsItems0) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -389,8 +416,8 @@ func (m *SalaryStatementRequestIndividualEarningDetailsItems0) MarshalBinary() (
 }
 
 // UnmarshalBinary interface implementation
-func (m *SalaryStatementRequestIndividualEarningDetailsItems0) UnmarshalBinary(b []byte) error {
-	var res SalaryStatementRequestIndividualEarningDetailsItems0
+func (m *SalaryStatementRequestEarningDetailsItems0) UnmarshalBinary(b []byte) error {
+	var res SalaryStatementRequestEarningDetailsItems0
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

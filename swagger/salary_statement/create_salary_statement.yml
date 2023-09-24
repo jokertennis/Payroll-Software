@@ -1,0 +1,97 @@
+post:
+  description: 特定の年と月の給料明細を個別支給・個別控除を利用して作成するための管理者向けAPI
+  parameters:
+    - name: salary_statement_request
+      in: body
+      description: 給料明細のリクエストデータ
+      required: true
+      schema:
+        $ref: "#/definitions/SalaryStatementRequest"
+  responses:
+    201:
+      description: Created
+      schema:
+        type: object
+        properties:
+          id_of_salary_statement:
+            type: integer
+            description: 給料明細id
+    400:
+      description: BadRequest
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    401:
+      description: Unauthorized
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    500:
+      description: Internal Server Error
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+
+definitions:
+  SalaryStatementRequest:
+    type: object
+    properties:
+      mailaddressOfEmployee:
+        type: string
+      nominal:
+        type: string
+      payday:
+        type: string
+        format: date-time
+      target_period:
+        type: string
+      nominal_of_earning:
+        type: string
+      amount_of_earning:
+        type: integer
+        format: int32
+      earning_and_deduction_type:
+        type: string
+      earning_details:
+        type: array
+        items:
+          type: object
+          properties:
+            nominal:
+              type: string
+            amount_of_earning_detail:
+              type: integer
+              format: int32
+      nominal_of_deduction:
+        type: string
+      amount_of_deduction:
+        type: integer
+        format: int32
+      deduction_details:
+        type: array
+        items:
+          type: object
+          properties:
+            nominal:
+              type: string
+            amount_of_deduction_detail:
+              type: integer
+              format: int32
+    required:
+      - mailaddressOfEmployee
+      - nominal
+      - payday
+      - target_period
+      - nominal_of_earning
+      - amount_of_earning
+      - earning_and_deduction_type
+      - earning_details
+      - nominal_of_deduction
+      - amount_of_deduction
+      - deduction_details

@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-	"usr/local/go/basicauth"
-	"usr/local/go/db"
-	"usr/local/go/src/main/application-service/salary_statement_application_service"
-	"usr/local/go/src/main/domain-service/repository/administrator_repository"
-	"usr/local/go/src/main/domain-service/repository/employee_repository"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	"github.com/jokertennis/Payroll-Software/basicauth"
+	"github.com/jokertennis/Payroll-Software/db"
+	"github.com/jokertennis/Payroll-Software/src/main/application-service/salary_statement_application_service"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/administrator_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/employee_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 
-	"usr/local/go/src/main/infrastructure"
-	"usr/local/go/swagger/restapi/operations"
+	"github.com/jokertennis/Payroll-Software/src/main/infrastructure"
+	"github.com/jokertennis/Payroll-Software/swagger/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )

@@ -22,5 +22,5 @@ paths:
     $ref: './salary_statement/get_all_for_employee.yml'
   /administrator/protected:
     $ref: './prompt/protected_for_administrator.yml'
-  /administrator/salary_statement_individual:
-    $ref: './salary_statement/create_salary_statement_by_using_individual_data.yml'
+  /administrator/salary_statement:
+    $ref: './salary_statement/create_salary_statement.yml'

@@ -10,7 +10,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"usr/local/go/swagger/restapi/operations"
+	"github.com/jokertennis/Payroll-Software/swagger/restapi/operations"
 )
 
 //go:generate swagger generate server --target ../../swagger --name Swagger --spec ../swagger.yml --principal interface{}
@@ -62,9 +62,9 @@ func configureAPI(api *operations.SwaggerAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetUnprotected has not yet been implemented")
 		})
 	}
-	if api.PostAdministratorSalaryStatementIndividualHandler == nil {
-		api.PostAdministratorSalaryStatementIndividualHandler = operations.PostAdministratorSalaryStatementIndividualHandlerFunc(func(params operations.PostAdministratorSalaryStatementIndividualParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.PostAdministratorSalaryStatementIndividual has not yet been implemented")
+	if api.PostAdministratorSalaryStatementHandler == nil {
+		api.PostAdministratorSalaryStatementHandler = operations.PostAdministratorSalaryStatementHandlerFunc(func(params operations.PostAdministratorSalaryStatementParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.PostAdministratorSalaryStatement has not yet been implemented")
 		})
 	}
 

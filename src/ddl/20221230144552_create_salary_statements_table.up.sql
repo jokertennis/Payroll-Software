@@ -1,9 +1,7 @@
 CREATE TABLE `salary_statements` (
     `id` mediumint unsigned AUTO_INCREMENT,
-    `individual_earning_id` mediumint unsigned,
-    `fixed_earning_id` mediumint unsigned,
-    `individual_deduction_id` mediumint unsigned,
-    `fixed_deduction_id` mediumint unsigned,
+    `earning_id` mediumint unsigned NOT NULL,
+    `deduction_id` mediumint unsigned NOT NULL,
     `employee_id` mediumint unsigned NOT NULL,
     `nominal` varchar(255) NOT NULL,
     `payday` date NOT NULL,
@@ -11,11 +9,7 @@ CREATE TABLE `salary_statements` (
     `created_at` timestamp NOT NULL,
     `updated_at` timestamp NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`individual_earning_id`) REFERENCES `individual_earnings` (`id`),
-    UNIQUE (`individual_earning_id`),
-    FOREIGN KEY (`fixed_earning_id`) REFERENCES `fixed_earnings` (`id`),
-    FOREIGN KEY (`individual_deduction_id`) REFERENCES `individual_deductions` (`id`),
-    UNIQUE (`individual_deduction_id`),
-    FOREIGN KEY (`fixed_deduction_id`) REFERENCES `fixed_deductions` (`id`),
+    FOREIGN KEY (`earning_id`) REFERENCES `earnings` (`id`),
+    FOREIGN KEY (`deduction_id`) REFERENCES `deductions` (`id`),
     FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`)
 );

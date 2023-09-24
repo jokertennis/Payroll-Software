@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"os"
 	"testing"
-	"usr/local/go/db"
-	"usr/local/go/server/gen/models"
+
+	"github.com/jokertennis/Payroll-Software/db"
+	"github.com/jokertennis/Payroll-Software/server/gen/models"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/volatiletech/sqlboiler/v4/boil"

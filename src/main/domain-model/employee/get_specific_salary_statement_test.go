@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 	"time"
-	"usr/local/go/src/main/domain-model/employee"
-	"usr/local/go/src/main/domain-model/salary_statement"
-	"usr/local/go/src/testtool"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
+	"github.com/jokertennis/Payroll-Software/src/testtool"
 
 	"github.com/stretchr/testify/assert"
 )

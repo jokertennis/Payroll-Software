@@ -3,19 +3,17 @@ package salary_statement_application_service
 import (
 	"fmt"
 	"net/http"
-	"usr/local/go/src/main/domain-model/fixed_deduction"
-	"usr/local/go/src/main/domain-model/fixed_earning"
-	"usr/local/go/src/main/domain-model/individual_deduction"
-	"usr/local/go/src/main/domain-model/individual_earning"
-	"usr/local/go/src/main/domain-service/repository/employee_repository"
-	"usr/local/go/src/main/domain-service/repository/salary_statement_repository"
+	deduction_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/deduction"
+	earning_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/earning"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/employee_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 
 	"github.com/go-openapi/strfmt"
 )
 
 type ResultOfGetAllSalaryStatementsForEmployee struct {
-	NameOfEmployee                  string
-	SalaryStatementForEmployeeList  []*SalaryStatementForEmployee
+	NameOfEmployee                 string
+	SalaryStatementForEmployeeList []*SalaryStatementForEmployee
 }
 
 type SalaryStatementForEmployee struct {
@@ -29,16 +27,16 @@ type SalaryStatementForEmployee struct {
 }
 
 type EarningDetailOfGetAllSalaryStatementsForEmployee struct {
-	Nominal                  string
-	AmountOfEarningDetail    int
+	Nominal               string
+	AmountOfEarningDetail int
 }
 
 type DeductionDetailOfGetAllSalaryStatementsForEmployee struct {
-	Nominal                   string
-	AmountOfDeductionDetail   int
+	Nominal                 string
+	AmountOfDeductionDetail int
 }
 
-func GetAllSalaryStatementsForEmployeeUseCase(employeeRepository employee_repository.EmployeeRepository, salaryStatementRepository salary_statement_repository.SalaryStatementRepository, mailAddress string) (result *ResultOfGetAllSalaryStatementsForEmployee, statusCode int, errorMessage error){
+func GetAllSalaryStatementsForEmployeeUseCase(employeeRepository employee_repository.EmployeeRepository, salaryStatementRepository salary_statement_repository.SalaryStatementRepository, mailAddress string) (result *ResultOfGetAllSalaryStatementsForEmployee, statusCode int, errorMessage error) {
 	employee, err := employeeRepository.GetEmployeeByMailAddress(mailAddress)
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
@@ -59,17 +57,11 @@ func GetAllSalaryStatementsForEmployeeUseCase(employeeRepository employee_reposi
 
 	var salaryStatementForEmployeeList []*SalaryStatementForEmployee
 	for _, salaryStatement := range salaryStatements {
-		individualDeduction, fixedDeduction, err := salaryStatement.GetDeduction()
-		if err != nil {
-			return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
-		}
-		individualEarning, fixedEarning, err := salaryStatement.GetEarning()
-		if err != nil {
-			return nil, http.StatusInternalServerError, fmt.Errorf("InternalServerError:error:%s", err)
-		}
+		deduction := salaryStatement.Deduction
+		earning := salaryStatement.Earning
 
-		amountOfDeduction, deductionDetails := MappingAmountOfDeductionAndDeductionDetailOfGetAllSalaryStatementsForEmployee(individualDeduction, fixedDeduction)
-		amountOfEarning, earningDetails := MappingAmountOfEarningAndEarningDetailOfGetAllSalaryStatementsForEmployee(individualEarning, fixedEarning)
+		amountOfDeduction, deductionDetails := MappingAmountOfDeductionAndDeductionDetailOfGetAllSalaryStatementsForEmployee(deduction)
+		amountOfEarning, earningDetails := MappingAmountOfEarningAndEarningDetailOfGetAllSalaryStatementsForEmployee(earning)
 
 		salaryStatementForEmployee := MappingSalaryStatementForEmployee(salaryStatement.Nominal, strfmt.DateTime(salaryStatement.Payday), salaryStatement.TargetPeriod, amountOfDeduction, amountOfEarning, earningDetails, deductionDetails)
 		salaryStatementForEmployeeList = append(salaryStatementForEmployeeList, salaryStatementForEmployee)
@@ -78,69 +70,49 @@ func GetAllSalaryStatementsForEmployeeUseCase(employeeRepository employee_reposi
 	return MappingResultOfGetAllSalaryStatementsForEmployee(employee.Name, salaryStatementForEmployeeList), http.StatusOK, nil
 }
 
-func MappingAmountOfDeductionAndDeductionDetailOfGetAllSalaryStatementsForEmployee(individualDeduction *individual_deduction_domain_model.IndividualDeduction, fixedDeduction *fixed_deduction_domain_model.FixedDeduction) (int, []DeductionDetailOfGetAllSalaryStatementsForEmployee) {
-	var deductionDetails   []DeductionDetailOfGetAllSalaryStatementsForEmployee
-	var amountOfDeduction  int
-	if individualDeduction != nil {
-		amountOfDeduction = individualDeduction.Amount
-		for _, value := range individualDeduction.IndividualDeductionDetails {
-			deductionDetails = append(deductionDetails, DeductionDetailOfGetAllSalaryStatementsForEmployee{
-				Nominal: value.Nominal,
-				AmountOfDeductionDetail: value.Amount,
-			})
-		}
-		
-	} else if fixedDeduction != nil {
-		amountOfDeduction = fixedDeduction.Amount
-		for _, value := range fixedDeduction.FixedDeductionDetails {
-			deductionDetails = append(deductionDetails, DeductionDetailOfGetAllSalaryStatementsForEmployee{
-				Nominal: value.Nominal,
-				AmountOfDeductionDetail: value.Amount,
-			})
-		}
+func MappingAmountOfDeductionAndDeductionDetailOfGetAllSalaryStatementsForEmployee(deduction deduction_domain_model.Deduction) (int, []DeductionDetailOfGetAllSalaryStatementsForEmployee) {
+	var deductionDetails []DeductionDetailOfGetAllSalaryStatementsForEmployee
+	var amountOfDeduction int
+	amountOfDeduction = deduction.Amount
+	for _, value := range deduction.DeductionDetails {
+		deductionDetails = append(deductionDetails, DeductionDetailOfGetAllSalaryStatementsForEmployee{
+			Nominal:                 value.Nominal,
+			AmountOfDeductionDetail: value.Amount,
+		})
 	}
+
 	return amountOfDeduction, deductionDetails
 }
 
-func MappingAmountOfEarningAndEarningDetailOfGetAllSalaryStatementsForEmployee(individualEarning *individual_earning_domain_model.IndividualEarning, fixedEarning *fixed_earning_domain_model.FixedEarning) (int, []EarningDetailOfGetAllSalaryStatementsForEmployee) {
-	var earningDetails   []EarningDetailOfGetAllSalaryStatementsForEmployee
-	var amountOfEarning  int
-	if individualEarning != nil {
-		amountOfEarning = individualEarning.Amount
-		for _, value := range individualEarning.IndividualEarningDetails {
-			earningDetails = append(earningDetails, EarningDetailOfGetAllSalaryStatementsForEmployee{
-				Nominal: value.Nominal,
-				AmountOfEarningDetail: value.Amount,
-			})
-		}
-		
-	} else if fixedEarning != nil {
-		amountOfEarning = fixedEarning.Amount
-		for _, value := range fixedEarning.FixedEarningDetails {
-			earningDetails = append(earningDetails, EarningDetailOfGetAllSalaryStatementsForEmployee{
-				Nominal: value.Nominal,
-				AmountOfEarningDetail: value.Amount,
-			})
-		}
+func MappingAmountOfEarningAndEarningDetailOfGetAllSalaryStatementsForEmployee(earning earning_domain_model.Earning) (int, []EarningDetailOfGetAllSalaryStatementsForEmployee) {
+	var earningDetails []EarningDetailOfGetAllSalaryStatementsForEmployee
+	var amountOfEarning int
+	amountOfEarning = earning.Amount
+	for _, value := range earning.EarningDetails {
+		earningDetails = append(earningDetails, EarningDetailOfGetAllSalaryStatementsForEmployee{
+			Nominal:               value.Nominal,
+			AmountOfEarningDetail: value.Amount,
+		})
 	}
+
 	return amountOfEarning, earningDetails
 }
 
 func MappingSalaryStatementForEmployee(nominal string, payday strfmt.DateTime, targetPeriod string, amountOfDeduction int, amountOfEarning int, earningDetails []EarningDetailOfGetAllSalaryStatementsForEmployee, deductionDetails []DeductionDetailOfGetAllSalaryStatementsForEmployee) *SalaryStatementForEmployee {
 	return &SalaryStatementForEmployee{
-		Nominal: nominal,
-		Payday: payday,
-		TargetPeriod: targetPeriod,
+		Nominal:           nominal,
+		Payday:            payday,
+		TargetPeriod:      targetPeriod,
 		AmountOfDeduction: amountOfDeduction,
-		AmountOfEarning: amountOfEarning,
-		EarningDetails: earningDetails,
-		DeductionDetails: deductionDetails,
+		AmountOfEarning:   amountOfEarning,
+		EarningDetails:    earningDetails,
+		DeductionDetails:  deductionDetails,
 	}
 }
 
 func MappingResultOfGetAllSalaryStatementsForEmployee(nameOfEmployee string, salaryStatementForEmployeeList []*SalaryStatementForEmployee) *ResultOfGetAllSalaryStatementsForEmployee {
 	return &ResultOfGetAllSalaryStatementsForEmployee{
-		NameOfEmployee: nameOfEmployee,
+		NameOfEmployee:                 nameOfEmployee,
 		SalaryStatementForEmployeeList: salaryStatementForEmployeeList,
 	}
 }

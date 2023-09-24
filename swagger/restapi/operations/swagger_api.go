@@ -57,8 +57,8 @@ func NewSwaggerAPI(spec *loads.Document) *SwaggerAPI {
 		GetUnprotectedHandler: GetUnprotectedHandlerFunc(func(params GetUnprotectedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUnprotected has not yet been implemented")
 		}),
-		PostAdministratorSalaryStatementIndividualHandler: PostAdministratorSalaryStatementIndividualHandlerFunc(func(params PostAdministratorSalaryStatementIndividualParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostAdministratorSalaryStatementIndividual has not yet been implemented")
+		PostAdministratorSalaryStatementHandler: PostAdministratorSalaryStatementHandlerFunc(func(params PostAdministratorSalaryStatementParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostAdministratorSalaryStatement has not yet been implemented")
 		}),
 	}
 }
@@ -106,8 +106,8 @@ type SwaggerAPI struct {
 	GetEmployeeSalaryStatementsHandler GetEmployeeSalaryStatementsHandler
 	// GetUnprotectedHandler sets the operation handler for the get unprotected operation
 	GetUnprotectedHandler GetUnprotectedHandler
-	// PostAdministratorSalaryStatementIndividualHandler sets the operation handler for the post administrator salary statement individual operation
-	PostAdministratorSalaryStatementIndividualHandler PostAdministratorSalaryStatementIndividualHandler
+	// PostAdministratorSalaryStatementHandler sets the operation handler for the post administrator salary statement operation
+	PostAdministratorSalaryStatementHandler PostAdministratorSalaryStatementHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -200,8 +200,8 @@ func (o *SwaggerAPI) Validate() error {
 	if o.GetUnprotectedHandler == nil {
 		unregistered = append(unregistered, "GetUnprotectedHandler")
 	}
-	if o.PostAdministratorSalaryStatementIndividualHandler == nil {
-		unregistered = append(unregistered, "PostAdministratorSalaryStatementIndividualHandler")
+	if o.PostAdministratorSalaryStatementHandler == nil {
+		unregistered = append(unregistered, "PostAdministratorSalaryStatementHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -314,7 +314,7 @@ func (o *SwaggerAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/administrator/salary_statement_individual"] = NewPostAdministratorSalaryStatementIndividual(o.context, o.PostAdministratorSalaryStatementIndividualHandler)
+	o.handlers["POST"]["/administrator/salary_statement"] = NewPostAdministratorSalaryStatement(o.context, o.PostAdministratorSalaryStatementHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
@@ -356,6 +356,6 @@ func (o *SwaggerAPI) AddMiddlewareFor(method, path string, builder middleware.Bu
 	}
 	o.Init()
 	if h, ok := o.handlers[um][path]; ok {
-		o.handlers[method][path] = builder(h)
+		o.handlers[um][path] = builder(h)
 	}
 }

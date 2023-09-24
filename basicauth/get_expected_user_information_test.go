@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 	"testing"
-	"usr/local/go/basicauth"
-	"usr/local/go/db"
-	"usr/local/go/src/main/domain-service/repository/employee_repository"
-	"usr/local/go/src/main/domain-service/repository/administrator_repository"
-	"usr/local/go/src/main/infrastructure"
+	"github.com/jokertennis/Payroll-Software/basicauth"
+	"github.com/jokertennis/Payroll-Software/db"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/employee_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/administrator_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/infrastructure"
 
 	"github.com/stretchr/testify/assert"
 )

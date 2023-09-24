@@ -275,6 +275,11 @@ func (o *GetEmployeeSalaryStatementOKBody) contextValidateDeductionDetails(ctx c
 	for i := 0; i < len(o.DeductionDetails); i++ {
 
 		if o.DeductionDetails[i] != nil {
+
+			if swag.IsZero(o.DeductionDetails[i]) { // not required
+				return nil
+			}
+
 			if err := o.DeductionDetails[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("getEmployeeSalaryStatementOK" + "." + "deduction_details" + "." + strconv.Itoa(i))
@@ -295,6 +300,11 @@ func (o *GetEmployeeSalaryStatementOKBody) contextValidateEarningDetails(ctx con
 	for i := 0; i < len(o.EarningDetails); i++ {
 
 		if o.EarningDetails[i] != nil {
+
+			if swag.IsZero(o.EarningDetails[i]) { // not required
+				return nil
+			}
+
 			if err := o.EarningDetails[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("getEmployeeSalaryStatementOK" + "." + "earning_details" + "." + strconv.Itoa(i))

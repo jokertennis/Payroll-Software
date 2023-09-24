@@ -1,7 +1,7 @@
 package prompt
 
 import (
-	"usr/local/go/swagger/restapi/operations"
+	"github.com/jokertennis/Payroll-Software/swagger/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )

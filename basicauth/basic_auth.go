@@ -5,8 +5,8 @@ import (
 	"crypto/subtle"
 	"fmt"
 	"net/http"
-	"usr/local/go/src/main/domain-service/repository/administrator_repository"
-	"usr/local/go/src/main/domain-service/repository/employee_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/administrator_repository"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/employee_repository"
 )
 
 type ExpectedUserInformation struct {

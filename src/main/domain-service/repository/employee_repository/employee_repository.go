@@ -1,7 +1,7 @@
 package employee_repository
 
 import (
-	"usr/local/go/src/main/domain-model/employee"
+	"github.com/jokertennis/Payroll-Software/src/main/domain-model/employee"
 )
 
 type EmployeeRepository interface {
