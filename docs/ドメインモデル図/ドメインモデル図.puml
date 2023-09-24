@@ -21,23 +21,14 @@ package ドメインモデルの関係性に関して {
   class 支給 {
     +名目
     +支給総額
-  }
-  class 控除詳細 {
-    +名目
-    +控除額
-  }
-  class 個別控除詳細 extends 控除詳細 {
-    +個別控除ID
+    +支給タイプ
   }
 
   note "集約関係を表現している。\n企業が従業員のグループを形成している状態" as AggregationDescription
   従業員 --> AggregationDescription
 
-  note "合成関係を表現している。\n企業が従業員のグループを形成している状態" as CompositionDescription
+  note "合成関係を表現している。\n支給が給料明細書の一部を形成している状態" as CompositionDescription
   支給 --> CompositionDescription
-
-  note "汎化関係を表現している。" as  GeneralizationDescription
-  個別控除詳細 --> GeneralizationDescription
 
   企業 o-- 従業員 : has-many
   給料明細書 *-- 支給 : has-one
@@ -69,47 +60,25 @@ package DomainModel {
     class 支給 {
       +名目
       +支給総額
+      +支給タイプ
     }
 
-    note "支給作成時に固定支給詳細と個別支給雨詳細は混在して利用されない。" as EarningDescription
-    支給 --> EarningDescription
-
-    class 個別支給 extends 支給{
-    }
-    class 固定支給 extends 支給{
-    }
     class 支給詳細 {
       +名目
       +支給額
     }
-    class 個別支給詳細 extends 支給詳細{
-      +個別支給ID
-    }
-    class 固定支給詳細 extends 支給詳細{
-      +固定支給ID
-    }
+
     class 控除 {
       +名目
       +控除総額
+      +控除タイプ
     }
 
-    note "控除作成時に固定控除詳細と個別控除詳細は混在して利用されない。" as DeductionDescription
-    控除 --> DeductionDescription
-
-    class 個別控除 extends 控除{
-    }
-    class 固定控除 extends 控除{
-    }
     class 控除詳細 {
       +名目
       +控除額
     }
-    class 個別控除詳細 extends 控除詳細 {
-      +個別控除ID
-    }
-    class 固定控除詳細 extends 控除詳細 {
-      +固定控除ID
-    }
+
     mix_actor 従業員
     mix_actor 管理者
 
