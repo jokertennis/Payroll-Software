@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
-	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -24,15 +23,15 @@ import (
 
 // SalaryStatement is an object representing the database table.
 type SalaryStatement struct {
-	ID           uint32      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EarningID    null.Uint32 `boil:"earning_id" json:"earning_id,omitempty" toml:"earning_id" yaml:"earning_id,omitempty"`
-	DeductionID  null.Uint32 `boil:"deduction_id" json:"deduction_id,omitempty" toml:"deduction_id" yaml:"deduction_id,omitempty"`
-	EmployeeID   uint32      `boil:"employee_id" json:"employee_id" toml:"employee_id" yaml:"employee_id"`
-	Nominal      string      `boil:"nominal" json:"nominal" toml:"nominal" yaml:"nominal"`
-	Payday       time.Time   `boil:"payday" json:"payday" toml:"payday" yaml:"payday"`
-	TargetPeriod string      `boil:"target_period" json:"target_period" toml:"target_period" yaml:"target_period"`
-	CreatedAt    time.Time   `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
-	UpdatedAt    time.Time   `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
+	ID           uint32    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	EarningID    uint32    `boil:"earning_id" json:"earning_id" toml:"earning_id" yaml:"earning_id"`
+	DeductionID  uint32    `boil:"deduction_id" json:"deduction_id" toml:"deduction_id" yaml:"deduction_id"`
+	EmployeeID   uint32    `boil:"employee_id" json:"employee_id" toml:"employee_id" yaml:"employee_id"`
+	Nominal      string    `boil:"nominal" json:"nominal" toml:"nominal" yaml:"nominal"`
+	Payday       time.Time `boil:"payday" json:"payday" toml:"payday" yaml:"payday"`
+	TargetPeriod string    `boil:"target_period" json:"target_period" toml:"target_period" yaml:"target_period"`
+	CreatedAt    time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	UpdatedAt    time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
 	R *salaryStatementR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L salaryStatementL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -84,48 +83,10 @@ var SalaryStatementTableColumns = struct {
 
 // Generated where
 
-type whereHelpernull_Uint32 struct{ field string }
-
-func (w whereHelpernull_Uint32) EQ(x null.Uint32) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Uint32) NEQ(x null.Uint32) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Uint32) LT(x null.Uint32) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Uint32) LTE(x null.Uint32) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Uint32) GT(x null.Uint32) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Uint32) GTE(x null.Uint32) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-func (w whereHelpernull_Uint32) IN(slice []uint32) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelpernull_Uint32) NIN(slice []uint32) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-func (w whereHelpernull_Uint32) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Uint32) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-
 var SalaryStatementWhere = struct {
 	ID           whereHelperuint32
-	EarningID    whereHelpernull_Uint32
-	DeductionID  whereHelpernull_Uint32
+	EarningID    whereHelperuint32
+	DeductionID  whereHelperuint32
 	EmployeeID   whereHelperuint32
 	Nominal      whereHelperstring
 	Payday       whereHelpertime_Time
@@ -134,8 +95,8 @@ var SalaryStatementWhere = struct {
 	UpdatedAt    whereHelpertime_Time
 }{
 	ID:           whereHelperuint32{field: "`salary_statements`.`id`"},
-	EarningID:    whereHelpernull_Uint32{field: "`salary_statements`.`earning_id`"},
-	DeductionID:  whereHelpernull_Uint32{field: "`salary_statements`.`deduction_id`"},
+	EarningID:    whereHelperuint32{field: "`salary_statements`.`earning_id`"},
+	DeductionID:  whereHelperuint32{field: "`salary_statements`.`deduction_id`"},
 	EmployeeID:   whereHelperuint32{field: "`salary_statements`.`employee_id`"},
 	Nominal:      whereHelperstring{field: "`salary_statements`.`nominal`"},
 	Payday:       whereHelpertime_Time{field: "`salary_statements`.`payday`"},
@@ -543,9 +504,7 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 		if object.R == nil {
 			object.R = &salaryStatementR{}
 		}
-		if !queries.IsNil(object.EarningID) {
-			args = append(args, object.EarningID)
-		}
+		args = append(args, object.EarningID)
 
 	} else {
 	Outer:
@@ -555,14 +514,12 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 			}
 
 			for _, a := range args {
-				if queries.Equal(a, obj.EarningID) {
+				if a == obj.EarningID {
 					continue Outer
 				}
 			}
 
-			if !queries.IsNil(obj.EarningID) {
-				args = append(args, obj.EarningID)
-			}
+			args = append(args, obj.EarningID)
 
 		}
 	}
@@ -620,7 +577,7 @@ func (salaryStatementL) LoadEarning(ctx context.Context, e boil.ContextExecutor,
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if queries.Equal(local.EarningID, foreign.ID) {
+			if local.EarningID == foreign.ID {
 				local.R.Earning = foreign
 				if foreign.R == nil {
 					foreign.R = &earningR{}
@@ -667,9 +624,7 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 		if object.R == nil {
 			object.R = &salaryStatementR{}
 		}
-		if !queries.IsNil(object.DeductionID) {
-			args = append(args, object.DeductionID)
-		}
+		args = append(args, object.DeductionID)
 
 	} else {
 	Outer:
@@ -679,14 +634,12 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 			}
 
 			for _, a := range args {
-				if queries.Equal(a, obj.DeductionID) {
+				if a == obj.DeductionID {
 					continue Outer
 				}
 			}
 
-			if !queries.IsNil(obj.DeductionID) {
-				args = append(args, obj.DeductionID)
-			}
+			args = append(args, obj.DeductionID)
 
 		}
 	}
@@ -744,7 +697,7 @@ func (salaryStatementL) LoadDeduction(ctx context.Context, e boil.ContextExecuto
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if queries.Equal(local.DeductionID, foreign.ID) {
+			if local.DeductionID == foreign.ID {
 				local.R.Deduction = foreign
 				if foreign.R == nil {
 					foreign.R = &deductionR{}
@@ -905,7 +858,7 @@ func (o *SalaryStatement) SetEarning(ctx context.Context, exec boil.ContextExecu
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	queries.Assign(&o.EarningID, related.ID)
+	o.EarningID = related.ID
 	if o.R == nil {
 		o.R = &salaryStatementR{
 			Earning: related,
@@ -922,39 +875,6 @@ func (o *SalaryStatement) SetEarning(ctx context.Context, exec boil.ContextExecu
 		related.R.SalaryStatements = append(related.R.SalaryStatements, o)
 	}
 
-	return nil
-}
-
-// RemoveEarning relationship.
-// Sets o.R.Earning to nil.
-// Removes o from all passed in related items' relationships struct.
-func (o *SalaryStatement) RemoveEarning(ctx context.Context, exec boil.ContextExecutor, related *Earning) error {
-	var err error
-
-	queries.SetScanner(&o.EarningID, nil)
-	if _, err = o.Update(ctx, exec, boil.Whitelist("earning_id")); err != nil {
-		return errors.Wrap(err, "failed to update local table")
-	}
-
-	if o.R != nil {
-		o.R.Earning = nil
-	}
-	if related == nil || related.R == nil {
-		return nil
-	}
-
-	for i, ri := range related.R.SalaryStatements {
-		if queries.Equal(o.EarningID, ri.EarningID) {
-			continue
-		}
-
-		ln := len(related.R.SalaryStatements)
-		if ln > 1 && i < ln-1 {
-			related.R.SalaryStatements[i] = related.R.SalaryStatements[ln-1]
-		}
-		related.R.SalaryStatements = related.R.SalaryStatements[:ln-1]
-		break
-	}
 	return nil
 }
 
@@ -985,7 +905,7 @@ func (o *SalaryStatement) SetDeduction(ctx context.Context, exec boil.ContextExe
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	queries.Assign(&o.DeductionID, related.ID)
+	o.DeductionID = related.ID
 	if o.R == nil {
 		o.R = &salaryStatementR{
 			Deduction: related,
@@ -1002,39 +922,6 @@ func (o *SalaryStatement) SetDeduction(ctx context.Context, exec boil.ContextExe
 		related.R.SalaryStatements = append(related.R.SalaryStatements, o)
 	}
 
-	return nil
-}
-
-// RemoveDeduction relationship.
-// Sets o.R.Deduction to nil.
-// Removes o from all passed in related items' relationships struct.
-func (o *SalaryStatement) RemoveDeduction(ctx context.Context, exec boil.ContextExecutor, related *Deduction) error {
-	var err error
-
-	queries.SetScanner(&o.DeductionID, nil)
-	if _, err = o.Update(ctx, exec, boil.Whitelist("deduction_id")); err != nil {
-		return errors.Wrap(err, "failed to update local table")
-	}
-
-	if o.R != nil {
-		o.R.Deduction = nil
-	}
-	if related == nil || related.R == nil {
-		return nil
-	}
-
-	for i, ri := range related.R.SalaryStatements {
-		if queries.Equal(o.DeductionID, ri.DeductionID) {
-			continue
-		}
-
-		ln := len(related.R.SalaryStatements)
-		if ln > 1 && i < ln-1 {
-			related.R.SalaryStatements[i] = related.R.SalaryStatements[ln-1]
-		}
-		related.R.SalaryStatements = related.R.SalaryStatements[:ln-1]
-		break
-	}
 	return nil
 }
 

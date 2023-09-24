@@ -591,7 +591,7 @@ func (earningL) LoadSalaryStatements(ctx context.Context, e boil.ContextExecutor
 			}
 
 			for _, a := range args {
-				if queries.Equal(a, obj.ID) {
+				if a == obj.ID {
 					continue Outer
 				}
 			}
@@ -649,7 +649,7 @@ func (earningL) LoadSalaryStatements(ctx context.Context, e boil.ContextExecutor
 
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
-			if queries.Equal(local.ID, foreign.EarningID) {
+			if local.ID == foreign.EarningID {
 				local.R.SalaryStatements = append(local.R.SalaryStatements, foreign)
 				if foreign.R == nil {
 					foreign.R = &salaryStatementR{}
@@ -724,7 +724,7 @@ func (o *Earning) AddSalaryStatements(ctx context.Context, exec boil.ContextExec
 	var err error
 	for _, rel := range related {
 		if insert {
-			queries.Assign(&rel.EarningID, o.ID)
+			rel.EarningID = o.ID
 			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
 				return errors.Wrap(err, "failed to insert into foreign table")
 			}
@@ -745,7 +745,7 @@ func (o *Earning) AddSalaryStatements(ctx context.Context, exec boil.ContextExec
 				return errors.Wrap(err, "failed to update foreign table")
 			}
 
-			queries.Assign(&rel.EarningID, o.ID)
+			rel.EarningID = o.ID
 		}
 	}
 
@@ -766,80 +766,6 @@ func (o *Earning) AddSalaryStatements(ctx context.Context, exec boil.ContextExec
 			rel.R.Earning = o
 		}
 	}
-	return nil
-}
-
-// SetSalaryStatements removes all previously related items of the
-// earning replacing them completely with the passed
-// in related items, optionally inserting them as new records.
-// Sets o.R.Earning's SalaryStatements accordingly.
-// Replaces o.R.SalaryStatements with related.
-// Sets related.R.Earning's SalaryStatements accordingly.
-func (o *Earning) SetSalaryStatements(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*SalaryStatement) error {
-	query := "update `salary_statements` set `earning_id` = null where `earning_id` = ?"
-	values := []interface{}{o.ID}
-	if boil.IsDebug(ctx) {
-		writer := boil.DebugWriterFrom(ctx)
-		fmt.Fprintln(writer, query)
-		fmt.Fprintln(writer, values)
-	}
-	_, err := exec.ExecContext(ctx, query, values...)
-	if err != nil {
-		return errors.Wrap(err, "failed to remove relationships before set")
-	}
-
-	if o.R != nil {
-		for _, rel := range o.R.SalaryStatements {
-			queries.SetScanner(&rel.EarningID, nil)
-			if rel.R == nil {
-				continue
-			}
-
-			rel.R.Earning = nil
-		}
-		o.R.SalaryStatements = nil
-	}
-
-	return o.AddSalaryStatements(ctx, exec, insert, related...)
-}
-
-// RemoveSalaryStatements relationships from objects passed in.
-// Removes related items from R.SalaryStatements (uses pointer comparison, removal does not keep order)
-// Sets related.R.Earning.
-func (o *Earning) RemoveSalaryStatements(ctx context.Context, exec boil.ContextExecutor, related ...*SalaryStatement) error {
-	if len(related) == 0 {
-		return nil
-	}
-
-	var err error
-	for _, rel := range related {
-		queries.SetScanner(&rel.EarningID, nil)
-		if rel.R != nil {
-			rel.R.Earning = nil
-		}
-		if _, err = rel.Update(ctx, exec, boil.Whitelist("earning_id")); err != nil {
-			return err
-		}
-	}
-	if o.R == nil {
-		return nil
-	}
-
-	for _, rel := range related {
-		for i, ri := range o.R.SalaryStatements {
-			if rel != ri {
-				continue
-			}
-
-			ln := len(o.R.SalaryStatements)
-			if ln > 1 && i < ln-1 {
-				o.R.SalaryStatements[i] = o.R.SalaryStatements[ln-1]
-			}
-			o.R.SalaryStatements = o.R.SalaryStatements[:ln-1]
-			break
-		}
-	}
-
 	return nil
 }
 

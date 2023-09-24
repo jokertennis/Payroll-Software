@@ -9,7 +9,6 @@ import (
 	salary_statement_domain_model "github.com/jokertennis/Payroll-Software/src/main/domain-model/salary_statement"
 	"github.com/jokertennis/Payroll-Software/src/main/domain-service/repository/salary_statement_repository"
 
-	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
@@ -130,8 +129,8 @@ func (r *SalaryStatementRepository) CreateSalaryStatement(salaryStatementEntry s
 	}
 
 	newSalaryStatement := &models.SalaryStatement{
-		EarningID:    null.Uint32From(newEarning.ID),
-		DeductionID:  null.Uint32From(newDeduction.ID),
+		EarningID:    newEarning.ID,
+		DeductionID:  newDeduction.ID,
 		EmployeeID:   salaryStatementEntry.EmployeeId,
 		Nominal:      salaryStatementEntry.Nominal,
 		Payday:       salaryStatementEntry.Payday,

@@ -1,7 +1,7 @@
 CREATE TABLE `salary_statements` (
     `id` mediumint unsigned AUTO_INCREMENT,
-    `earning_id` mediumint unsigned,
-    `deduction_id` mediumint unsigned,
+    `earning_id` mediumint unsigned NOT NULL,
+    `deduction_id` mediumint unsigned NOT NULL,
     `employee_id` mediumint unsigned NOT NULL,
     `nominal` varchar(255) NOT NULL,
     `payday` date NOT NULL,

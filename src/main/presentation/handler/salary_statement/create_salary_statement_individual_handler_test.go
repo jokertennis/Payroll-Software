@@ -15,7 +15,6 @@ import (
 	"github.com/jokertennis/Payroll-Software/src/main/infrastructure"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
@@ -104,8 +103,8 @@ func createDataForTestOfCreateSalaryStatementHandler(ctx context.Context, db boi
 	}
 
 	salary_statements := []models.SalaryStatement{
-		{ID: 1, EarningID: null.Uint32{Uint32: 1, Valid: true}, DeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
-		{ID: 2, EarningID: null.Uint32{Uint32: 1, Valid: true}, DeductionID: null.Uint32{Uint32: 1, Valid: true}, EmployeeID: 1, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
+		{ID: 1, EarningID: 1, DeductionID: 1, EmployeeID: 1, Nominal: "2022年1月 給与明細", Payday: time.Date(2022, 1, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年12月1日~2022年12月31日"},
+		{ID: 2, EarningID: 1, DeductionID: 1, EmployeeID: 1, Nominal: "2022年2月 給与明細", Payday: time.Date(2022, 2, 20, 0, 0, 0, 0, time.Local), TargetPeriod: "2022年1月1日~2022年1月31日"},
 	}
 
 	for _, salary_statement := range salary_statements {
@@ -138,7 +137,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Individual",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -150,7 +150,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -182,7 +182,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Fixed",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -194,7 +195,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -226,7 +227,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Individual",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -238,7 +240,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -270,7 +272,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Fixed",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -282,7 +285,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -314,7 +317,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Individual",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -326,7 +330,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -358,7 +362,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Fixed",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -370,7 +375,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -402,7 +407,8 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				"target_period": "2022年1月1日~2022年1月31日",
 				"nominal_of_earning": "支給総額",
 				"amount_of_earning": 300000,
-				"_earning_details": [
+				"earning_and_deduction_type": "Individual",
+				"earning_details": [
 				  {
 					"nominal": "基本給",
 					"amount_of_earning_detail": 250000
@@ -414,7 +420,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				],
 				"nominal_of_deduction": "控除総額",
 				"amount_of_deduction": 50000,
-				"_deduction_details": [
+				"deduction_details": [
 				  {
 					"nominal": "住民税",
 					"amount_of_deduction_detail": 10000
@@ -463,7 +469,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 	}
 
 	for _, value := range cases {
-		req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/administrator/salary_statement_", bytes.NewBufferString(value.requestBody))
+		req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/administrator/salary_statement", bytes.NewBufferString(value.requestBody))
 		assert.Nil(t, err)
 
 		if value.email == "" && value.password == "" {
@@ -516,7 +522,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				arrayOfNominalOfEarningDetail = append(arrayOfNominalOfEarningDetail, value.Nominal)
 				arrayOfAmountOfEarningDetail = append(arrayOfAmountOfEarningDetail, value.Amount)
 			}
-			earningDetails := expectedData["_earning_details"].([]interface{})
+			earningDetails := expectedData["earning_details"].([]interface{})
 			for _, detail := range earningDetails {
 				detailMap := detail.(map[string]interface{})
 				assert.Contains(t, arrayOfNominalOfEarningDetail, detailMap["nominal"].(string))
@@ -529,7 +535,7 @@ func TestCreateSalaryStatementHandler(t *testing.T) {
 				arrayOfNominalOfDeductionDetail = append(arrayOfNominalOfDeductionDetail, value.Nominal)
 				arrayOfAmountOfDeductionDetail = append(arrayOfAmountOfDeductionDetail, value.Amount)
 			}
-			deductionDetails := expectedData["_deduction_details"].([]interface{})
+			deductionDetails := expectedData["deduction_details"].([]interface{})
 			for _, detail := range deductionDetails {
 				detailMap := detail.(map[string]interface{})
 				assert.Contains(t, arrayOfNominalOfDeductionDetail, detailMap["nominal"].(string))
